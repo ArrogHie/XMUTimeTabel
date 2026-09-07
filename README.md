@@ -33,6 +33,7 @@
 <img src="assets/README/主页面.jpg" width="30%">
 
 **课表导入**
+
 输入账号密码自动导入
 
 <img src="assets/README/课表导入.jpg" width="30%">

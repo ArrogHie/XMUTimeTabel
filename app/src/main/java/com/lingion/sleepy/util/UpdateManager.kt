@@ -15,12 +15,17 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.coroutines.coroutineContext
 
-/** 拉 GitHub/镜像 release 信息、下载 APK、清理旧 APK。不含 UI 状态。 */
+/**
+ * 拉 GitHub/国内代理 release 信息、下载 APK、清理旧 APK。不含 UI 状态。
+ *
+ * 网络策略(2026-09-07 实测调整): 单一镜像不可靠(gh.qdp.qzz.io TLS 失败 /
+ * relv DNS 不存在 / gitclone 网关错误), 改为「候选地址列表逐个尝试」:
+ *   - 信息检查: GitHub API 直连 → gh-proxy 代理的同一 API JSON
+ *   - APK 下载: gh-proxy 加速 → GitHub 直连
+ * 某个候选失败(超时/断连/HTTP 错)立即换下一个, 全挂才报错。
+ */
 object UpdateManager {
     private const val TAG = "UpdateManager"
-    private const val GITHUB_API = "https://api.github.com/repos/ArrogHie/XMUTimeTabel/releases/latest"
-    private const val MIRROR_RELEASE = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/latest"
-    private const val MIRROR_PREFIX = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/"
 
     private fun currentAbiAsset(): String = when {
         Build.SUPPORTED_ABIS.any { it == "arm64-v8a" } -> "app-arm64-v8a-release.apk"
@@ -32,44 +37,57 @@ object UpdateManager {
     private fun currentAbi(): String = currentAbiAsset()
         .removePrefix("app-").removeSuffix("-release.apk")
 
-    /** 只拉 release 信息,不下载。GitHub 不通回退镜像。 */
+    /**
+     * 只拉 release 信息,不下载。按候选逐个尝试: GitHub API 直连失败(国内常见)
+     * → gh-proxy 代理的同一 JSON; 代理也失败才抛错。
+     */
     suspend fun fetchUpdateInfo(context: Context): UpdateInfo = withContext(Dispatchers.IO) {
         val abi = currentAbi()
-        val abiAsset = currentAbiAsset()
-        runCatching {
-            val json = readText(GITHUB_API)
-            return@withContext parseReleaseJson(json, BuildConfig.VERSION_NAME, abi)
+        val candidates = updateInfoUrlCandidates()
+        var lastError: Throwable? = null
+        for (url in candidates) {
+            try {
+                val json = readText(url)
+                val info = parseReleaseJson(json, BuildConfig.VERSION_NAME, abi)
+                if (info.version.isBlank()) throw IllegalStateException("empty version")
+                return@withContext info
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                lastError = e
+                Log.w(TAG, "update info source failed: $url", e)
+            }
         }
-        // 镜像回退:正则取 tag,changelog 从页面 markdown-body 块提取
-        val page = readText(MIRROR_RELEASE)
-        val tag = Regex("/ArrogHie/XMUTimeTabel/releases/tag/(v[0-9A-Za-z.+_-]+)").find(page)
-            ?.groupValues?.get(1)
-            ?: throw IllegalStateException(context.getString(com.lingion.sleepy.R.string.error_no_version_found))
-        val version = tag.removePrefix("v")
-        val url = "$MIRROR_PREFIX$tag/$abiAsset"
-        val isUpdate = VersionUtils.compare(version, BuildConfig.VERSION_NAME) > 0
-        UpdateInfo(version, parseMirrorPage(page, tag), url, isUpdate)
+        throw lastError ?: IllegalStateException(
+            context.getString(com.lingion.sleepy.R.string.error_no_version_found)
+        )
     }
 
-    /** 下载 APK 到 cacheDir,带进度回调(0-100)。协程 cancel 时删半截文件。 */
+    /**
+     * 下载 APK 到 cacheDir,带进度回调(0-100)。
+     * 候选列表: 代理加速 → GitHub 直连。协程 cancel 时删半截文件。
+     */
     suspend fun downloadApk(
         context: Context, info: UpdateInfo, onProgress: (Int) -> Unit
     ): File = withContext(Dispatchers.IO) {
         val target = File(context.cacheDir, "sleepy-update-${currentAbiAsset()}")
-        try {
-            downloadOnce(info.downloadUrl, target, onProgress)
-        } catch (primary: Exception) {
-            if (primary is kotlinx.coroutines.CancellationException) throw primary
-            // 镜像下载失败 → GitHub 直连回退 (信息源/下载源各回退一次, 用户 2026-09-05 令)
-            val direct = toDirectGithubUrl(info.downloadUrl)
-            if (direct == info.downloadUrl) throw primary
-            Log.w(TAG, "mirror download failed, falling back to github direct", primary)
-            target.delete()
-            downloadOnce(direct, target, onProgress)
+        val candidates = updateAssetUrlCandidates(info.downloadUrl)
+        var lastError: Throwable? = null
+        for (url in candidates) {
+            try {
+                downloadOnce(url, target, onProgress)
+                if (!target.isFile || target.length() == 0L)
+                    throw IllegalStateException(context.getString(com.lingion.sleepy.R.string.error_empty_download))
+                return@withContext target
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                lastError = e
+                Log.w(TAG, "update download failed: $url", e)
+                target.delete()
+            }
         }
-        if (!target.isFile || target.length() == 0L)
-            throw IllegalStateException(context.getString(com.lingion.sleepy.R.string.error_empty_download))
-        target
+        throw lastError ?: IllegalStateException(
+            context.getString(com.lingion.sleepy.R.string.error_empty_download)
+        )
     }
 
     private suspend fun downloadOnce(

@@ -46,110 +46,47 @@ class UpdateInfoParseTest {
         assertEquals("", info.downloadUrl)
     }
 
-    // ─── 下载地址镜像改写(2026-09-05 用户令: api.github.com 可达 ≠ github.com 资产可达) ──
-
-    private val githubAssetBody = """{"tag_name":"v1.0.47","body":"x","assets":[
-        {"name":"app-arm64-v8a-release.apk","browser_download_url":"https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"}]}"""
+    // ─── 更新源候选列表(2026-09-07: 单一镜像不可靠, 改候选逐个尝试) ───
 
     @Test
-    fun github_asset_url_is_rewritten_to_mirror() {
-        // 用户实测: api.github.com 通(0.6s)但 github.com 资产 15s 超时 —
-        // 下载地址必须改写到镜像, 镜像目录结构与 GitHub 1:1
+    fun info_candidates_prefer_direct_then_gh_proxy() {
+        val urls = updateInfoUrlCandidates()
+        assertEquals(2, urls.size)
+        // 直连 API 在前
+        assertTrue(urls[0].startsWith("https://api.github.com/repos/ArrogHie/XMUTimeTabel/releases/latest"))
+        // 代理 = 前缀 + 直连 URL
+        assertEquals("https://gh-proxy.com/${urls[0]}", urls[1])
+    }
+
+    @Test
+    fun github_download_asset_candidates_are_proxy_then_direct() {
+        val direct = "https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
+        val urls = updateAssetUrlCandidates(direct)
+        assertEquals(listOf("https://gh-proxy.com/$direct", direct), urls)
+    }
+
+    @Test
+    fun non_github_asset_url_has_single_candidate() {
+        // 非 github release 下载地址(测试样例/自定义源)不做代理改写, 单候选直取
+        val foreign = "https://example.com/a.apk"
+        assertEquals(listOf(foreign), updateAssetUrlCandidates(foreign))
+    }
+
+    @Test
+    fun parse_keeps_direct_github_download_url() {
+        // downloadUrl 保留直连原值, 代理候选由 updateAssetUrlCandidates 生成
+        val githubAssetBody = """{"tag_name":"v1.0.47","body":"x","assets":[
+            {"name":"app-arm64-v8a-release.apk","browser_download_url":"https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"}]}"""
         val info = parseReleaseJson(githubAssetBody, "1.0.46", "arm64-v8a")
         assertEquals(
-            "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk",
+            "https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk",
             info.downloadUrl
         )
     }
 
     @Test
-    fun non_github_asset_url_passes_through_untouched() {
-        val foreign = """{"tag_name":"v1.0.47","body":"x","assets":[
-            {"name":"app-arm64-v8a-release.apk","browser_download_url":"https://example.com/a.apk"}]}"""
-        val info = parseReleaseJson(foreign, "1.0.46", "arm64-v8a")
-        assertEquals("https://example.com/a.apk", info.downloadUrl)
-    }
-
-    @Test
-    fun github_direct_url_is_derived_from_mirror_url_for_fallback() {
-        // 下载失败时的回退对: 镜像地址 → 原始 GitHub 直连地址
-        val mirror = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
-        val direct = "https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
-        assertEquals(direct, toDirectGithubUrl(mirror))
-        // 已是直连则原样返回(幂等)
-        assertEquals(direct, toDirectGithubUrl(direct))
-        // 非下载路径不改写
-        assertEquals("https://gh.qdp.qzz.io/other/page", toDirectGithubUrl("https://gh.qdp.qzz.io/other/page"))
-    }
-
-    // ─── 镜像页 changelog 提取 ───────────────────────────────────────────
-
-    private val mirrorPage = """
-        <html><head><title>Release v1.0.39</title></head><body>
-        <div data-pjax="true" data-test-selector="body-content" data-view-component="true" class="markdown-body tmp-my-3"><h2>v1.0.39</h2>
-        <p>Two changes: bug reported in <a class="issue-link" href="https://github.com/ArrogHie/XMUTimeTabel/issues/5">#5</a> is fixed.</p>
-        <h3>New</h3>
-        <p><strong>Each time slot keeps its own week range</strong></p>
-        <ul>
-        <li>Every time slot carries its own start week.</li>
-        <li>Slots that share a day stay separate.</li>
-        </ul>
-        <h3>Fixes</h3>
-        <ul>
-        <li><strong>Weekday header wrong date</strong> is fixed.</li>
-        </ul>
-        </div>
-        </body></html>
-    """.trimIndent()
-
-    @Test
-    fun mirrorPage_extracts_markdown_body_block() {
-        val md = parseMirrorPage(mirrorPage, "v1.0.39")
-        assertTrue(md.contains("Each time slot keeps its own week range"))
-        assertTrue(md.contains("start week"))
-    }
-
-    @Test
-    fun mirrorPage_converts_headings_lists_bold_links() {
-        val md = parseMirrorPage(mirrorPage, "v1.0.39")
-        assertTrue(md.contains("## v1.0.39"))
-        assertTrue(md.contains("### New"))
-        assertTrue(md.contains("### Fixes"))
-        assertTrue(md.contains("- Every time slot carries its own start week."))
-        assertTrue(md.contains("**Each time slot keeps its own week range**"))
-        assertTrue(md.contains("[#5](https://github.com/ArrogHie/XMUTimeTabel/issues/5)"))
-    }
-
-    @Test
-    fun mirrorPage_strips_unsafe_tags_and_keeps_text() {
-        val md = parseMirrorPage(mirrorPage, "v1.0.39")
-        assertFalse(md.contains("<div"))
-        assertFalse(md.contains("class="))
-        assertFalse(md.contains("data-pjax"))
-    }
-
-    @Test
-    fun mirrorPage_no_markdown_body_returns_empty() {
-        assertEquals("", parseMirrorPage("<html><body>404</body></html>", "v1.0.39"))
-    }
-
-    @Test
-    fun mirrorPage_multiple_markdown_bodies_uses_first() {
-        val two = mirrorPage.replace(
-            "</body>", """
-            <div class="markdown-body"><h2>comment</h2></div></body>
-        """.trimIndent()
-        )
-        val md = parseMirrorPage(two, "v1.0.39")
-        assertTrue(md.contains("Each time slot keeps its own week range"))
-        assertFalse(md.contains("comment"))
-    }
-
-    @Test
-    fun mirrorPage_handles_multiline_div_without_regex_greed() {
-        // .*? 非贪婪在多 markdown-body 时必须停在第一个闭合 div,而不是吞掉后半页
-        val md = parseMirrorPage(mirrorPage, "v1.0.39")
-        assertFalse(md.contains("</body>"))
-        assertFalse(md.contains("</html>"))
+    fun blank_download_url_yields_single_direct_candidate() {
+        // 找不到对应 ABI asset → downloadUrl 空 → 单候选空串(下载层直接报错, 不产生幽灵代理 URL)
+        assertEquals(listOf(""), updateAssetUrlCandidates(""))
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FileUpload
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,6 +43,7 @@ fun ManagementPage(
     onCreateNewTableRequested: () -> Unit,
     onManualAdd: () -> Unit,
     onEditCurrentTable: () -> Unit,
+    onStarRequested: () -> Unit,
     viewModel: ScheduleViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -129,6 +131,16 @@ fun ManagementPage(
                         onClick = onEditCurrentTable
                     )
                 }
+            }
+
+            // 支持入口：给项目点个 Star
+            item {
+                ManageCard(
+                    icon = Icons.Outlined.Star,
+                    title = stringResource(R.string.manage_star),
+                    subtitle = stringResource(R.string.manage_star_sub),
+                    onClick = onStarRequested
+                )
             }
         }
     }

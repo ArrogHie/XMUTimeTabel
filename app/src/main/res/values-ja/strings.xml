@@ -319,7 +319,7 @@
     <string name="about_license_detail">ライセンスと謝辞</string>
     <string name="license_page_title">ライセンスと謝辞</string>
     <string name="license_gpl_section">ライセンス</string>
-    <string name="license_gpl_body">Sleepy はオープンソースのスマート時間割アプリです。ソースコードは GNU General Public License v3.0 の下で公開されています。誰でも自由に使用、改変、配布できます。GitHub での貢献を歓迎します。</string>
+    <string name="license_gpl_body">厦大課表（XMU Timetable）は ArrogHie が開発・保守する、オープンソースの時間割アプリ Sleepy（lingion/sleepy、https://github.com/lingion/sleepy）の派生版で、厦門大学の教務システム向けに深くカスタマイズされています。本プロジェクトは上流の GPL-3.0 ライセンスで配布されます：誰でも自由に使用・改変・再配布でき、派生作品は同じライセンスを維持し出典を明記してください。ソースコード: https://github.com/ArrogHie/XMUTimeTabel</string>
     <string name="license_attribution_section">教务システムアダプタの謝辞</string>
     <string name="license_attribution_note">一部の教务システム取り込みアダプタは、以下のオープンソースプロジェクトの公開実装を参考にしています。皆様に感謝申し上げます。</string>
     <string name="license_foundational_section">複数大学共通の基盤プロジェクト</string>
@@ -523,4 +523,8 @@
     <string name="settings_widget_rows_card_height">カードの最小の高さ</string>
     <string name="settings_widget_rows_card_height_auto">自動</string>
     <string name="settings_widget_rows_card_height_sub">大きくすると各カードが高くなり情報を多く表示（0 = 内容に合わせて自動）</string>
+    <string name="license_project_source">本プロジェクトのソースコード</string>
+    <string name="license_upstream_project">上流プロジェクト（本フォークの基盤）</string>
+    <string name="manage_star">GitHub で Star を付ける</string>
+    <string name="manage_star_sub">気に入ったら Star で開発を応援しましょう</string>
 </resources>

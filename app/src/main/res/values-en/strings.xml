@@ -320,7 +320,7 @@
     <string name="about_license_detail">License &amp; Acknowledgements</string>
     <string name="license_page_title">License &amp; Acknowledgements</string>
     <string name="license_gpl_section">License</string>
-    <string name="license_gpl_body">Sleepy is an open-source smart class schedule app. The source code is released under the GNU General Public License v3.0. Anyone is free to use, modify, and distribute this software. Contributions via GitHub are welcome.</string>
+    <string name="license_gpl_body">XMU Timetable (厦大课表) is developed and maintained by ArrogHie as a derivative of the open-source schedule app Sleepy (lingion/sleepy, https://github.com/lingion/sleepy), deeply customized for the Xiamen University academic system. It is distributed under the upstream GPL-3.0 license: anyone may freely use, modify and redistribute it; derivative works must keep the same license and credit the source. Source code: https://github.com/ArrogHie/XMUTimeTabel</string>
     <string name="license_attribution_section">Academic System Acknowledgements</string>
     <string name="license_attribution_note">Parts of the academic-system import adapters reference public implementations from the following open-source projects, with thanks to all.</string>
     <string name="license_foundational_section">Cross-university foundational projects</string>
@@ -524,4 +524,8 @@
     <string name="settings_widget_rows_card_height">Minimum card height</string>
     <string name="settings_widget_rows_card_height_auto">Auto</string>
     <string name="settings_widget_rows_card_height_sub">Fix every course card taller so more info fits (0 = auto fit content)</string>
+    <string name="license_project_source">Source code of this project</string>
+    <string name="license_upstream_project">Upstream project (this fork is based on it)</string>
+    <string name="manage_star">Star this project on GitHub</string>
+    <string name="manage_star_sub">Enjoy it? Give a star to support ongoing development</string>
 </resources>

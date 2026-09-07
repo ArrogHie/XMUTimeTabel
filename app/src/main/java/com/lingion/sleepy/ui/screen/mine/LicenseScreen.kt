@@ -1,5 +1,7 @@
 package com.lingion.sleepy.ui.screen.mine
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,8 +36,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.lingion.sleepy.R
 import com.lingion.sleepy.ui.theme.SleepyTheme
@@ -88,6 +92,7 @@ fun LicenseScreen(onBack: () -> Unit) {
             // ---- 许可证区块 ----
             item {
                 LicenseCard {
+                    val context = LocalContext.current
                     Text(
                         text = stringResource(R.string.license_gpl_section),
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
@@ -98,6 +103,18 @@ fun LicenseScreen(onBack: () -> Unit) {
                         text = stringResource(R.string.license_gpl_body),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    LinkRow(
+                        label = stringResource(R.string.license_project_source),
+                        url = PROJECT_SOURCE_URL,
+                        onOpen = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PROJECT_SOURCE_URL))) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LinkRow(
+                        label = stringResource(R.string.license_upstream_project),
+                        url = UPSTREAM_URL,
+                        onOpen = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(UPSTREAM_URL))) }
                     )
                 }
             }
@@ -280,6 +297,33 @@ private fun LicenseCard(content: @Composable () -> Unit) {
         content()
     }
 }
+
+/** 许可证卡内的源码/上游链接行: 上行标签, 下行可点 URL(主题色下划线)。 */
+@Composable
+private fun LinkRow(label: String, url: String, onOpen: () -> Unit) {
+    val colors = SleepyTheme.colors
+    Column {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.onSurfaceVariant
+        )
+        Text(
+            text = url,
+            style = MaterialTheme.typography.bodySmall.copy(
+                color = colors.primary,
+                textDecoration = TextDecoration.Underline
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onOpen)
+                .padding(top = 2.dp)
+        )
+    }
+}
+
+private const val PROJECT_SOURCE_URL = "https://github.com/ArrogHie/XMUTimeTabel"
+private const val UPSTREAM_URL = "https://github.com/lingion/sleepy"
 
 /**
  * 顶层致谢条目 (跨校项目卡)。description 为可见文字段, 与原 BATCH_A/B/C/BATCH_D

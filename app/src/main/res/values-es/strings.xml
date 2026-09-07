@@ -319,7 +319,7 @@
     <string name="about_license_detail">Licencia y agradecimientos</string>
     <string name="license_page_title">Licencia y agradecimientos</string>
     <string name="license_gpl_section">Licencia</string>
-    <string name="license_gpl_body">Sleepy es una aplicación de horario escolar inteligente de código abierto. El código fuente se publica bajo la licencia GNU General Public License v3.0. Cualquiera puede usar, modificar y distribuir este software libremente. Las contribuciones a través de GitHub son bienvenidas.</string>
+    <string name="license_gpl_body">XMU Timetable (厦大课表) está desarrollado y mantenido por ArrogHie como una versión derivada de la app de horarios de código abierto Sleepy (lingion/sleepy, https://github.com/lingion/sleepy), profundamente personalizada para el sistema académico de la Universidad de Xiamen. Se distribuye bajo la licencia GPL-3.0 del proyecto original: cualquiera puede usarla, modificarla y redistribuirla libremente; las obras derivadas deben mantener la misma licencia y acreditar la fuente. Código fuente: https://github.com/ArrogHie/XMUTimeTabel</string>
     <string name="license_attribution_section">Agradecimientos de adaptaciones académicas</string>
     <string name="license_attribution_note">Partes de los adaptadores de importación de sistemas académicos hacen referencia a implementaciones públicas de los siguientes proyectos de código abierto, con agradecimiento a todos.</string>
     <string name="license_foundational_section">Proyectos transversales</string>
@@ -523,4 +523,8 @@
     <string name="settings_widget_rows_card_height">Altura mínima de tarjeta</string>
     <string name="settings_widget_rows_card_height_auto">Auto</string>
     <string name="settings_widget_rows_card_height_sub">Fija tarjetas más altas para más información (0 = ajuste automático)</string>
+    <string name="license_project_source">Código fuente de este proyecto</string>
+    <string name="license_upstream_project">Proyecto upstream (en el que se basa este fork)</string>
+    <string name="manage_star">Da una estrella en GitHub</string>
+    <string name="manage_star_sub">¿Te gusta? Da una estrella para apoyar el desarrollo</string>
 </resources>

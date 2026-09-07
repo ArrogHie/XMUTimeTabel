@@ -37,7 +37,7 @@ class FeedbackComposerTest {
     @Test
     fun mailtoUri_usesConfirmedAddressAndEncodesFields() {
         val result = FeedbackComposer.mailtoUri("中文标题", "内容\n和&符号", diagnostic)
-        assertTrue(result.startsWith("mailto:ArrogHie@gmail.com?subject="))
+        assertTrue(result.startsWith("mailto:3288618516@qq.com?subject="))
         assertTrue(result.contains("body="))
         assertFalse(result.contains(" "))
         assertTrue(result.contains("VersionCode%3A") || result.contains("VersionCode%3a"))

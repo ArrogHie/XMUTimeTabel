@@ -208,7 +208,7 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
                     version = updateAvailable!!.version,
                     onClick = {
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/tag/v${updateAvailable!!.version}"))
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ArrogHie/XMUTimeTabel/releases/tag/v${updateAvailable!!.version}"))
                         )
                     }
                 )

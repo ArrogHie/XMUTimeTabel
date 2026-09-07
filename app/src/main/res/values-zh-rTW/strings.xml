@@ -319,7 +319,7 @@
     <string name="about_license_detail">開源授權與致謝</string>
     <string name="license_page_title">開源授權與致謝</string>
     <string name="license_gpl_section">授權條款</string>
-    <string name="license_gpl_body">Sleepy 是一款開源的智慧課表應用，原始碼基於 GNU General Public License v3.0 協議發布。任何人都可以自由使用、修改和分發本軟體。歡迎透過 GitHub 參與貢獻。</string>
+    <string name="license_gpl_body">廈大課表（XMU Timetable）由 ArrogHie 開發維護，為開源課表應用 Sleepy（lingion/sleepy，https://github.com/lingion/sleepy）的二次開發版本，針對廈門大學教務系統深度客製。本專案基於上游 GPL-3.0 授權分發：任何人皆可自由使用、修改與再散布，衍生作品須維持相同授權並註明出處。本專案原始碼：https://github.com/ArrogHie/XMUTimeTabel</string>
     <string name="license_attribution_section">教務適配致謝</string>
     <string name="license_attribution_note">本應用部分教務匯入適配參考了以下開源專案的公開實現，在此一併致謝。</string>
     <string name="license_foundational_section">跨校普適項目</string>
@@ -523,4 +523,8 @@
     <string name="settings_widget_rows_card_height">卡片最小高度</string>
     <string name="settings_widget_rows_card_height_auto">自動</string>
     <string name="settings_widget_rows_card_height_sub">調大讓每張課程卡固定更高，容納更多資訊（設為 0 則按內容自動適應）</string>
+    <string name="license_project_source">本專案原始碼</string>
+    <string name="license_upstream_project">上游專案（本 fork 基於其開發）</string>
+    <string name="manage_star">在 GitHub 上點個 Star</string>
+    <string name="manage_star_sub">喜歡本專案，給個 Star 支持作者持續維護</string>
 </resources>

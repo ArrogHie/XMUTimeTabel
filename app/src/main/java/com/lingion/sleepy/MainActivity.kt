@@ -421,7 +421,7 @@ private fun MainTabs(
         Tab.Today -> TodayScreen(onEditCourse = { course -> editingCourse(course) })
         Tab.Manage -> {
             val ctx = LocalContext.current
-            ManagementPage(onJwImportRequested = { ctx.startActivity(Intent(ctx, com.lingion.sleepy.ui.screen.imports.JwImportActivity::class.java)) }, onCreateNewTableRequested = onCreateNewTable, onManualAdd = { pushOverlay(OverlayScreen.AddCourse) }, onEditCurrentTable = { pushOverlay(OverlayScreen.EditTable) })
+            ManagementPage(onJwImportRequested = { ctx.startActivity(Intent(ctx, com.lingion.sleepy.ui.screen.imports.JwImportActivity::class.java)) }, onCreateNewTableRequested = onCreateNewTable, onManualAdd = { pushOverlay(OverlayScreen.AddCourse) }, onEditCurrentTable = { pushOverlay(OverlayScreen.EditTable) }, onStarRequested = { ctx.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/ArrogHie/XMUTimeTabel"))) })
         }
         Tab.Mine -> MineScreen(
             onOpenAllTables = { pushOverlay(OverlayScreen.AllTables) },

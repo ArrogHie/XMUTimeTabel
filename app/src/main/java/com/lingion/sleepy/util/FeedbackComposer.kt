@@ -16,7 +16,7 @@ import java.net.URLEncoder
 object FeedbackComposer {
 
     const val GITHUB_REPO = "ArrogHie/XMUTimeTabel"
-    const val FALLBACK_EMAIL = "ArrogHie@gmail.com"
+    const val FALLBACK_EMAIL = "3288618516@qq.com"
     private const val NEW_ISSUE_PATH = "/issues/new"
 
     /**
@@ -47,7 +47,7 @@ object FeedbackComposer {
 
     /**
      * 构造 mailto: URI。
-     * 默认发到 FALLBACK_EMAIL(用户邮箱 lingion@hrbeu.edu.cn)。
+     * 默认发到 FALLBACK_EMAIL(用户邮箱 3288618516@qq.com)。
      */
     fun mailtoUri(
         subject: String,
