@@ -29,13 +29,16 @@
 ## 预览
 
 **主页面**
+
 <img src="assets/README/主页面.jpg" width="30%">
 
 **课表导入**
+
 输入账号密码自动导入
 <img src="assets/README/课表导入.jpg" width="30%">
 
 **小组件**
+
 <img src="assets/README/周课表小组件.jpg" width="30%"> <img src="assets/README/日课表小组件.jpg" width="32.5%">
 
 ## 功能特性
