@@ -5,7 +5,7 @@
 <h1 align="center">厦大课表</h1>
 
 <p align="center">
-  厦门大学课程表 Android 应用 — 教务直连导入 · 多视图 · 桌面小组件
+  厦门大学课程表 Android 应用 — 更适合厦大宝宝的课程表
 </p>
 
 <p align="center">
@@ -25,6 +25,18 @@
 ## 简介
 
 厦大课表是为厦门大学学生定制的课程表应用：账号密码登录厦门大学统一身份认证后，自动从教务系统（jw.xmu.edu.cn）抓取本学期课表并落库，支持手动添加、多课表管理与课程提醒。
+
+## 预览
+
+**主页面**
+<img src="assets/README/主页面.jpg" width="30%">
+
+**课表导入**
+输入账号密码自动导入
+<img src="assets/README/课表导入.jpg" width="30%">
+
+**小组件**
+<img src="assets/README/周课表小组件.jpg" width="30%"> <img src="assets/README/日课表小组件.jpg" width="32.5%">
 
 ## 功能特性
 
