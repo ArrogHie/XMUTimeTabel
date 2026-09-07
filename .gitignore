@@ -34,3 +34,7 @@ docs/sop/jw-cross-verify-sop.md
 
 schedule/
 
+# 签名密钥与口令(本机手工放置, 严禁入库 / 上传)
+keystore/
+keystore.properties
+

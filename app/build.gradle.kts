@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -10,6 +12,23 @@ android {
     // 注: 原 37 → 36。AGP 9.1.0 官方上限 36.1, 且本机 SDK 的 37 平台包在仓库里
     // 命名为 android-37.0(AGP 找不到 hash android-37)。编译验证与出包以 36 为准。
     compileSdk = 36
+
+    // 正式签名(可选): 根目录 keystore.properties(不入库, 仅本机手工放置)存在且 storeFile
+    // 可读 → 配置 release 签名; 缺失(CI/克隆) → null, release 回退 debug 签名保证构建不中断。
+    val releaseSigning = run {
+        val propsFile = rootProject.file("keystore.properties")
+        if (!propsFile.isFile) return@run null
+        val p = Properties()
+        propsFile.inputStream().use { p.load(it) }
+        val f = rootProject.file(p.getProperty("storeFile"))
+        if (!f.isFile) return@run null
+        signingConfigs.create("release") {
+            storeFile = f
+            storePassword = p.getProperty("storePassword") ?: ""
+            keyAlias = p.getProperty("keyAlias") ?: ""
+            keyPassword = p.getProperty("keyPassword") ?: ""
+        }
+    }
 
     defaultConfig {
         // 厦大专属版对外唯一标识。namespace 保持 com.lingion.sleepy(内部代码路径不变),
@@ -38,7 +57,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            // v1.0 正式签名: 根目录 keystore.properties 存在(本地手工放置, gitignore 排除,
+            // 不入库)时用正式 keystore 签名; 缺失(CI/克隆)回退 debug 签名, 保证构建不中断。
+            signingConfig = if (releaseSigning != null) releaseSigning else signingConfigs.getByName("debug")
         }
     }
 
