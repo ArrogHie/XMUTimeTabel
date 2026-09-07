@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" width="120">
+  <img src="assets/logo.png" width="120">
 </p>
 
 <h1 align="center">厦大课表</h1>
