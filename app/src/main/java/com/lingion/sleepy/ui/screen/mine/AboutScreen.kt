@@ -23,6 +23,7 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.NewReleases
@@ -102,16 +103,15 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
     }
 
-    fun openEmailFeedback() {
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(FeedbackComposer.mailtoUri(
-            subject = context.getString(R.string.about_feedback_email_subject),
-            body = context.getString(R.string.about_feedback_email_body),
-            diag = diagnostic(),
-        )))
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
-        } else {
-            scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.about_feedback_no_mail_app)) }
+    /** 复制反馈邮箱到剪贴板(v1.1.1: 不再拉起邮件应用, 地址常驻卡片内方便自取)。 */
+    fun copyEmail() {
+        val cm = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)
+            as android.content.ClipboardManager
+        cm.setPrimaryClip(
+            android.content.ClipData.newPlainText("email", FeedbackComposer.FALLBACK_EMAIL)
+        )
+        scope.launch {
+            snackbarHostState.showSnackbar(context.getString(R.string.about_email_copied))
         }
     }
 
@@ -380,42 +380,65 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Feedback card
+            // Feedback card: GitHub Issue 入口 + 常驻邮箱地址行(点击复制)
             InfoCard {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Outlined.BugReport,
-                        contentDescription = null,
-                        tint = colors.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.about_feedback),
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-                            color = colors.onSurface
-                        )
-                        Text(
-                            text = stringResource(R.string.about_feedback_detail),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.onSurfaceVariant
-                        )
-                    }
-                    IconButton(onClick = { openGitHubFeedback() }) {
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.OpenInNew,
-                            contentDescription = stringResource(R.string.about_feedback_github),
+                            imageVector = Icons.Outlined.BugReport,
+                            contentDescription = null,
                             tint = colors.primary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(24.dp)
                         )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.about_feedback),
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                                color = colors.onSurface
+                            )
+                            Text(
+                                text = stringResource(R.string.about_feedback_detail),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colors.onSurfaceVariant
+                            )
+                        }
+                        IconButton(onClick = { openGitHubFeedback() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Outlined.OpenInNew,
+                                contentDescription = stringResource(R.string.about_feedback_github),
+                                tint = colors.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
-                    IconButton(onClick = { openEmailFeedback() }) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    // 邮箱常驻行: 直接展示地址, 整行点击复制
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .noRippleClickable(onClick = { copyEmail() })
+                            .padding(vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             imageVector = Icons.Outlined.Email,
-                            contentDescription = stringResource(R.string.about_feedback_email),
+                            contentDescription = null,
                             tint = colors.primary,
                             modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = FeedbackComposer.FALLBACK_EMAIL,
+                            style = MaterialTheme.typography.bodyMedium.copy(color = colors.primary),
+                            color = colors.primary,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Icon(
+                            imageVector = Icons.Outlined.ContentCopy,
+                            contentDescription = stringResource(R.string.about_feedback_email),
+                            tint = colors.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }

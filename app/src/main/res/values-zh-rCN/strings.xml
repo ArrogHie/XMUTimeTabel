@@ -542,4 +542,5 @@
     <string name="license_upstream_project">上游项目（本 fork 基于其开发）</string>
     <string name="manage_star">在 GitHub 上点个 Star</string>
     <string name="manage_star_sub">喜欢本项目，给个 Star 支持作者继续维护</string>
+    <string name="about_email_copied">邮箱地址已复制</string>
 </resources>

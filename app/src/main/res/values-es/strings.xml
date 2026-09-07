@@ -334,9 +334,6 @@
     <string name="about_feedback_detail">Reporta errores o comparte ideas mediante un Issue de GitHub, o contacta al autor por correo</string>
     <string name="about_feedback_github">Issue de GitHub</string>
     <string name="about_feedback_email">Correo</string>
-    <string name="about_feedback_email_subject">[Comentario XMU Timetable]</string>
-    <string name="about_feedback_email_body">Por favor describe el problema o la idea:\n\n— Entorno —\n(opcional)\n</string>
-    <string name="about_feedback_no_mail_app">No se encontró ninguna app de correo. Usa un Issue de GitHub.</string>
     <string name="about_title">Acerca de</string>
     <string name="about_update">Buscar actualizaciones</string>
     <string name="about_update_checking">Comprobando actualizaciones…</string>
@@ -527,4 +524,5 @@
     <string name="license_upstream_project">Proyecto upstream (en el que se basa este fork)</string>
     <string name="manage_star">Da una estrella en GitHub</string>
     <string name="manage_star_sub">¿Te gusta? Da una estrella para apoyar el desarrollo</string>
+    <string name="about_email_copied">Dirección de correo copiada</string>
 </resources>

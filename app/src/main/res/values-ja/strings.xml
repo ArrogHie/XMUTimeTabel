@@ -334,9 +334,6 @@
     <string name="about_feedback_detail">GitHub Issue でバグやアイデアを報告するか、メールで作者に連絡できます</string>
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">メール</string>
-    <string name="about_feedback_email_subject">[厦大課表フィードバック]</string>
-    <string name="about_feedback_email_body">問題やアイデアを説明してください：\n\n— 環境 —\n（任意）\n</string>
-    <string name="about_feedback_no_mail_app">メールアプリが見つかりません。GitHub Issue を使用してください。</string>
     <string name="about_title">について</string>
     <string name="about_update">更新を確認</string>
     <string name="about_update_checking">更新を確認中…</string>
@@ -527,4 +524,5 @@
     <string name="license_upstream_project">上流プロジェクト（本フォークの基盤）</string>
     <string name="manage_star">GitHub で Star を付ける</string>
     <string name="manage_star_sub">気に入ったら Star で開発を応援しましょう</string>
+    <string name="about_email_copied">メールアドレスをコピーしました</string>
 </resources>

@@ -466,9 +466,6 @@
     <string name="about_feedback_detail">提交 Bug 或新想法到 GitHub Issue，或通过邮件联系作者</string>
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">邮件反馈</string>
-    <string name="about_feedback_email_subject">[厦大课表反馈]</string>
-    <string name="about_feedback_email_body">请描述你遇到的问题或建议：\n\n— 环境 —\n（选填）\n</string>
-    <string name="about_feedback_no_mail_app">未找到可用的邮件应用，请改用 GitHub Issue</string>
     <string name="about_license_title">开源声明</string>
     <string name="about_license_body">教务导入适配参考：WakeUp 课程表 (YZune, Apache-2.0) — JwCourse 数据结构参考；WakeupSchedule_BUPT (dIT8Zv, Apache-2.0) — 解析器与学校目录设计参考；WakeupSchedule_Kotlin (YZune, Apache-2.0) — 周次位图解析参考。厦门大学课表接口（金智 gsapp/wdkbapp 微服务）时序为本项目自行调研验证（schedule/ 目录脚本）。</string>
     <string name="about_license_detail">开源许可与致谢</string>
@@ -580,4 +577,5 @@
     <string name="license_upstream_project">上游项目（本 fork 基于其开发）</string>
     <string name="manage_star">在 GitHub 上点个 Star</string>
     <string name="manage_star_sub">喜欢本项目，给个 Star 支持作者继续维护</string>
+    <string name="about_email_copied">邮箱地址已复制</string>
 </resources>
