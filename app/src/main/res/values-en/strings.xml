@@ -1,0 +1,655 @@
+<resources>
+    <string name="app_name">XMU Timetable</string>
+    <string name="widget_today_label">Today\'s Classes</string>
+    <string name="widget_week_grid_label">This Week</string>
+    <string name="widget_twoday_label">Next Two Days</string>
+
+    <string name="tab_schedule">Schedule</string>
+    <string name="tab_today">Today</string>
+    <string name="tab_mine">Me</string>
+    <string name="tab_manage">Manage</string>
+
+    <string name="schedule_empty">No schedule yet</string>
+    <string name="schedule_empty_hint">Go to Manage to import, or manually create your first course.</string>
+    <string name="schedule_go_manage">Go to Manage</string>
+    <string name="schedule_manual_first">Create first course</string>
+    <string name="schedule_add_course">Add Course</string>
+    <string name="share_sheet_title">Share Schedule</string>
+    <string name="schedule_share_table">Share Schedule</string>
+    <string name="exit_press_back_again">Press back again to exit</string>
+    <string name="schedule_current_week">Week %1$d</string>
+    <string name="schedule_no_course_today">No classes today</string>
+
+    <string name="import_title">Import Schedule</string>
+    <string name="manage_current_table">Current Schedule</string>
+    <string name="manage_import">Import</string>
+    <string name="manage_import_sub">Import from file / text / CSV</string>
+    <string name="manage_new_table">New Schedule</string>
+    <string name="manage_new_table_sub">Create a blank schedule, add courses manually</string>
+    <string name="manage_edit_current">Edit Current</string>
+    <string name="manage_edit_current_sub">Edit name, dates, and time slots</string>
+    <string name="manage_manual_add">Add Course</string>
+    <string name="manage_manual_add_sub">Add a course directly to current schedule</string>
+    <string name="table_info">Start: %1$s  |  Week %2$d  |  %3$d courses</string>
+    <string name="current_table_week">Current · Week %1$d</string>
+    <string name="table_start_date">Start: %1$s</string>
+    <string name="all_tables">All Schedules</string>
+    <string name="schedule_switch_table">Switch schedule</string>
+    <string name="schedule_undo">Undo</string>
+    <string name="schedule_undo_none">Nothing to undo</string>
+    <string name="all_tables_new">New Schedule</string>
+    <string name="all_tables_duplicate">Duplicate</string>
+    <string name="table_created_at">Imported %1$s</string>
+    <string name="edit_table_title">Edit Schedule</string>
+    <string name="edit_table_basic_info">Basic Info</string>
+    <string name="edit_table_name">Schedule Name</string>
+    <string name="edit_table_start_date">Semester Start Date</string>
+    <string name="edit_table_start_date_hint">e.g. 2026-02-24</string>
+    <string name="edit_table_max_week">Total Weeks</string>
+    <string name="edit_table_time_slots">Class Times</string>
+    <string name="edit_table_delete">Delete Schedule</string>
+    <string name="edit_table_save">Save Settings</string>
+    <string name="edit_table_not_found">Schedule not found</string>
+    <string name="edit_table_validation_error">Date must be yyyy-MM-dd, time must be HH:mm with start before end</string>
+    <string name="edit_table_delete_confirm">Confirm Delete</string>
+    <string name="edit_table_delete_msg">Delete schedule \"%1$s\"? This cannot be undone.</string>
+    <string name="edit_table_delete_msg_count">Delete timetable "%1$s"? Its %2$d courses will be deleted too. This cannot be undone.</string>    <string name="default_table_name">Default</string>
+    <string name="import_paste">Paste Text</string>
+    <string name="import_paste_hint">Paste schedule text…</string>
+    <string name="import_file">Import from File</string>
+    <string name="import_qr">Scan QR</string>
+    <string name="import_jw">Import from XMU</string>
+    <string name="import_manual">Manual Add</string>
+    <string name="import_success">Import successful</string>
+    <string name="import_failed">Import failed: %1$s</string>
+    <string name="import_preview">Preview Import</string>
+    <string name="import_parsing">Parsing…</string>
+    <string name="import_supported_formats">Supported Formats</string>
+    <string name="import_preview_title">Import Preview</string>
+    <string name="import_target_table">Target: %1$s</string>
+    <string name="import_courses">Courses</string>
+    <string name="import_conflicts">Conflicts</string>
+    <string name="import_appendable">Appendable</string>
+    <string name="import_table_name">Schedule Name</string>
+    <string name="import_start_date">Start Date</string>
+    <string name="import_suggestion">Suggestion</string>
+    <string name="import_no_conflict">No conflicts — safe to append or overwrite</string>
+    <string name="import_conflict_count">Found %1$d conflict(s). Consider importing as new schedule or appending non-conflicting courses only.</string>
+    <string name="import_conflict_more">%1$d more conflict(s)…</string>
+    <string name="import_append_only">Append non-conflicting</string>
+    <string name="import_as_new">Import as new schedule</string>
+    <string name="import_overwrite">⚠ Overwrite current (caution)</string>
+    <string name="import_append_as_new">Merge into new schedule</string>
+    <string name="import_append_conflict">Append with conflicts</string>
+    <string name="import_confirm_title">Confirm Before Import</string>
+    <string name="import_confirm_body">Verify the semester start date and class times — otherwise the current week will be inaccurate.</string>
+    <string name="import_week_start">First week starts on</string>
+    <string name="import_confirm">Confirm Import</string>
+    <string name="import_all_conflict">All courses conflict — nothing to append</string>
+    <string name="import_content_empty">Content is empty</string>
+    <string name="import_select_table">Please select a schedule first</string>
+    <string name="read_failed">Read failed: %1$s</string>
+    <string name="cannot_read_file">Cannot read file</string>
+    <string name="import_preview_sub">Preview first, then import -- do not overwrite your schedule</string>
+    <string name="format_wakeup_share">WakeUp share text</string>
+    <string name="format_wakeup_desc">Starts with 【来自WakeUp课程表】</string>
+    <string name="format_wakeup_json">WakeUp JSON</string>
+    <string name="format_json_desc">Export .json file</string>
+    <string name="format_ics">ICS calendar</string>
+    <string name="format_ics_desc">Exportable from school registry</string>
+    <string name="format_csv">CSV file</string>
+    <string name="format_csv_desc">.csv with headers, comma separated</string>
+    <string name="format_html">HTML table</string>
+    <string name="format_html_desc">&lt;table&gt; format, parse by row after detecting headers</string>
+    <string name="format_plain">Plain text</string>
+    <string name="format_plain_desc">Sleepy native format, one course per line, pipe-separated</string>
+
+    <!-- Format detail dialogs: wording must match ScheduleParser behavior -->
+    <string name="format_help_spec">Recognition requirements</string>
+    <string name="format_help_example">Example</string>
+    <string name="format_help_close">Got it</string>
+    <string name="format_detail_content_desc">View format details</string>
+    <string name="copy_prompt">Copy prompt</string>
+    <string name="copied">Copied</string>
+    <string name="ai_prompt_title">Let AI convert your screenshot (Sleepy native format)</string>
+    <string name="ai_prompt_hint">Copy the prompt below to any AI assistant (Doubao, ChatGPT…) together with your timetable screenshot. The AI outputs #sleepy-v1 text - paste it back into the field above to import.</string>
+    <string name="ai_prompt_text">Task: Convert the timetable screenshot (or file content) I send next into the sleepy-v1 plain-text format. Output nothing besides the conversion result itself - no explanations, no greetings, no markdown code fences. The first line of your output must be #sleepy-v1.\n\n========== 1. Format rules ==========\n\nThe first line is always: #sleepy-v1\n\nEvery other line is one record, with columns separated by a vertical bar |. Three kinds of lines:\n\n1. T line (table info, optional, at most one):\nTtableName|termStartDate|totalWeeks|nodesPerDay\n· The start date format is YYYY-MM-DD and must be the Monday of week 1\n· Fill in only what the timetable explicitly states; leave unspecified fields empty. You may stop after the last known column, e.g. T|2026-03-02\n· If the timetable does not mention these at all, omit the T line entirely. Never guess.\n\n2. N line (per-period times, optional, one line per period):\nNnumber|startTime|endTime\n· e.g. N3|10:00|10:45\n· Only output N lines if the timetable explicitly provides a period-time table. Use 24-hour HH:mm; write 8:00 as 08:00\n· No period-time table in the timetable -&gt; output no N lines at all\n\n3. C line (courses, the main body, one line per occurrence):\nCname|day|nodes|weeks|teacher|room|color|note|time|group\nAlways exactly 10 columns / 9 bars. Empty columns stay empty, but the bars must not be dropped. Column rules:\n  Col 1 name: copy the timetable verbatim, character for character, any language\n  Col 2 day: Monday..Sunday = 1 2 3 4 5 6 7\n  Col 3 nodes: periods 3-4 = 3-4; single period 6 = 6\n  Col 4 weeks: see \"2. Week rules\"\n  Col 5 teacher: copy from the timetable; empty if absent\n  Col 6 room: same\n  Col 7 color: always empty\n  Col 8 note: only if the timetable states a note; otherwise empty\n  Col 9 time: only when the timetable explicitly marks a clock time for this course (e.g. evening class), as HH:mm-HH:mm; otherwise empty\n  Col 10 group: always empty\n\n========== 2. Week rules ==========\n\nExtract the set of weeks each course meets, then decide in order:\n1. A continuous range with no odd/even restriction -&gt; S-E, e.g. 1-16\n2. All odd weeks within the range (\"odd weeks\") -&gt; S-E单, e.g. 1-15单\n3. All even weeks (\"even weeks\") -&gt; S-E双, e.g. 2-16双\n4. Scattered weeks (e.g. \"weeks 1-8, 10, 12-16\") -&gt; split into maximal runs, one C line each, copying all other columns:\n   · A full-week run -&gt; S-E (e.g. 1-8, 12-16)\n   · A lone single week -&gt; S定 (e.g. 10定)\n   · A purely odd run -&gt; S-E单; a purely even run -&gt; S-E双\n   · A run that is neither continuous nor purely odd/even -&gt; S-E定 (e.g. weeks 6,7 -&gt; 6-7定)\n5. The timetable says nothing about weeks -&gt; 1-16\n\n========== 3. Extraction rules ==========\n\n· A course meeting multiple times per week (different days or periods) -&gt; multiple C lines, one per meeting; never merge into one line\n· Read period numbers from \"period X\" in the timetable; if it has only times and no periods, number the non-overlapping time slots 1, 2, 3... top to bottom and emit matching N lines\n· Copy names, teachers and rooms verbatim; if a text contains | \ \" &amp;lt; { ( escape each with a leading \; a newline inside text is the two characters \n and a tab is \t\n· Anything the timetable does not state stays empty. Never invent teachers, rooms, times or weeks.\n\n========== 4. Output self-check (verify silently, do not print) ==========\n\n· First line is #sleepy-v1 and nothing else precedes or follows the records\n· Every C line has exactly 9 bars / 10 columns\n· Day is a digit 1-7; hours are two digits (08:00, not 8:00)\n· The weeks column only ever shows S-E, S-E单, S-E双, S-E定 or S定\n· Names match the timetable verbatim; nothing was invented\n\n========== 5. Example output ==========\n\n#sleepy-v1\nT|2026-03-02\nN1|08:00|08:45\nN2|08:55|09:40\nN3|10:00|10:45\nN4|10:55|11:40\nN5|14:00|14:45\nN6|14:55|15:40\nN7|16:00|16:45\nN8|16:55|17:40\nN9|19:00|19:45\nN10|19:55|20:40\nC高等数学A|1|1-2|1-16|张三|A101||||\nC高等数学A|3|3-4|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC数据结构|4|3-4|2-16双|王五|C302||||\nC体育|4|5-6|3-4定||||||\nCJava实战|3|9-10|1-16||机房|||19:00-21:30|\nC影视鉴赏|7|6|10-16双||||||\nC形势与政策|5|8-9|1-8||||||\nC形势与政策|5|8-9|12-16||||||</string>
+
+    <string name="format_wakeup_share_when">Migrating everything from the WakeUp app. Copy the entire text generated by WakeUp\'s "Share courses" and paste it as-is.</string>
+    <string-array name="format_wakeup_share_spec">
+        <item>Copy the whole share text, including the 【来自WakeUp课程表】 header line</item>
+        <item>The text must contain a courseDetailJson field (WakeUp adds it automatically)</item>
+        <item>Table name, semester start date and per-course colors are imported too</item>
+    </string-array>
+    <string name="format_wakeup_share_example" formatted="false">【来自WakeUp课程表】\n课程分享:\n{"name":"My table","startDate":"2026-09-07","courseDetailJson":"%5B%7B%22name%22…%5D"}</string>
+
+    <string name="format_wakeup_json_when">Content of a WakeUp-exported .json file, or JSON you write yourself in this structure.</string>
+    <string-array name="format_wakeup_json_spec">
+        <item>The whole text must be JSON: starts with { and contains a courses array</item>
+        <item>Top level: name (table name), startDate (2026-09-07 format)</item>
+        <item>Each course: name, teacher, position (room), day (number 1-7, 1=Monday), startNode (first period), step (how many periods), startWeek/endWeek range, type (0 weekly / 1 odd / 2 even)</item>
+        <item>Periods 3-4 = startNode 3, step 2 (not 3 and 4)</item>
+        <item>color is optional</item>
+    </string-array>
+    <string name="format_wakeup_json_example" formatted="false">{\n  "name": "My table",\n  "startDate": "2026-09-07",\n  "courses": [\n    {"name":"Calculus","teacher":"John","position":"A101","day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":0}\n  ]\n}</string>
+
+    <string name="format_ics_when">Calendar files (.ics) exported from your school system or WakeUp. Pick the file via "Import from file", tap it in your file manager and choose Sleepy, or open it in a text editor and paste everything.</string>
+    <string-array name="format_ics_spec">
+        <item>Text must start with BEGIN:VCALENDAR — dropping the first line breaks recognition</item>
+        <item>Each class is one event: SUMMARY = course name, LOCATION = room; teacher is read from the description</item>
+        <item>Weekday is derived from the event date; week 1 = the Monday of the earliest event\'s week</item>
+        <item>Periods are read from the "第X - Y节" line in the description, or estimated from start/end times</item>
+        <item>Biweekly events are merged automatically</item>
+    </string-array>
+    <string name="format_ics_example" formatted="false">BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:Calculus\nLOCATION:A101\nDESCRIPTION:第1 - 2节\\nA101\\nJohn\nDTSTART:20260907T010000Z\nDTEND:20260907T015500Z\nRRULE:FREQ=WEEKLY;UNTIL=20261227T010000Z\nEND:VEVENT\nEND:VCALENDAR</string>
+
+    <string name="format_csv_when">Registry-exported tables, or Excel files saved as "CSV (comma delimited)".</string>
+    <string-array name="format_csv_spec">
+        <item>First line is the header. Required columns: course (course/name), day (day/weekday), node, week (week/weeks)</item>
+        <item>Optional columns: teacher, room, type, note</item>
+        <item>Node, two ways: one column like 1-2, or split into "start node" + "end node" columns</item>
+        <item>Day accepts 1-7, Monday, Mon</item>
+        <item>Week supports 1-16, 2-5,7-9, 11,13,15 — multiple ranges become separate courses</item>
+        <item>Optional "start time" + "end time" columns (HH:mm): real period times are applied automatically on import</item>
+        <item>Type accepts 0/1/2 or weekly/odd/even</item>
+    </string-array>
+    <string name="format_csv_example" formatted="false">course,teacher,room,weekday,period,weeks,type\nCalculus,John,A101,Monday,1-2,1-16,weekly\nEnglish,Mary,B202,3,3-4,1-16,odd</string>
+
+    <string name="format_html_when">Timetable web pages saved as .html, copied table source, or tap the .html file in your file manager and choose Sleepy.</string>
+    <string-array name="format_html_spec">
+        <item>Text must start with a tag like &lt;!DOCTYPE, &lt;html, or &lt;table — any plain text before it breaks detection, delete it first</item>
+        <item>The page must contain a table whose header row includes "course"</item>
+        <item>Column names same as CSV: course, day, node, week required; teacher, room, type, note optional</item>
+        <item>Same as CSV: optional "start time" + "end time" columns, applied automatically on import</item>
+        <item>Grid layouts with Monday-Sunday columns cannot be parsed; needs a long table with one course per row</item>
+    </string-array>
+    <string name="format_html_example" formatted="false">&lt;table&gt;\n&lt;tr&gt;&lt;td&gt;course&lt;/td&gt;&lt;td&gt;teacher&lt;/td&gt;&lt;td&gt;room&lt;/td&gt;&lt;td&gt;weekday&lt;/td&gt;&lt;td&gt;period&lt;/td&gt;&lt;td&gt;weeks&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td&gt;Calculus&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;td&gt;A101&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1-2&lt;/td&gt;&lt;td&gt;1-16&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;</string>
+
+    <string name="format_plain_when">Sleepy native format (sleepy-v1): compact, tidy and fault-tolerant. Great for handwriting and even better for letting AI convert a timetable screenshot (see the prompt below). The legacy tab-separated format still imports.</string>
+    <string-array name="format_plain_spec">
+        <item>First line is always #sleepy-v1</item>
+        <item>Course line layout: Cname|day|nodes|weeks|teacher|room|color|note|time|group - exactly 10 columns / 9 pipes</item>
+        <item>Empty columns stay empty, but the pipes must not be dropped</item>
+        <item>Day is 1-7 (Monday=1); nodes as a range 1-2, or a single node 6</item>
+        <item>Week column has five shapes: 1-16 (weekly), 1-15单 (odd), 2-16双 (even), 3-4定 (range), 10定 (single week)</item>
+        <item>Leave color empty for auto; time column only for courses with a fixed clock time, as HH:mm-HH:mm</item>
+        <item>Escape | \ \" &lt; { ( in text with a leading backslash</item>
+        <item>Period-time line (optional): N&lt;number&gt;|start|end, e.g. N3|10:00|10:45; or a single Nd line when times equal the built-in preset</item>
+        <item>Table line (optional): Tname|startDate|totalWeeks|nodesPerDay; startDate must be the Monday of week 1</item>
+        <item>Unrecognized lines are listed in the import preview, never silently dropped</item>
+    </string-array>
+    <string name="format_plain_example" formatted="false">#sleepy-v1\nTMy timetable|2026-03-02|20|12\nNd\nC高等数学A|1|1-2|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC体育|4|5-6|3-4定||||||\nC影视鉴赏|7|6|10-16双||||||</string>
+    <string name="import_dropped_title">%1$d lines could not be parsed</string>
+    <string name="import_dropped_hint">These lines were skipped. Check their format and re-import:</string>
+    <string name="import_warnings_title">Notes</string>
+    <string name="export_native_title">Sleepy Native</string>
+    <string name="export_native_subtitle">Full backup · smallest size · recommended for migration</string>
+    <string name="import_start_date_required">Please enter semester start date</string>
+    <string name="start_date_format">Date format must be YYYY-MM-DD</string>
+    <string name="slot_time_required">Period %1$d time is required</string>
+    <string name="slot_time_invalid">Period %1$d time invalid (start must be before end)</string>
+    <string name="expand">Tap to expand</string>
+    <string name="collapse">Tap to collapse</string>
+    <string name="n_periods">%1$d periods</string>
+
+    <string name="course_detail_title">Course Details</string>
+    <string name="course_detail_edit">Edit</string>
+    <string name="course_detail_delete">Delete</string>
+    <string name="course_detail_edit_course">Edit this class</string>
+    <string name="course_field_name">Course</string>
+    <string name="course_field_teacher">Teacher</string>
+    <string name="course_field_room">Room</string>
+    <string name="course_field_note">Note</string>
+    <string name="course_field_week">Time</string>
+    <string name="course_field_color">Color</string>
+
+    <string name="edit_course">Edit Course</string>
+    <string name="create_course">Create Course</string>
+    <string name="course_basic_info">Basic Info</string>
+    <string name="course_basic_info_sub">Teacher and room are shared; one course can have multiple time slots</string>
+    <string name="course_name_required">Course Name *</string>
+    <string name="course_teacher">Teacher</string>
+    <string name="course_room">Room</string>
+    <string name="course_note">Note (optional)</string>
+    <string name="course_color">Color</string>
+    <string name="week_range">Week Range</string>
+    <string name="week_range_sub">Default week range for the course; use \"Apply to all slots\" to overwrite every slot</string>
+    <string name="start_week">Start Week</string>
+    <string name="end_week">End Week</string>
+    <string name="meeting_slots">Time Slots</string>
+    <string name="meeting_slots_sub">A course can have any number of time slots; each can select multiple days</string>
+    <string name="slot_n">Slot %1$d</string>
+    <string name="slot_week_range">Weeks</string>
+    <string name="slot_week_order">Slot %1$d start week cannot be after its end week</string>
+    <string name="apply_to_all_slots">Apply to all slots</string>
+    <string name="week_every">Weekly</string>
+    <string name="week_odd">Odd weeks</string>
+    <string name="week_even">Even weeks</string>
+    <string name="week_custom">By weeks</string>
+    <string name="add_slot">Add time slot</string>
+    <string name="save_course">Save Course</string>
+    <string name="delete_course">Delete Course</string>
+    <string name="delete_course_confirm">Delete course \"%1$s\"? This cannot be undone.</string>
+    <string name="select_at_least_one_day">Select at least one day</string>
+    <string name="delete_slot">Remove slot</string>
+    <string name="start_node">Start Period</string>
+    <string name="step_count">Periods</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="mode_by_node">By Period</string>
+    <string name="mode_by_time">By Time</string>
+    <string name="course_name_empty">Course name is required</string>
+    <string name="week_must_be_positive">Week must be greater than 0</string>
+    <string name="slot_at_least_one_day">Slot %1$d must have at least one day</string>
+    <string name="slot_start_node_positive">Slot %1$d start period must be greater than 0</string>
+    <string name="slot_step_positive">Slot %1$d consecutive periods must be greater than 0</string>
+    <string name="slot_step_exceeds_max">Slot %1$d periods %2$d–%3$d exceed the timetable\'s max period (%4$d)</string>
+    <string name="slot_step_clamped_hint">Input exceeds the max period (%3$d). To add more periods, go to Timetable Manager and edit the current timetable\'s period count</string>
+    <string name="slot_time_format">Slot %1$d start/end time should be HH:mm format</string>
+    <string name="slot_time_order">Slot %1$d start time must be before end time</string>
+    <string name="conflict_detail_title">Conflicts with existing courses</string>
+    <string name="conflict_detail_save_anyway">Save anyway</string>
+    <string name="conflict_detail_go_back">Go back</string>
+    <string name="conflict_detail_line">Conflicts with "%4$s" — %1$s, period %2$s, %3$s</string>
+    <string name="slot_time_overlap">Slot %1$d and slot %2$d overlap on %3$s</string>
+    <string name="fix_issues_first">Please fix these issues first</string>
+    <string name="more_unexpanded">%1$d more unexpanded</string>
+    <string name="create_course_btn">Create</string>
+    <string name="selected_days">Selected: %1$s</string>
+    <string name="time_format_hint">Format HH:mm</string>
+
+    <string name="mine_title">Me</string>
+    <string name="mine_subtitle">Manage schedules and settings</string>
+    <string name="mine_export">Export</string>
+    <string name="mine_stat_tables">Schedules</string>
+    <string name="mine_stat_courses">Courses</string>
+    <string name="mine_stat_week">Week</string>
+
+        <string name="settings_high_refresh">High refresh rate</string>
+    <string name="settings_nav_style">Bottom bar style</string>
+    <string name="settings_nav_style_docked">Docked</string>
+    <string name="settings_nav_style_floating">Floating</string>
+    <string name="settings_section_display">Display</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_display_mode">Time Display</string>
+    <string name="settings_display_node">Periods</string>
+    <string name="settings_display_node_sub">All courses show as \"Period N\"</string>
+    <string name="settings_display_time">Times</string>
+    <string name="settings_display_time_sub">All courses show as \"HH:mm–HH:mm\"</string>
+    <string name="settings_start_view">Default view on launch</string>
+    <string name="settings_start_view_full">Week view</string>
+    <string name="settings_start_view_cards">Grid</string>
+    <string name="settings_start_view_sub">Only affects the view shown at launch; switch anytime from the schedule top bar</string>
+    <string name="settings_grid_sub_info">Grid card details</string>
+    <string name="settings_grid_sub_room">Room</string>
+    <string name="settings_grid_sub_room_sub">Show the room under the course name (hidden if none)</string>
+    <string name="settings_grid_sub_teacher">Teacher</string>
+    <string name="settings_grid_sub_teacher_sub">Show the teacher under the course name (hidden if none)</string>
+    <string name="settings_grid_sub_none">None</string>
+    <string name="settings_grid_sub_none_sub">Grid cards show course name only</string>
+<string name="settings_grid_card_content">Course card content</string>
+<string name="settings_grid_card_content_sub">Choose what appears below the course name (multi-select; all off shows the name only)</string>
+<string name="settings_grid_show_time">Show time</string>
+<string name="settings_grid_show_room">Show room</string>
+<string name="settings_grid_show_teacher">Show teacher</string>
+<string name="settings_grid_gap_h">Row gap</string>
+<string name="settings_grid_gap_w">Column gap</string>
+
+    <string name="settings_pill">Home display</string>
+    <string name="settings_pill_scale">Grid view zoom</string>
+    <string name="settings_pill_week_scale">Week view zoom</string>
+    <string name="settings_pill_corner">Card corners</string>
+    <string name="settings_week_two_column">Two-column week view</string>
+    <string name="settings_week_two_column_days">Split days evenly</string>
+    <string name="settings_week_two_column_balance">Balance by course count</string>
+    <string name="settings_week_hide_empty">Hide empty days in week view</string>
+    <string name="settings_show_date">Show dates in grid header</string>
+    <string name="settings_conflict_style">Conflicting course style</string>
+    <string name="settings_conflict_stack">Stacked offset</string>
+    <string name="settings_conflict_stack_sub">Overlapping courses with the lower one peeking out at the edge</string>
+    <string name="settings_conflict_fold">Folded corner</string>
+    <string name="settings_conflict_fold_sub">A folded corner marks cards that hide more courses beneath</string>
+    <string name="settings_conflict_rail">Side rail</string>
+    <string name="settings_conflict_rail_sub">A color rail on the right lists conflicting courses with vertical names</string>
+    <string name="settings_conflict_stack_inset">Stack offset distance</string>
+    <string name="settings_conflict_rail_inset">Right-edge inset</string>
+    <string name="settings_conflict_fold_size">Fold corner size</string>
+    <string name="settings_conflict_fold_size_sub">Size of the folded-corner mark; adjusts both the visual and its tap area</string>
+    <string name="settings_visible_days">Visible Days</string>
+    <string name="settings_visible_days_sub">Unchecked days are hidden on the schedule page and in widgets</string>
+
+    <string name="theme_system">Follow System</string>
+    <string name="theme_system_desc">Material You dynamic color (Android 12+)</string>
+
+    <string name="view_full">Week</string>
+    <string name="view_cards">Grid</string>
+
+    <string name="today_today">Today</string>
+    <string name="today_no_course">No classes today</string>
+    <string name="today_rest">Free day</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="back">Back</string>
+    <string name="selected">Selected</string>
+    <string name="action_settings">Settings</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="no_course">Free</string>
+    <string name="n_courses">%1$d</string>
+    <string name="action_close">Close</string>
+
+    <!-- Widget / Common UI -->
+    <string name="widget_create_schedule">Please create a schedule first</string>
+    <string name="widget_open_sleepy">Open Sleepy to add</string>
+    <string name="more_sections">%1$d more...</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="n_course_periods">%1$d course periods</string>
+    <string name="course_node_format">Period %1$s</string>
+    <string name="course_period_range">%1$d-%2$d</string>
+
+    <!-- JW Import -->
+    <string name="jw_no_url">No registry URL configured for this school</string>
+    <string name="jw_parse_empty">Parse result is empty. Please make sure you are on the "My Schedule" page (not home/login page)</string>
+    <!-- T7 — frame 抓取/渲染时序错误分类 -->
+    <string name="jw_err_cross_domain_iframe">Cross-origin embedded frame detected, unable to read the timetable (%1$s). Please open the timetable page directly on campus network/VPN and try again</string>
+    <string name="jw_err_container_empty_after_delay">Timetable area found but not fully loaded yet. Wait until the timetable is fully displayed, then tap "Import this page" again</string>
+    <string name="jw_err_iframe_nav_pending">The timetable frame has not started loading. Wait until the timetable is fully displayed, then tap "Import this page" again</string>
+    <string name="jw_err_wrong_page">This page is not the timetable page. Please log in and open your personal timetable first</string>
+    <string name="jw_err_session_expired">Session expired. Please log in again on the page, then tap "Import this page"</string>
+    <string name="jw_err_empty_semester">No courses this semester. Please confirm the correct semester is selected; image-based timetables cannot be imported</string>
+    <string name="jw_import_success">Successfully imported %1$d courses</string>
+    <string name="jw_parse_failed">Parse failed: %1$s</string>
+    <string name="jw_parse_failed_hint">\n\nTip: For HEU, log in via browser then navigate to "My Schedule" page before clicking import</string>
+    <string name="jw_webview_not_ready">WebView not ready</string>
+    <string name="jw_fetching">Fetching schedule…</string>
+    <string name="jw_fetch_failed_no_response">Fetch failed: No response from page (may still be loading)</string>
+    <string name="jw_fetch_format_error">Fetch returned invalid format</string>
+    <string name="jw_fetch_failed">Fetch failed: %1$s</string>
+    <string name="jw_page_not_loaded">Page not fully loaded</string>
+                <string name="jw_fetch_timeout">Fetch timed out: the server did not respond for a long time. Check your network and retry</string>
+    <string name="jw_fetch_no_courses">Fetched successfully but no courses were parsed: make sure the page shows this semester\'s timetable and the semester is correct</string>
+
+    <!-- School Select -->
+        <string name="search_school">Search schools…</string>
+        <string name="loading">Loading…</string>
+                
+    <!-- Course Detail -->
+    <string name="course_week_range">%1$s (Week %2$d-%3$d)</string>
+
+    <!-- Date/Time Pickers -->
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+
+    <!-- Time Slot Editor -->
+    <string name="add_period">Add period</string>
+    <string name="start_label">Start</string>
+    <string name="end_label">End</string>
+    <string name="delete_period">Delete this period</string>
+
+    <string name="mine_about">About</string>
+    <string name="mine_about_body">XMU Schedule v%1$s\n\nA minimal, clean, local-first schedule app.\nAll data stays on your device — nothing is uploaded.\n\n· No ads\n· No tracking\n· Supports WakeUp / ICS / CSV / HTML / plain text import</string>
+
+    <string-array name="day_names">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+    <!-- Localized date / theme display -->
+    <string name="date_long_format">%1$d/%2$d</string>
+    <string name="notif_title">Today\'s Classes — %1$s %2$s</string>
+    <string name="notif_text">Tap to view today\'s schedule</string>
+    <string name="theme_name_default">Lilac</string>
+    <string name="theme_name_spring">Spring</string>
+    <string name="theme_name_ocean">Ocean</string>
+    <string name="theme_name_peach">Peach</string>
+    <string name="theme_name_slate">Slate</string>
+<string name="default_table_with_num">Default %1$d</string>
+    <string name="new_course">New Course</string>
+    <string name="jw_import_title">Import - %1$s</string>
+    <string name="month_day_format">%1$d/%2$d</string>
+    <string name="section_short">%1$d</string>
+    <string name="day_short_1">M</string>
+    <string name="day_short_2">T</string>
+    <string name="day_short_3">W</string>
+    <string name="day_short_4">T</string>
+    <string name="day_short_5">F</string>
+    <string name="day_short_6">S</string>
+    <string name="day_short_7">S</string>
+    <string name="section_node_format">Period %1$d–%2$d</string>
+    <string name="section_single">Period %1$d</string>
+    <string name="mine_appearance">Appearance &amp; theme</string>
+    <string name="mine_general">General</string>
+    <string name="theme_appearance">Appearance</string>
+    <string name="theme_mode_system">Auto (light/dark)</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="appearance_section_theme">Theme colors</string>
+    <string name="appearance_section_display">Course display</string>
+    <string name="appearance_section_widget">Widget</string>
+    <string name="about_update_latest">You\'re on the latest version v%1$s</string>
+    <string name="update_found_title">New version v%1$s available</string>
+    <string name="update_download">Download</string>
+    <string name="update_cancel">Cancel</string>
+    <string name="update_downloading">Downloading %1$d%%</string>
+    <string name="update_installing">Download complete, opening installer</string>
+    <string name="update_retry">Retry</string>
+    <string name="update_download_failed">Download failed: %1$s</string>
+    <string name="about_author">Author</string>
+    <string name="about_author_name">Lingion</string>
+    <string name="about_license_body">Import adapters reference the following open-source implementations: WakeUp Schedule (YZune, Apache-2.0) for the JwCourse data structure; WakeupSchedule_BUPT (dIT8Zv, Apache-2.0) for the parser and school-directory design; WakeupSchedule_Kotlin (YZune, Apache-2.0) for week-bitmap parsing. The XMU timetable API (Wisedu gsapp/wdkbapp) flow was researched and verified by this project itself (scripts under schedule/).</string>
+    <string name="about_license_detail">License &amp; Acknowledgements</string>
+    <string name="license_page_title">License &amp; Acknowledgements</string>
+    <string name="license_gpl_section">License</string>
+    <string name="license_gpl_body">Sleepy is an open-source smart class schedule app. The source code is released under the GNU General Public License v3.0. Anyone is free to use, modify, and distribute this software. Contributions via GitHub are welcome.</string>
+    <string name="license_attribution_section">Academic System Acknowledgements</string>
+    <string name="license_attribution_note">Parts of the academic-system import adapters reference public implementations from the following open-source projects, with thanks to all.</string>
+    <string name="license_foundational_section">Cross-university foundational projects</string>
+    <string name="license_perschool_section">Per-school acknowledgements</string>
+    <string name="about_update_check">Check for updates automatically</string>
+    <string name="about_update_check_detail">Checks GitHub Releases on app start; a banner appears on the About page when a new version is found</string>
+    <string name="about_update_available">Version %1$s is available — tap to view</string>
+    <string name="about_license_title">Open Source License</string>
+    <string name="about_source">Source Code</string>
+    <string name="about_source_url">github.com/lingion/sleepy</string>
+    <string name="about_feedback">Feedback &amp; Suggestions</string>
+    <string name="about_feedback_detail">Report bugs or share ideas via GitHub Issue, or contact the author by email</string>
+    <string name="about_feedback_github">GitHub Issue</string>
+    <string name="about_feedback_email">Email</string>
+    <string name="about_feedback_email_subject">[Sleepy Feedback]</string>
+    <string name="about_feedback_email_body">Please describe the issue or idea:\n\n— Environment —\n(optional)\n</string>
+    <string name="about_feedback_no_mail_app">No email app found. Please use GitHub Issue instead.</string>
+    <string name="about_title">About</string>
+    <string name="about_update">Check for Updates</string>
+    <string name="about_update_checking">Checking for updates…</string>
+    <string name="about_update_detail">If GitHub is unavailable, the app will fall back to the mirror automatically</string>
+    <string name="about_version">Version</string>
+    <string name="about_version_detail">Version %1$s (Build %2$d)</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_confirm">OK</string>
+    <string name="export_copied_hint">Share sheet opened</string>
+    <string name="export_course_count">%1$d courses</string>
+    <string name="export_failed">Export failed, please retry</string>
+    <string name="export_ics_subtitle">Standard iCalendar format, importable to system calendar / Google / Apple Calendar</string>
+    <string name="export_ics_title">ICS Calendar</string>
+    <string name="export_json_subtitle">Full schedule structure, directly importable by WakeUp and similar apps</string>
+    <string name="export_json_title">WakeUp-compatible JSON</string>
+    <string name="export_no_table">No schedule available to export</string>
+    <string name="export_pick_table">Choose a timetable to export</string>
+    <string name="export_current_table_badge">Current timetable</string>
+    <string name="export_saved_to">Saved to Download/Sleepy/%1$s</string>
+    <string name="export_share_chooser">Share Schedule</string>
+    <string name="export_share_subtitle">Short text format, pasteable into any chat app</string>
+    <string name="export_share_title">Share as Text</string>
+    <string name="export_start_date">Term starts %1$s</string>
+    <string name="export_title">Export Schedule</string>
+    <string name="import_new_table_hint">(will be created as a new schedule)</string>
+    <string name="jw_config_confirm">Confirm Import</string>
+    <string name="jw_config_title">Confirm Before Import</string>
+    <string name="jw_table_name_label">Schedule name</string>
+    <string name="jw_pending_apply">Request Support</string>
+    <string name="jw_pending_close">Close</string>
+        <string name="jw_pending_input_url">Enter URL Manually</string>
+        <string name="jw_pending_manual">Add Course Manually</string>
+    <string name="jw_pending_msg">The course registration system for %1$s is not yet supported by Sleepy.\n\nYou can:\n1. Tap \"Request Support\" to submit to the developer\n2. Tap \"Enter URL Manually\" to open and log in via WebView\n3. Temporarily import via HTML / CSV file, or add courses manually</string>
+        <string name="jw_pending_supported">Supported</string>
+    <string name="jw_pending_title">This school\'s course registration import is not yet available</string>
+    <string name="jw_pending_use_csv">Import via CSV File</string>
+    <string name="jw_pending_use_html">Import via HTML File</string>
+    <string name="mine_refresh_widgets">Refresh All Widgets</string>
+    <string name="mine_refresh_widgets_done">All widgets refreshed</string>
+    <string name="notif_before_class_text">Next class: %1$s at %2$s in %3$s</string>
+    <string name="notif_before_class_text_with_teacher">Next class: %1$s at %2$s in %3$s, Teacher: %4$s</string>
+    <string name="notif_before_class_title">Class Reminder</string>
+    <string name="notif_channel_before_class">Before-class Reminder</string>
+    <string name="notif_channel_before_class_desc">Notifies you about the next class before each one starts</string>
+    <string name="notif_channel_daily">Daily Schedule Reminder</string>
+    <string name="notif_channel_daily_desc">Pushes a daily course summary at a specified time</string>
+    <string name="notif_channel_fluid">Fluid Cloud / Super Island</string>
+    <string name="notif_channel_fluid_desc">Shows an expandable real-time course card before class</string>
+    <string name="notif_daily_text_first">First class: %1$s at %2$s in %3$s</string>
+    <string name="notif_daily_text_no_course">Take a break and enjoy the day!</string>
+    <!-- 无序数句式: 英语序数后缀仅 1st/21st/31st 匹配 st, 硬编码 %1$dst 在其余日期全错 -->
+    <string name="notif_daily_title">Today is day %1$d of the month, you have %2$d classes</string>
+    <string name="notif_daily_title_no_course">Today is day %1$d of the month, no classes today</string>
+    <string name="notif_room_unknown">Unknown room</string>
+    <string name="reminder_banner_sub">Show a before-class banner in the notification bar</string>
+    <string name="reminder_banner_title">Banner Reminder</string>
+    <string name="reminder_before_class_preview">Example: Next class Advanced Math at 08:00 in Building A101</string>
+    <string name="reminder_before_class_sub">Remind you about the next class before each one starts</string>
+    <string name="reminder_before_class_title">Before-class Reminder</string>
+    <string name="reminder_before_minutes_label">Advance</string>
+    <string name="reminder_before_minutes_unit">minutes</string>
+    <string name="reminder_daily_preview">Example: Today the 15th, you have 3 classes. First class Advanced Math at 08:00 in Building A101</string>
+    <string name="reminder_daily_sub">Push a daily course summary at a specified time</string>
+    <string name="reminder_daily_time_label">Reminder Time</string>
+    <string name="reminder_daily_title">Daily Reminder</string>
+    <string name="reminder_fluid_field_name">Course Name</string>
+    <string name="reminder_fluid_field_room">Location</string>
+    <string name="reminder_fluid_field_teacher">Teacher</string>
+    <string name="reminder_fluid_field_time">Time</string>
+    <string name="reminder_fluid_fields">Capsule Primary Content</string>
+    <string name="reminder_fluid_fields_hint">Choose a primary display field</string>
+    <string name="reminder_fluid_note">Tap the notification to expand course details. Whether it appears as Fluid Cloud / Super Island depends on the phone system, notification permissions, and manufacturer service eligibility.</string>
+    <string name="reminder_fluid_sub">Show real-time course cards on supported Xiaomi and OPPO phones</string>
+    <string name="reminder_fluid_title">Fluid Cloud / Super Island</string>
+    <string name="reminder_master_sub">Allow Sleepy to send course notifications</string>
+    <string name="reminder_master_title">Enable Reminders</string>
+    <string name="reminder_pick_time">Pick Reminder Time</string>
+    <string name="reminder_title">Reminders</string>
+    <string name="school_count_supported">%1$d supported</string>
+            <string name="semester_out_of_range">Current date is outside the semester range</string>
+    <string name="semester_not_started">Semester hasn\'t started</string>
+    <string name="semester_ended">Semester is over</string>
+    <string name="schedule_week_prefix">Week %1$d</string>
+    <string name="today_semester_out_hint">Outside the semester range — classes shown for reference</string>
+    <string name="settings_vert_punct">Widget vertical punctuation</string>
+    <string name="settings_vert_punct_sub">When course names render vertically in widgets, swap ( ) 《 》 for vertical forms (experimental)</string>
+<string name="settings_widget_show_time">Show time in widgets</string>
+<string name="settings_widget_show_time_sub">Show period/time on widget course chips (off = course name and room only)</string>
+<string name="settings_widget_hide_weekend">Hide weekends</string>
+<string name="settings_widget_hide_weekend_sub">Hide Sat/Sun columns in widgets (independent from the schedule view setting)</string>
+<string name="settings_widget_grid_style">Grid widget look</string>
+<string name="settings_widget_grid_style_sub">Widget cells are fixed by the launcher; tune chip corner, row/column gap and font density here</string>
+<string name="settings_widget_grid_corner">Chip corner</string>
+<string name="settings_widget_grid_gap_h">Row gap</string>
+<string name="settings_widget_grid_gap_w">Column gap</string>
+<string name="settings_widget_grid_font">Font density</string>
+
+    <string name="settings_widget">Widget settings</string>
+    <string name="settings_widget_colorless">Uniform widget course colors</string>
+    <string name="settings_widget_colorless_sub">Neutralize only widget course colors; in-app and custom colors are not affected</string>
+    <string name="settings_course_colorless">Uniform course-pill colors</string>
+    <string name="settings_course_colorless_sub">Neutralize only in-app course pill colors; widget and custom colors are not affected</string>
+    <string name="settings_widget_separator">Week-widget separator</string>
+    <string name="settings_holiday_holiday">Gray out public holidays</string>
+    <string name="settings_holiday_holiday_sub">Courses on public holidays (e.g. National Day, Spring Festival) appear gray</string>
+    <string name="settings_holiday_entry_sub">Configure dimming rules and view holiday and make-up day data</string>
+    <string name="holiday_page_title">Holidays &amp; Make-up Days</string>
+    <string name="holiday_data_source">Data source</string>
+    <string name="holiday_source_label">unpkg.com/holiday-calendar · CN</string>
+    <string name="holiday_data_failed">Failed to fetch holiday data. Check your network and retry</string>
+    <string name="holiday_data_empty">No holiday or make-up day data for this year</string>
+    <string name="holiday_data_refresh">Refresh</string>
+    <string name="holiday_data_retry">Retry</string>
+    <string name="holiday_year_prev">Previous year</string>
+    <string name="holiday_year_next">Next year</string>
+    <string name="holiday_list_holidays">Public holidays</string>
+    <string name="holiday_list_workdays">Make-up workdays</string>
+    <string name="holiday_workday_badge">Workday</string>
+    <string name="settings_holiday_title">Holiday course dimming</string>
+    <string name="settings_holiday_weekend">Dim weekend courses</string>
+    <string name="settings_holiday_weekend_sub">Automatically show Saturday and Sunday courses in gray</string>
+    <string name="settings_holiday_style">Dimming style</string>
+    <string name="settings_holiday_style_grey">Gray</string>
+    <string name="settings_holiday_style_strikethrough">Gray with strikethrough</string>
+    <string name="settings_holiday_workday">Ignore make-up workdays</string>
+    <string name="settings_holiday_workday_sub">Make-up Saturdays and Sundays stay normal when weekend dimming is on</string>
+    <string name="holiday_edit_title">Edit custom dates</string>
+    <string name="holiday_add_title">Add custom dates</string>
+    <string name="holiday_name_label_date">Start date</string>
+    <string name="holiday_name_label">Name</string>
+    <string name="holiday_name_label_end">End date</string>
+    <string name="holiday_date_invalid">Invalid dates or end before start</string>
+    <string name="holiday_removed_section">Deleted</string>
+    <string name="holiday_restore">Restore</string>
+    <string name="holiday_delete_range">Delete</string>
+    <string name="holiday_type_holiday">Public holiday</string>
+    <string name="holiday_type_workday">Make-up workday</string>
+    <string name="holiday_custom_badge">Custom</string>
+    <string name="holiday_add_entry">Add custom dates</string>
+    <string name="settings_widget_separator_sub">Show dividers between course names in the week-list widget</string>
+    <!-- i18n: hardcoded string extraction -->
+    <string name="edit_period_input">Input</string>
+    <string name="edit_period_duration_label">Per-period duration</string>
+    <string name="unit_minutes">minutes</string>
+    <string name="edit_period_total_label">Total periods</string>
+    <string name="unit_periods">periods</string>
+    <string name="edit_period_first_start">First period starts</string>
+    <string name="short_break">Short break</string>
+    <string name="long_break">Long break</string>
+    <string name="break_assign_hint">Break assignment (tap to toggle)</string>
+    <string name="preview">Preview</string>
+    <string name="break_min_two_periods">Need at least 2 periods to assign breaks</string>
+    <string name="empty_placeholder">(Empty)</string>
+    <string name="period_format_node">Period %1$s</string>
+    <string name="period_time_range">Period %1$s  %2$s ~ %3$s</string>
+    <string name="break_continuous_0">  ↓ 0 min continuous</string>
+    <string name="break_continuous_n">  ↓ %1$d min %2$s</string>
+    <string name="add_label">Add %1$s</string>
+    <string name="mode_manual">Manual mode</string>
+    <string name="mode_auto">Auto mode</string>
+    <string name="label_from">From</string>
+    <string name="schedule_jump_week">Jump to week</string>
+    <string name="schedule_empty_name">Schedule \"%1$s\" is still empty</string>
+    <string name="schedule_empty_name_hint">Add courses to this schedule, or import a new one</string>
+    <string name="course_count_format">%1$d courses</string>
+    <string name="today_suffix"> · Today</string>
+    <string name="no_course_today"> · No class</string>
+    <string name="default_course_name">Course</string>
+    <string name="default_room">Location</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_no_version_found">No version found from main site or mirror</string>
+    <string name="error_empty_download">Downloaded file is empty</string>
+    <string name="jw_fetch_failed_generic">Fetch failed, please retry later</string>
+    <string name="xmu_table_default_name">XMU Timetable</string>
+    <string name="settings_widget_grid_layout">Widget card layout</string>
+    <string name="settings_widget_grid_layout_sub">Grid: narrow 7-column cells; Wide rows: full-width course cards with time / room / teacher</string>
+    <string name="settings_widget_grid_layout_grid">Grid</string>
+    <string name="settings_widget_grid_layout_rows">Wide rows</string>
+    <string name="settings_widget_rows_style">Wide-row card style</string>
+    <string name="settings_widget_rows_style_sub">Applies to the wide-row layout only</string>
+    <string name="settings_widget_rows_corner">Card corner radius</string>
+    <string name="settings_widget_rows_card_gap">Card spacing</string>
+    <string name="settings_widget_grid_row_scale">Row height per period</string>
+    <string name="settings_widget_grid_row_scale_sub">Increase so course cards grow taller and fit more time / room / teacher info</string>
+    <string name="settings_widget_rows_card_height">Minimum card height</string>
+    <string name="settings_widget_rows_card_height_auto">Auto</string>
+    <string name="settings_widget_rows_card_height_sub">Fix every course card taller so more info fits (0 = auto fit content)</string>
+</resources>

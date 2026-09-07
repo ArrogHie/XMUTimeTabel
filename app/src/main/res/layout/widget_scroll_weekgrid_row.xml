@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 「本周课程」可滚动窗口的 Item 行 — v1.0.52-xmu11。
+     高度 wrap_content + 渲染时 setMinimumHeight(位图像素高): ListView Item 的高度 = 该行带
+     位图的真实像素高, 与内容逐像素一致, 杜绝 measure/layout 不匹配导致的 Item 内容重叠;
+     切片边界落在节次间隙上, 文字不跨行。scaleType=centerCrop: 万一宽度有出入只等比裁边, 不拉伸。 -->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_row_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scaleType="centerCrop"
+    android:adjustViewBounds="false"
+    android:contentDescription="@string/widget_week_grid_label" />

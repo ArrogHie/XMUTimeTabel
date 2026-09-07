@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 小组件右上角设置按钮的深色半透明圆底 — 任何主题背景上均可辨识 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#66000000"/>
+    <size android:width="26dp" android:height="26dp"/>
+</shape>

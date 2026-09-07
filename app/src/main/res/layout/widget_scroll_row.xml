@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 条带行 — 高度必须 == ScrollStripService.STRIP_DP (48dp)。
+     条带宽 == widget 宽 → 1:1; scaleType=centerCrop: 万一上报宽度与实际略有出入,
+     只做等比 + 轻微裁边, 绝不拉伸变形(字形"宽扁"根因是 fitXY 强拉)。 -->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_row_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:scaleType="centerCrop"
+    android:adjustViewBounds="false" />

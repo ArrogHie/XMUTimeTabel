@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WeekGrid 小组件容器 — 主图 fill 整窗 + 右上角设置齿轮(独立点击区域, 打开通用设置)。
+     v1.0.52-xmu6: 主图改 centerCrop — 位图比例与容器 1:1 时与 fitXY 无异; 万一比例不同
+     (桌面按格缩放/尺寸上报偏差) 只轻微裁边, 绝不拉伸变形字体("宽扁"根因)。 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/widget_bitmap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/widget_week_grid_label" />
+    <ImageView
+        android:id="@+id/widget_gear"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_settings_gear"
+        android:background="@drawable/widget_gear_chip"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/mine_general" />
+</FrameLayout>

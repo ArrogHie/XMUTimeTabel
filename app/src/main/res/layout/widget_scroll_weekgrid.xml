@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 「本周课程」小组件本体 = 内部渲染窗口(v1.0.52-xmu9)。
+     不再放"整张课表位图"由外层拉伸(桌面壳缩放会导致字体变形、高度受限);
+     整个小组件是一个可滚动 ListView — 每条 = 课表长图(固定最大高度)的 48dp 切片,
+     ListView 即内部视口, 上下滑动范围 = 固定上限(最大行高 × 最多 11 节), 必定能滑到底。
+     FrameLayout clipToOutline 圆角裁剪; 右上角设置齿轮独立点击。 -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_scroll_clip"
+    android:outlineProvider="background"
+    android:clipToOutline="true">
+    <ListView
+        android:id="@+id/widget_strip_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:scrollbars="none"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent" />
+    <ImageView
+        android:id="@+id/widget_gear"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_settings_gear"
+        android:background="@drawable/widget_gear_chip"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/mine_general" />
+</FrameLayout>

@@ -1,0 +1,976 @@
+package com.lingion.sleepy.ui.screen.mine
+
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.lingion.sleepy.R
+import com.lingion.sleepy.ui.component.DisplayModeOption
+import com.lingion.sleepy.ui.component.SectionHeader
+import com.lingion.sleepy.ui.component.SettingsFlatCard
+import com.lingion.sleepy.ui.component.SettingsCard
+import com.lingion.sleepy.ui.component.SettingToggleRow
+import com.lingion.sleepy.ui.theme.SleepyTheme
+import com.lingion.sleepy.ui.theme.noRippleClickable
+import com.lingion.sleepy.util.AppPrefs
+import com.lingion.sleepy.util.DateUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+
+/**
+ * 通用设置页(决策 D1 L1 ⑤): 课程显示 / 小组件 / 语言 三组。
+ * 课程显示与小组件自 AppearanceScreen 迁入(2026-08-24, 用户指定), 语言卡沿用原折叠列表卡片样式。
+ * 显示项变更后即时刷新小组件(refreshWidgets 管线随迁移一并保留)。
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GeneralSettingsScreen(
+    onBack: () -> Unit,
+    onOpenHoliday: () -> Unit = {},
+    navDock: Boolean = false,
+    onNavDockChange: (Boolean) -> Unit = {}
+) {
+    val colors = SleepyTheme.colors
+    val context = LocalContext.current
+    var language by remember { mutableStateOf(AppPrefs.getLanguage(context)) }
+
+    val languages = listOf(
+        "zh-CN" to "简体中文",
+        "zh-TW" to "繁體中文",
+        "en" to "English",
+        "ja" to "日本語",
+        "es" to "Español"
+    )
+
+    // 课程显示 / 小组件设置项状态
+    var expandedSections by remember { mutableStateOf(emptySet<String>()) }
+    fun toggleSection(key: String) {
+        expandedSections = if (key in expandedSections) expandedSections - key else expandedSections + key
+    }
+    var displayMode by remember { mutableStateOf(AppPrefs.getDisplayMode(context)) }
+    var gridShowRoom by remember { mutableStateOf(AppPrefs.isGridShowRoom(context)) }
+    var gridShowTeacher by remember { mutableStateOf(AppPrefs.isGridShowTeacher(context)) }
+    var gridShowTime by remember { mutableStateOf(AppPrefs.isGridShowTime(context)) }
+    var gridGapH by remember { mutableStateOf(AppPrefs.getGridGapH(context)) }
+    var gridGapW by remember { mutableStateOf(AppPrefs.getGridGapW(context)) }
+    var gridScale by remember { mutableStateOf(AppPrefs.getGridScale(context)) }
+    var weekScale by remember { mutableStateOf(AppPrefs.getWeekScale(context)) }
+    var gridCorner by remember { mutableStateOf(AppPrefs.getGridCornerRatio(context)) }
+    var weekTwoColumn by remember { mutableStateOf(AppPrefs.isWeekTwoColumn(context)) }
+    var weekTwoColumnMode by remember { mutableStateOf(AppPrefs.getWeekTwoColumnMode(context)) }
+    var weekHideEmptyDays by remember { mutableStateOf(AppPrefs.isWeekHideEmptyDays(context)) }
+    var conflictStyle by remember { mutableStateOf(AppPrefs.getConflictStyle(context)) }
+    var conflictStackInset by remember { mutableStateOf(AppPrefs.getConflictStackInset(context)) }
+    var conflictRailInset by remember { mutableStateOf(AppPrefs.getConflictRailInset(context)) }
+    var conflictFoldSize by remember { mutableStateOf(AppPrefs.getConflictFoldSize(context)) }
+    var showDate by remember { mutableStateOf(AppPrefs.isShowDate(context)) }
+    var startView by remember { mutableStateOf(AppPrefs.getStartView(context)) }
+    var visibleDays by remember { mutableStateOf(AppPrefs.getVisibleDays(context)) }
+    var vertPunct by remember { mutableStateOf(AppPrefs.isVertPunctReplace(context)) }
+    var widgetColorless by remember { mutableStateOf(AppPrefs.isWidgetColorless(context)) }
+    var courseColorless by remember { mutableStateOf(AppPrefs.isCourseColorless(context)) }
+    var widgetSeparator by remember { mutableStateOf(AppPrefs.isWidgetSeparator(context)) }
+    // v1.0.51-xmu2: 小组件全局/WeekGrid 外观设置项
+    var widgetShowTime by remember { mutableStateOf(AppPrefs.isWidgetShowTime(context)) }
+    var widgetHideWeekend by remember { mutableStateOf(AppPrefs.isWidgetHideWeekend(context)) }
+    var widgetGridCorner by remember { mutableStateOf(AppPrefs.getWidgetGridCorner(context)) }
+    var widgetGridGapH by remember { mutableStateOf(AppPrefs.getWidgetGridGapH(context)) }
+    var widgetGridGapW by remember { mutableStateOf(AppPrefs.getWidgetGridGapW(context)) }
+    var widgetGridFont by remember { mutableStateOf(AppPrefs.getWidgetGridFontScale(context)) }
+    // v1.0.52-xmu3: 小组件卡片形态(网格窄卡 / 宽行卡片)与宽行卡外观
+    var widgetGridLayout by remember { mutableStateOf(AppPrefs.getWidgetGridLayout(context)) }
+    var widgetRowsCorner by remember { mutableStateOf(AppPrefs.getWidgetRowsCorner(context)) }
+    var widgetRowsCardGap by remember { mutableStateOf(AppPrefs.getWidgetRowsCardGap(context)) }
+    // v1.0.52-xmu4: 卡片高度相关(网格行高倍率 / 宽行最小卡片高度)
+    var widgetGridRowScale by remember { mutableStateOf(AppPrefs.getWidgetGridRowScale(context)) }
+    var widgetRowsCardHeight by remember { mutableStateOf(AppPrefs.getWidgetRowsCardHeight(context)) }
+
+    // 显示项变更后立即刷小组件(管线自 AppearanceScreen 迁移保留)
+    val widgetScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+    fun refreshWidgets() {
+        widgetScope.launch { com.lingion.sleepy.widget.WidgetUpdater.notifyDataChanged(context) }
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize().background(colors.background),
+        containerColor = colors.background,
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.mine_general)) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = stringResource(R.string.back))
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colors.background,
+                    titleContentColor = colors.onBackground,
+                    navigationIconContentColor = colors.onBackground
+                )
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // ── 分组① 课程显示 ──
+            item {
+                SectionHeader(title = stringResource(R.string.appearance_section_display))
+            }
+
+            // 课程时间显示: 节次 / 时间 — 二选一, 标题行右侧 tab 切换(用户 2026-09-03 指令)
+            item {
+                SettingsFlatCard(
+                    title = stringResource(R.string.settings_display_mode),
+                    options = listOf(
+                        stringResource(R.string.settings_display_node),
+                        stringResource(R.string.settings_display_time)
+                    ),
+                    selectedKey = if (displayMode == "node") 0 else 1,
+                    onSelect = { i ->
+                        val v = if (i == 0) "node" else "time"
+                        displayMode = v; AppPrefs.setDisplayMode(context, v); refreshWidgets()
+                    }
+                )
+            }
+
+            // 网格卡片底部内容: 时间 / 教室 / 老师 三个独立开关, 可自由组合(取代旧三选一)
+            item {
+                SettingsCard(title = stringResource(R.string.settings_grid_card_content), expanded = "gridCardContent" in expandedSections, onToggle = { toggleSection("gridCardContent") }) {
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_grid_show_time),
+                        checked = gridShowTime,
+                        onCheckedChange = {
+                            gridShowTime = it
+                            AppPrefs.setGridShowTime(context, it)
+                        }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_grid_show_room),
+                        checked = gridShowRoom,
+                        onCheckedChange = {
+                            gridShowRoom = it
+                            AppPrefs.setGridShowRoom(context, it)
+                        }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_grid_show_teacher),
+                        checked = gridShowTeacher,
+                        onCheckedChange = {
+                            gridShowTeacher = it
+                            AppPrefs.setGridShowTeacher(context, it)
+                        }
+                    )
+                }
+            }
+
+            // 主页显示(issue#8): 网格/周视图各一个缩放 70%~130% + 圆角 0%~200%(5% 吸附) + 周视图两栏开关
+            item {
+                SettingsCard(title = stringResource(R.string.settings_pill), expanded = "gridScale" in expandedSections, onToggle = { toggleSection("gridScale") }) {
+                    Text(text = stringResource(R.string.settings_pill_scale), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(gridScale * 100).roundToInt()}%",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = gridScale,
+                            onValueChange = {
+                                gridScale = (it * 20).roundToInt() / 20f
+                            },
+                            onValueChangeFinished = {
+                                AppPrefs.setGridScale(context, gridScale)
+                            },
+                            valueRange = 0.7f..1.3f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    Text(text = stringResource(R.string.settings_pill_week_scale), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(weekScale * 100).roundToInt()}%",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = weekScale,
+                            onValueChange = {
+                                weekScale = (it * 20).roundToInt() / 20f
+                            },
+                            onValueChangeFinished = {
+                                AppPrefs.setWeekScale(context, weekScale)
+                            },
+                            valueRange = 0.7f..1.3f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    Text(text = stringResource(R.string.settings_grid_gap_h), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(gridGapH * 10).roundToInt() / 10f}dp",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = gridGapH,
+                            onValueChange = {
+                                gridGapH = (it * 2).roundToInt() / 2f
+                            },
+                            onValueChangeFinished = {
+                                AppPrefs.setGridGapH(context, gridGapH)
+                            },
+                            valueRange = 0f..16f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    Text(text = stringResource(R.string.settings_grid_gap_w), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(gridGapW * 10).roundToInt() / 10f}dp",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = gridGapW,
+                            onValueChange = {
+                                gridGapW = (it * 2).roundToInt() / 2f
+                            },
+                            onValueChangeFinished = {
+                                AppPrefs.setGridGapW(context, gridGapW)
+                            },
+                            valueRange = 0f..16f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    Text(text = stringResource(R.string.settings_pill_corner), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 4.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(gridCorner * 100).roundToInt()}%",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = gridCorner,
+                            onValueChange = {
+                                gridCorner = (it * 20).roundToInt() / 20f
+                            },
+                            onValueChangeFinished = {
+                                AppPrefs.setGridCornerRatio(context, gridCorner)
+                            },
+                            valueRange = 0f..2f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_week_two_column),
+                        checked = weekTwoColumn,
+                        onCheckedChange = { weekTwoColumn = it; AppPrefs.setWeekTwoColumn(context, it) }
+                    )
+                    // 分栏标准 — 两栏开启时才需要选
+                    if (weekTwoColumn) {
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        DisplayModeOption(
+                            label = stringResource(R.string.settings_week_two_column_days),
+                            subtitle = "",
+                            selected = weekTwoColumnMode == "days",
+                            onClick = { weekTwoColumnMode = "days"; AppPrefs.setWeekTwoColumnMode(context, "days") }
+                        )
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        DisplayModeOption(
+                            label = stringResource(R.string.settings_week_two_column_balance),
+                            subtitle = "",
+                            selected = weekTwoColumnMode == "balance",
+                            onClick = { weekTwoColumnMode = "balance"; AppPrefs.setWeekTwoColumnMode(context, "balance") }
+                        )
+                    }
+                    // 隐藏无课日 — 与两栏无关, 单栏/两栏都生效
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_week_hide_empty),
+                        checked = weekHideEmptyDays,
+                        onCheckedChange = { weekHideEmptyDays = it; AppPrefs.setWeekHideEmptyDays(context, it) }
+                    )
+                    // 表头日期 — 网格视图列头 + 小组件列头共用的开关
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_show_date),
+                        checked = showDate,
+                        onCheckedChange = { showDate = it; AppPrefs.setShowDate(context, it); refreshWidgets() }
+                    )
+                }
+            }
+
+            // 冲突课程样式: 叠层 / 折角 / 竖轨（仅 App 内网格视图, 不涉及小组件, 无需 refreshWidgets）
+            item {
+                SettingsCard(title = stringResource(R.string.settings_conflict_style), expanded = "conflictStyle" in expandedSections, onToggle = { toggleSection("conflictStyle") }) {
+                    DisplayModeOption(
+                        label = stringResource(R.string.settings_conflict_stack),
+                        subtitle = stringResource(R.string.settings_conflict_stack_sub),
+                        selected = conflictStyle == "stack",
+                        onClick = { conflictStyle = "stack"; AppPrefs.setConflictStyle(context, "stack") }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    DisplayModeOption(
+                        label = stringResource(R.string.settings_conflict_fold),
+                        subtitle = stringResource(R.string.settings_conflict_fold_sub),
+                        selected = conflictStyle == "fold",
+                        onClick = { conflictStyle = "fold"; AppPrefs.setConflictStyle(context, "fold") }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    DisplayModeOption(
+                        label = stringResource(R.string.settings_conflict_rail),
+                        subtitle = stringResource(R.string.settings_conflict_rail_sub),
+                        selected = conflictStyle == "rail",
+                        onClick = { conflictStyle = "rail"; AppPrefs.setConflictStyle(context, "rail") }
+                    )
+                    // 折角幅度拖杆(v7.10.16o): 仅折角样式下显示 —— 其他样式没有折角符号
+                    if (conflictStyle == "fold") {
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        Text(text = stringResource(R.string.settings_conflict_fold_size), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "${conflictFoldSize.roundToInt()}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = conflictFoldSize,
+                                onValueChange = { conflictFoldSize = it.roundToInt().toFloat() },
+                                onValueChangeFinished = {
+                                    AppPrefs.setConflictFoldSize(context, conflictFoldSize)
+                                },
+                                valueRange = AppPrefs.CONFLICT_FOLD_SIZE_RANGE.start..AppPrefs.CONFLICT_FOLD_SIZE_RANGE.endInclusive,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                    }
+                    // 叠层偏移量(用户 2026-09-04 拆分): 仅叠层样式下显示, 独立配置
+                    if (conflictStyle == "stack") {
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        Text(text = stringResource(R.string.settings_conflict_stack_inset), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "${conflictStackInset.roundToInt()}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = conflictStackInset,
+                                onValueChange = { conflictStackInset = it.roundToInt().toFloat() },
+                                onValueChangeFinished = {
+                                    AppPrefs.setConflictStackInset(context, conflictStackInset)
+                                },
+                                valueRange = AppPrefs.CONFLICT_TOP_INSET_RANGE.start..AppPrefs.CONFLICT_TOP_INSET_RANGE.endInclusive,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                    }
+                    // 右缘让宽(同上拆分): 仅侧边竖轨样式下显示, 与叠层互不影响
+                    if (conflictStyle == "rail") {
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        Text(text = stringResource(R.string.settings_conflict_rail_inset), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "${conflictRailInset.roundToInt()}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = conflictRailInset,
+                                onValueChange = { conflictRailInset = it.roundToInt().toFloat() },
+                                onValueChangeFinished = {
+                                    AppPrefs.setConflictRailInset(context, conflictRailInset)
+                                },
+                                valueRange = AppPrefs.CONFLICT_TOP_INSET_RANGE.start..AppPrefs.CONFLICT_TOP_INSET_RANGE.endInclusive,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 显示星期: 周一~周日多选
+            item {
+                SettingsCard(title = stringResource(R.string.settings_visible_days), expanded = "visibleDays" in expandedSections, onToggle = { toggleSection("visibleDays") }) {
+                    Text(text = stringResource(R.string.settings_visible_days_sub), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                    (1..7).forEach { day ->
+                        val checked = day in visibleDays
+                        Row(
+                            modifier = Modifier.fillMaxWidth().noRippleClickable {
+                                val n = if (checked) visibleDays - day else visibleDays + day
+                                if (n.isNotEmpty()) { visibleDays = n; AppPrefs.setVisibleDays(context, n); refreshWidgets() }
+                            }.padding(vertical = 8.dp, horizontal = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = DateUtils.localizedDay(day, context), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface)
+                            Switch(checked = checked, onCheckedChange = { on ->
+                                val n = if (on) visibleDays + day else visibleDays - day
+                                if (n.isNotEmpty()) { visibleDays = n; AppPrefs.setVisibleDays(context, n); refreshWidgets() }
+                            }, colors = SwitchDefaults.colors(checkedThumbColor = colors.onPrimary, checkedTrackColor = colors.primary))
+                        }
+                        if (day != 7) HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    }
+                }
+            }
+
+            // 启动默认页: full / cards — 二选一, 标题行右侧 tab 切换(仅 App 内偏好, 不涉及小组件, 无需 refreshWidgets)
+            item {
+                SettingsFlatCard(
+                    title = stringResource(R.string.settings_start_view),
+                    options = listOf(
+                        stringResource(R.string.settings_start_view_full),
+                        stringResource(R.string.settings_start_view_cards)
+                    ),
+                    selectedKey = if (startView == "full") 0 else 1,
+                    onSelect = { i ->
+                        val v = if (i == 0) "full" else "cards"
+                        startView = v; AppPrefs.setStartView(context, v)
+                    }
+                )
+            }
+
+            // 课程胶囊统一底色: 仅标题 + 右侧开关(用户 2026-09-03 指令: 说明文字去掉; 标题禁两遍),
+            // App 侧独立不刷新小组件。
+            // 高度对齐折叠卡收起态: Switch 默认 48dp 最小触摸目标会把行撑高, heightIn(max=32dp)
+            // 锁回开关本体高度(触摸目标仍覆盖整行点击区, 不损可用性)
+            item {
+                val colors = SleepyTheme.colors
+                Row(
+                    modifier = Modifier.fillMaxWidth().clip(SleepyTheme.shapes.large).background(colors.surfaceContainer).padding(horizontal = 16.dp, vertical = 14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_course_colorless),
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                        color = colors.onSurface,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Switch(
+                        checked = courseColorless,
+                        onCheckedChange = { courseColorless = it; AppPrefs.setCourseColorless(context, it) },
+                        colors = SwitchDefaults.colors(checkedThumbColor = colors.onPrimary, checkedTrackColor = colors.primary),
+                        modifier = Modifier.heightIn(max = 32.dp)
+                    )
+                }
+            }
+
+            // 节假日课程灰显: 点击进入二级页
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(SleepyTheme.shapes.large)
+                        .background(colors.surfaceContainer)
+                        .noRippleClickable(onOpenHoliday)
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        // 仅标题(用户 2026-09-03 指令: 入口说明文字去掉)
+                        Text(
+                            text = stringResource(R.string.settings_holiday_title),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = colors.onSurface
+                        )
+                    }
+                    Icon(
+                        Icons.Outlined.ChevronRight,
+                        contentDescription = null,
+                        tint = colors.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            // ── 分隔线 ──
+            item { HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline)) }
+
+            // ── 分组② 小组件 ──
+            item {
+                SectionHeader(title = stringResource(R.string.appearance_section_widget))
+            }
+
+            item {
+                SettingsCard(title = stringResource(R.string.settings_widget), expanded = "widget" in expandedSections, onToggle = { toggleSection("widget") }) {
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_widget_colorless),
+                        subtitle = stringResource(R.string.settings_widget_colorless_sub),
+                        checked = widgetColorless,
+                        onCheckedChange = {
+                            widgetColorless = it
+                            AppPrefs.setWidgetColorless(context, it)
+                            refreshWidgets()
+                        }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_widget_separator),
+                        subtitle = stringResource(R.string.settings_widget_separator_sub),
+                        checked = widgetSeparator,
+                        onCheckedChange = {
+                            widgetSeparator = it
+                            AppPrefs.setWidgetSeparator(context, it)
+                            refreshWidgets()
+                        }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_vert_punct),
+                        subtitle = stringResource(R.string.settings_vert_punct_sub),
+                        checked = vertPunct,
+                        onCheckedChange = {
+                            vertPunct = it
+                            AppPrefs.setVertPunctReplace(context, it)
+                            refreshWidgets()
+                        }
+                    )
+                    // v1.0.51-xmu2: 小组件全局开关(显示时间 / 隐藏周六日)
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_widget_show_time),
+                        subtitle = stringResource(R.string.settings_widget_show_time_sub),
+                        checked = widgetShowTime,
+                        onCheckedChange = {
+                            widgetShowTime = it
+                            AppPrefs.setWidgetShowTime(context, it)
+                            refreshWidgets()
+                        }
+                    )
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    SettingToggleRow(
+                        label = stringResource(R.string.settings_widget_hide_weekend),
+                        subtitle = stringResource(R.string.settings_widget_hide_weekend_sub),
+                        checked = widgetHideWeekend,
+                        onCheckedChange = {
+                            widgetHideWeekend = it
+                            AppPrefs.setWidgetHideWeekend(context, it)
+                            refreshWidgets()
+                        }
+                    )
+                }
+            }
+
+            // v1.0.52-xmu3: 小组件卡片形态 — 网格窄卡(7列) / 宽行卡片(课程卡全宽逐行, 信息量足)
+            item {
+                SettingsFlatCard(
+                    title = stringResource(R.string.settings_widget_grid_layout),
+                    subtitle = stringResource(R.string.settings_widget_grid_layout_sub),
+                    options = listOf(
+                        stringResource(R.string.settings_widget_grid_layout_grid),
+                        stringResource(R.string.settings_widget_grid_layout_rows)
+                    ),
+                    selectedKey = if (widgetGridLayout == "rows") 1 else 0,
+                    onSelect = { i ->
+                        val v = if (i == 0) "grid" else "rows"
+                        widgetGridLayout = v
+                        AppPrefs.setWidgetGridLayout(context, v)
+                        refreshWidgets()
+                    }
+                )
+            }
+
+            // 宽行卡片外观(仅宽行卡片形态生效): 卡片圆角 + 卡片纵向间距
+            if (widgetGridLayout == "rows") {
+                item {
+                    SettingsCard(title = stringResource(R.string.settings_widget_rows_style), expanded = "widgetRowsStyle" in expandedSections, onToggle = { toggleSection("widgetRowsStyle") }) {
+                        Text(text = stringResource(R.string.settings_widget_rows_style_sub), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                        // 课程卡圆角 (0~28dp)
+                        Text(text = stringResource(R.string.settings_widget_rows_corner), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "${(widgetRowsCorner * 10).roundToInt() / 10f}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = widgetRowsCorner,
+                                onValueChange = { widgetRowsCorner = (it * 2).roundToInt() / 2f },
+                                onValueChangeFinished = {
+                                    AppPrefs.setWidgetRowsCorner(context, widgetRowsCorner)
+                                    refreshWidgets()
+                                },
+                                valueRange = 0f..28f,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        // 卡片纵向间距 (0~16dp)
+                        Text(text = stringResource(R.string.settings_widget_rows_card_gap), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "${(widgetRowsCardGap * 10).roundToInt() / 10f}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = widgetRowsCardGap,
+                                onValueChange = { widgetRowsCardGap = (it * 2).roundToInt() / 2f },
+                                onValueChangeFinished = {
+                                    AppPrefs.setWidgetRowsCardGap(context, widgetRowsCardGap)
+                                    refreshWidgets()
+                                },
+                                valueRange = 0f..16f,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                        HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                        // v1.0.52-xmu4: 卡片最小高度(0 = 自适应; 调大容纳更多信息)
+                        Text(text = stringResource(R.string.settings_widget_rows_card_height), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                        Text(text = stringResource(R.string.settings_widget_rows_card_height_sub), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = if (widgetRowsCardHeight <= 0f) stringResource(R.string.settings_widget_rows_card_height_auto)
+                                else "${(widgetRowsCardHeight * 10).roundToInt() / 10f}dp",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = colors.primary,
+                                modifier = Modifier.widthIn(min = 52.dp)
+                            )
+                            Slider(
+                                value = widgetRowsCardHeight,
+                                onValueChange = { widgetRowsCardHeight = (it * 5).roundToInt() / 5f },
+                                onValueChangeFinished = {
+                                    AppPrefs.setWidgetRowsCardHeight(context, widgetRowsCardHeight)
+                                    refreshWidgets()
+                                },
+                                valueRange = 0f..200f,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.primary,
+                                    activeTrackColor = colors.primary,
+                                    inactiveTrackColor = colors.surfaceVariant
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 网格小组件(WeekGrid)外观 — 圆角/行距/列距/字号密度
+            item {
+                SettingsCard(title = stringResource(R.string.settings_widget_grid_style), expanded = "widgetGridStyle" in expandedSections, onToggle = { toggleSection("widgetGridStyle") }) {
+                    Text(text = stringResource(R.string.settings_widget_grid_style_sub), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                    // 课程卡圆角 (0~24dp)
+                    Text(text = stringResource(R.string.settings_widget_grid_corner), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(widgetGridCorner * 10).roundToInt() / 10f}dp",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = widgetGridCorner,
+                            onValueChange = { widgetGridCorner = (it * 2).roundToInt() / 2f },
+                            onValueChangeFinished = {
+                                AppPrefs.setWidgetGridCorner(context, widgetGridCorner)
+                                refreshWidgets()
+                            },
+                            valueRange = 0f..24f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    // 行间距 (0~8dp)
+                    Text(text = stringResource(R.string.settings_widget_grid_gap_h), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(widgetGridGapH * 10).roundToInt() / 10f}dp",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = widgetGridGapH,
+                            onValueChange = { widgetGridGapH = (it * 2).roundToInt() / 2f },
+                            onValueChangeFinished = {
+                                AppPrefs.setWidgetGridGapH(context, widgetGridGapH)
+                                refreshWidgets()
+                            },
+                            valueRange = 0f..8f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    // 列间距 (0~8dp)
+                    Text(text = stringResource(R.string.settings_widget_grid_gap_w), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(widgetGridGapW * 10).roundToInt() / 10f}dp",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = widgetGridGapW,
+                            onValueChange = { widgetGridGapW = (it * 2).roundToInt() / 2f },
+                            onValueChangeFinished = {
+                                AppPrefs.setWidgetGridGapW(context, widgetGridGapW)
+                                refreshWidgets()
+                            },
+                            valueRange = 0f..8f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    // 字号密度 (80%~130%)
+                    Text(text = stringResource(R.string.settings_widget_grid_font), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(widgetGridFont * 100).roundToInt()}%",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = widgetGridFont,
+                            onValueChange = { widgetGridFont = (it * 20).roundToInt() / 20f },
+                            onValueChangeFinished = {
+                                AppPrefs.setWidgetGridFontScale(context, widgetGridFont)
+                                refreshWidgets()
+                            },
+                            valueRange = 0.8f..1.3f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                    HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    // v1.0.52-xmu4: 每节课行高(80%~240%) — 调大让课程卡更高, 容纳更多信息行
+                    Text(text = stringResource(R.string.settings_widget_grid_row_scale), style = MaterialTheme.typography.bodyLarge, color = colors.onSurface, modifier = Modifier.padding(bottom = 8.dp))
+                    Text(text = stringResource(R.string.settings_widget_grid_row_scale_sub), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "${(widgetGridRowScale * 100).roundToInt()}%",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = colors.primary,
+                            modifier = Modifier.widthIn(min = 52.dp)
+                        )
+                        Slider(
+                            value = widgetGridRowScale,
+                            onValueChange = { widgetGridRowScale = (it * 20).roundToInt() / 20f },
+                            onValueChangeFinished = {
+                                AppPrefs.setWidgetGridRowScale(context, widgetGridRowScale)
+                                refreshWidgets()
+                            },
+                            valueRange = 0.8f..2.4f,
+                            colors = SliderDefaults.colors(
+                                thumbColor = colors.primary,
+                                activeTrackColor = colors.primary,
+                                inactiveTrackColor = colors.surfaceVariant
+                            )
+                        )
+                    }
+                }
+            }
+
+            // ── 分隔线 ──
+            item { HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline)) }
+
+            // ── 分组③ 画面 ──
+            item {
+                SectionHeader(title = stringResource(R.string.settings_section_display))
+            }
+
+            // 高刷新率: 单行卡, 标题+开关(用户 2026-09-04 定版: 大标题「画面」+卡片「高刷新率」无说明)
+            item {
+                var highRefresh by remember { mutableStateOf(AppPrefs.isHighRefresh(context)) }
+                val colors = SleepyTheme.colors
+                Row(
+                    modifier = Modifier.fillMaxWidth().clip(SleepyTheme.shapes.large).background(colors.surfaceContainer).padding(horizontal = 16.dp, vertical = 14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_high_refresh),
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                        color = colors.onSurface,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Switch(
+                        checked = highRefresh,
+                        onCheckedChange = { on ->
+                            highRefresh = on
+                            AppPrefs.setHighRefresh(context, on)
+                            val activity = context as? android.app.Activity
+                            if (activity == null) {
+                                // 理论不可达 (本页只从 MainActivity 进入); 留日志防静默失败
+                                Log.w("GeneralSettings", "high refresh toggle: context is not Activity, apply skipped")
+                                return@Switch
+                            }
+                            com.lingion.sleepy.util.HighRefreshRate.apply(activity, on)
+                        },
+                        colors = SwitchDefaults.colors(checkedThumbColor = colors.onPrimary, checkedTrackColor = colors.primary),
+                        modifier = Modifier.heightIn(max = 32.dp)
+                    )
+                }
+            }
+
+            // 底栏样式: 贴底 / 悬浮药丸 Dock — 贴右 SegmentedSwitcher 双 tab(用户 2026-09-04: 放「画面」分组)
+            // 状态由 MainActivity(AppRoot) 持有下传: 底栏与设置页同一真值, 切换即生效
+            item {
+                SettingsFlatCard(
+                    title = stringResource(R.string.settings_nav_style),
+                    options = listOf(
+                        stringResource(R.string.settings_nav_style_docked),
+                        stringResource(R.string.settings_nav_style_floating)
+                    ),
+                    selectedKey = if (navDock) 1 else 0,
+                    onSelect = { idx ->
+                        val on = idx == 1
+                        if (navDock != on) {
+                            AppPrefs.setNavDock(context, on)
+                            onNavDockChange(on)
+                        }
+                    }
+                )
+            }
+
+            // ── 分隔线 ──
+            item { HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline)) }
+
+            // ── 分组④ 语言 ──
+            item {
+                SectionHeader(title = stringResource(R.string.settings_language))
+            }
+
+            item {
+                Column(
+                    modifier = Modifier.fillMaxWidth().clip(SleepyTheme.shapes.large).background(colors.surfaceContainer).padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    languages.forEach { (code, label) ->
+                        val selected = language == code
+                        Row(
+                            modifier = Modifier.fillMaxWidth().noRippleClickable {
+                                language = code
+                                AppPrefs.setLanguage(context, code)
+                                (context as? android.app.Activity)?.recreate()
+                            }.padding(vertical = 10.dp, horizontal = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = label, style = MaterialTheme.typography.bodyLarge, color = if (selected) colors.primary else colors.onSurface)
+                            if (selected) Icon(Icons.Outlined.Check, null, tint = colors.primary, modifier = Modifier.size(20.dp))
+                        }
+                        if (code != languages.last().first) HorizontalDivider(color = colors.outlineVariant.copy(alpha = SleepyTheme.Alpha.hairline))
+                    }
+                }
+            }
+        }
+    }
+}

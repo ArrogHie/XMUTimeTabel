@@ -1,0 +1,654 @@
+<resources>
+    <string name="app_name">厦大時間割</string>
+    <string name="widget_today_label">今日の授業</string>
+    <string name="widget_week_grid_label">今週の授業</string>
+    <string name="widget_twoday_label">直近2日</string>
+
+    <string name="tab_schedule">時間割</string>
+    <string name="tab_today">今日</string>
+    <string name="tab_mine">マイ</string>
+    <string name="tab_manage">管理</string>
+
+    <string name="schedule_empty">時間割がまだありません</string>
+    <string name="schedule_empty_hint">「管理」からインポートするか、最初の授業を手動で作成してください。</string>
+    <string name="schedule_go_manage">管理へ移動</string>
+    <string name="schedule_manual_first">最初の授業を作成</string>
+    <string name="schedule_add_course">授業を追加</string>
+    <string name="share_sheet_title">時間割を共有</string>
+    <string name="schedule_share_table">時間割を共有</string>
+    <string name="exit_press_back_again">もう一度戻るボタンを押すと終了します</string>
+    <string name="schedule_current_week">第 %1$d 週</string>
+    <string name="schedule_no_course_today">今日は授業がありません</string>
+
+    <string name="import_title">時間割をインポート</string>
+    <string name="manage_current_table">現在の時間割</string>
+    <string name="manage_import">インポート</string>
+    <string name="manage_import_sub">ファイル / テキスト / CSV からインポート</string>
+    <string name="manage_new_table">新規作成</string>
+    <string name="manage_new_table_sub">空の時間割を作成し、手動で授業を追加</string>
+    <string name="manage_edit_current">編集</string>
+    <string name="manage_edit_current_sub">名前・日付・時限時間を編集</string>
+    <string name="manage_manual_add">授業を追加</string>
+    <string name="manage_manual_add_sub">現在の時間割に授業を追加</string>
+    <string name="table_info">開始日: %1$s  |  第%2$d週  |  %3$dコマ</string>
+    <string name="current_table_week">現在 · 第%1$d週</string>
+    <string name="table_start_date">開始日: %1$s</string>
+    <string name="all_tables">すべての時間割</string>
+    <string name="schedule_switch_table">時間割の切り替え</string>
+    <string name="schedule_undo">元に戻す</string>
+    <string name="schedule_undo_none">元に戻せる操作はありません</string>
+    <string name="all_tables_new">新規作成</string>
+    <string name="all_tables_duplicate">複製を作成</string>
+    <string name="table_created_at">インポート日時 %1$s</string>
+    <string name="edit_table_title">時間割を編集</string>
+    <string name="edit_table_basic_info">基本情報</string>
+    <string name="edit_table_name">時間割名</string>
+    <string name="edit_table_start_date">学期開始日</string>
+    <string name="edit_table_start_date_hint">例: 2026-02-24</string>
+    <string name="edit_table_max_week">総週数</string>
+    <string name="edit_table_time_slots">時限時間</string>
+    <string name="edit_table_delete">時間割を削除</string>
+    <string name="edit_table_save">設定を保存</string>
+    <string name="edit_table_not_found">時間割が見つかりません</string>
+    <string name="edit_table_validation_error">日付は yyyy-MM-dd、時刻は HH:mm で開始が終了より前である必要があります</string>
+    <string name="edit_table_delete_confirm">削除の確認</string>
+    <string name="edit_table_delete_msg">時間割「%1$s」を削除しますか？この操作は取り消せません。</string>
+    <string name="edit_table_delete_msg_count">時間割「%1$s」を削除しますか？%2$d 件の授業も一緒に削除されます。この操作は元に戻せません。</string>    <string name="default_table_name">デフォルト</string>
+    <string name="import_paste">テキストを貼り付け</string>
+    <string name="import_paste_hint">時間割テキストを貼り付け…</string>
+    <string name="import_file">ファイルから</string>
+    <string name="import_qr">QRスキャン</string>
+    <string name="import_jw">XMU からインポート</string>
+    <string name="import_manual">手動追加</string>
+    <string name="import_success">インポート成功</string>
+    <string name="import_failed">インポート失敗：%1$s</string>
+    <string name="import_preview">プレビュー</string>
+    <string name="import_parsing">解析中…</string>
+    <string name="import_supported_formats">対応形式</string>
+    <string name="import_preview_title">インポートプレビュー</string>
+    <string name="import_target_table">対象：%1$s</string>
+    <string name="import_courses">授業数</string>
+    <string name="import_conflicts">競合</string>
+    <string name="import_appendable">追加可能</string>
+    <string name="import_table_name">時間割名</string>
+    <string name="import_start_date">学期開始日</string>
+    <string name="import_suggestion">提案</string>
+    <string name="import_no_conflict">競合なし — 追加または上書き可能</string>
+    <string name="import_conflict_count">%1$d 件の競合があります。新規時間割としてインポートするか、競合しない授業のみ追加することを推奨します。</string>
+    <string name="import_conflict_more">他 %1$d 件の競合…</string>
+    <string name="import_append_only">競合なしのみ追加</string>
+    <string name="import_as_new">新規時間割として追加</string>
+    <string name="import_overwrite">⚠ 現在のものを上書き（注意）</string>
+    <string name="import_append_as_new">新規時間割に統合</string>
+    <string name="import_append_conflict">衝突を含めて追加</string>
+    <string name="import_confirm_title">インポート前の確認</string>
+    <string name="import_confirm_body">学期開始日と時限時間を確認してください。現在の週が不正確になります。</string>
+    <string name="import_week_start">第1週の開始日</string>
+    <string name="import_confirm">インポート</string>
+    <string name="import_all_conflict">すべて競合しています — 追加できる授業がありません</string>
+    <string name="import_content_empty">内容が空です</string>
+    <string name="import_select_table">時間割を先に選択してください</string>
+    <string name="read_failed">読み取り失敗: %1$s</string>
+    <string name="cannot_read_file">ファイルを読み取れません</string>
+    <string name="import_preview_sub">最初にプレビュー、それからインポート</string>
+    <string name="format_wakeup_share">WakeUp 共有テキスト</string>
+    <string name="format_wakeup_desc">【来自WakeUp课程表】で始まる</string>
+    <string name="format_wakeup_json">WakeUp JSON</string>
+    <string name="format_json_desc">.jsonファイルをエクスポート</string>
+    <string name="format_ics">ICSカレンダー</string>
+    <string name="format_ics_desc">学校の教務課からエクスポート可能</string>
+    <string name="format_csv">CSVファイル</string>
+    <string name="format_csv_desc">ヘッダー付き.csv、カンマ区切り</string>
+    <string name="format_html">HTMLテーブル</string>
+    <string name="format_html_desc">&lt;table&gt;形式、ヘッダー検出後に行ごとに解析</string>
+    <string name="format_plain">プレーンテキスト</string>
+    <string name="format_plain_desc">Sleepyネイティブ形式、1行1科目、縦棒区切り</string>
+
+    <!-- フォーマット詳細ダイアログ: 文言は ScheduleParser の実際の識別動作と一致させること -->
+    <string name="format_help_spec">識別条件</string>
+    <string name="format_help_example">例</string>
+    <string name="format_help_close">閉じる</string>
+    <string name="format_detail_content_desc">フォーマットの詳細を見る</string>
+    <string name="copy_prompt">プロンプトをコピー</string>
+    <string name="copied">コピーしました</string>
+    <string name="ai_prompt_title">AIにスクショを変換させる（Sleepyネイティブ形式）</string>
+    <string name="ai_prompt_hint">下のプロンプトをコピーして Doubao・ChatGPT などの AI に送り、時間割のスクリーンショットも一緒に送ってください。AI は #sleepy-v1 形式のテキストを出力するので、全体をコピーして上の入力欄に貼り付けるとインポートできます。</string>
+    <string name="ai_prompt_text">タスク：これから送る時間割のスクリーンショット（またはファイル内容）を、sleepy-v1 プレーンテキスト形式に変換して出力してください。変換結果以外は一切出力しないこと（説明・挨拶・Markdownコードフェンス禁止）。出力の1行目は必ず #sleepy-v1。\n\n========== 一、書式ルール ==========\n\n1行目は必ず：#sleepy-v1\n\n2行目以降は1行1レコード、列は縦棒 | で区切る。行は3種類：\n\n1. T 行（テーブル情報、省略可、最大1行）：\nTテーブル名|学期開始日|総週数|1日のコマ数\n· 開始日の形式は YYYY-MM-DD、第1週の月曜日であること\n· 時間割に明記されている項目のみ記入し、無い項目は空のまま。値がある列まで書けばOK（例：T|2026-03-02）\n· 時間割に全く言及がなければ T 行自体を出力しない。推測禁止\n\n2. N 行（各コマの開始・終了時刻、省略可、1コマ1行）：\nN番号|開始時刻|終了時刻\n· 例：N3|10:00|10:45\n· 時間割に時限表が明記されている場合のみ出力。時刻は24時間制 HH:mm（8:00 は 08:00 と書く）\n· 時限表がなければ N 行は一切出力しない\n\n3. C 行（科目、本体、1時限1行）：\nC科目名|曜日|コマ|週|教員|教室|色|備考|時刻|グループ\n常に10列・縦棒9個。空の列は空のまま、ただし縦棒は省略しない。各列の規則：\n  第1列 科目名：時間割の原文を一字一句そのまま写す（言語不問）\n  第2列 曜日：月〜日 = 1 2 3 4 5 6 7\n  第3列 コマ：3-4時限なら 3-4、単一時限は 6\n  第4列 週：「二、週のルール」参照\n  第5列 教員：時間割にあればそのまま、無ければ空\n  第6列 教室：同上\n  第7列 色：常に空\n  第8列 備考：時間割に備考があれば記入、無ければ空\n  第9列 時刻：時間割が科目ごとに具体的時刻（夜間授業など）を明記する場合のみ HH:mm-HH:mm、無ければ空\n  第10列 グループ：常に空\n\n========== 二、週のルール ==========\n\n各科目の開催週集合を抽出し、順に判定：\n1. 連続範囲かつ奇数・偶数の制約なし → S-E（例：1-16）\n2. 範囲内すべて奇数週（「奇数週」の表記）→ S-E单（例：1-15单）\n3. 範囲内すべて偶数週（「偶数週」の表記）→ S-E双（例：2-16双）\n4. 飛び飛びの週（例：1-8週、10週、12-16週）→ 連続する区間ごとに分割し、それぞれ独立した C 行に。他の列はそのままコピー：\n   · 全週の連続区間 → S-E（例：1-8、12-16）\n   · 孤立した単週 → S定（例：10定）\n   · 純奇数の連続 → S-E单、純偶数の連続 → S-E双\n   · 連続でなく純奇偶でもない → S-E定（例：6,7週 → 6-7定）\n5. 週の記載がなければ 1-16\n\n========== 三、抽出ルール ==========\n\n· 同じ科目が1週間に複数回（別日・別コマ）→ 複数の C 行、1時限1行。1行にまとめない\n· コマ番号は時間割の「X時限」から読む。時限がなく時刻のみなら、重複しない時間帯を朝から 1, 2, 3… と採番し、対応する N 行も出力\n· 科目名・教員・教室は原文のまま。テキストに | \ \" &amp;lt; { ( が含まれる場合は各文字の前に \ を付ける。文中の改行は \n の2文字、タブは \t\n· 時間割に無い情報はすべて空。教員・教室・時刻・週を捏造しないこと\n\n========== 四、出力セルフチェック（心中で確認。出力しない） ==========\n\n· 1行目が #sleepy-v1 で、他に余計な文字が一切ない\n· 各 C 行は正確に縦棒9個・10列\n· 曜日は 1-7 の数字。時刻は時が2桁（8:00 でなく 08:00）\n· 週の列は S-E、S-E单、S-E双、S-E定、S定 の5形態のみ\n· 科目名は時間割の原文と一致。捏造なし\n\n========== 五、出力例 ==========\n\n#sleepy-v1\nT|2026-03-02\nN1|08:00|08:45\nN2|08:55|09:40\nN3|10:00|10:45\nN4|10:55|11:40\nN5|14:00|14:45\nN6|14:55|15:40\nN7|16:00|16:45\nN8|16:55|17:40\nN9|19:00|19:45\nN10|19:55|20:40\nC高等数学A|1|1-2|1-16|张三|A101||||\nC高等数学A|3|3-4|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC数据结构|4|3-4|2-16双|王五|C302||||\nC体育|4|5-6|3-4定||||||\nCJava实战|3|9-10|1-16||机房|||19:00-21:30|\nC影视鉴赏|7|6|10-16双||||||\nC形势与政策|5|8-9|1-8||||||\nC形势与政策|5|8-9|12-16||||||</string>
+
+    <string name="format_wakeup_share_when">WakeUp アプリからの乗り換え。WakeUp の「コース共有」で生成されたテキスト全体をそのまま貼り付け。</string>
+    <string-array name="format_wakeup_share_spec">
+        <item>共有テキスト全体を先頭行の【来自WakeUp课程表】ごとコピー</item>
+        <item>courseDetailJson フィールドが含まれていること（WakeUp が自動で付与）</item>
+        <item>時間割名・学期開始日・科目ごとの色も一緒にインポートされる</item>
+    </string-array>
+    <string name="format_wakeup_share_example" formatted="false">【来自WakeUp课程表】\n课程分享:\n{"name":"My table","startDate":"2026-09-07","courseDetailJson":"%5B%7B%22name%22…%5D"}</string>
+
+    <string name="format_wakeup_json_when">WakeUp がエクスポートした .json ファイルの中身、または同じ構造で自分で書いた JSON。</string>
+    <string-array name="format_wakeup_json_spec">
+        <item>テキスト全体が JSON であること：{ で始まり courses 配列を含む</item>
+        <item>最上位：name（時間割名）、startDate（2026-09-07 形式）</item>
+        <item>各科目：name、teacher、position（教室）、day（1-7、1=月）、startNode（開始時限）、step（時限数）、startWeek/endWeek、type（0=毎週 / 1=奇数週 / 2=偶数週）</item>
+        <item>3-4時限の授業 = startNode 3、step 2（3 と 4 ではない）</item>
+        <item>color は省略可</item>
+    </string-array>
+    <string name="format_wakeup_json_example" formatted="false">{\n  "name": "My table",\n  "startDate": "2026-09-07",\n  "courses": [\n    {"name":"Calculus","teacher":"John","position":"A101","day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":0}\n  ]\n}</string>
+
+    <string name="format_ics_when">学校システムや WakeUp がエクスポートしたカレンダーファイル（.ics）。「ファイルからインポート」で選ぶか、ファイルマネージャーでタップして Sleepy を選択、またはテキストエディタで開いて全て貼り付け。</string>
+    <string-array name="format_ics_spec">
+        <item>テキストは BEGIN:VCALENDAR で始まること —— 1行目を落とすと識別できない</item>
+        <item>各授業は1イベント：SUMMARY=科目名、LOCATION=教室、教員は説明から自動識別</item>
+        <item>曜日はイベントの日付から推定。第1週 = 最初のイベントがある週の月曜日</item>
+        <item>時限は説明の「第X - Y節」を優先、なければ開始/終了時刻から推定</item>
+        <item>隔週イベントは自動的に1つに統合</item>
+    </string-array>
+    <string name="format_ics_example" formatted="false">BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:Calculus\nLOCATION:A101\nDESCRIPTION:第1 - 2節\\nA101\\nJohn\nDTSTART:20260907T010000Z\nDTEND:20260907T015500Z\nRRULE:FREQ=WEEKLY;UNTIL=20261227T010000Z\nEND:VEVENT\nEND:VCALENDAR</string>
+
+    <string name="format_csv_when">教務課からエクスポートされた表、または Excel で「CSV (カンマ区切り)」として保存した内容。</string>
+    <string-array name="format_csv_spec">
+        <item>最初の行はヘッダー。必須列：科目（科目/科目名/名称）、曜日（曜日/day）、時限、週（週/weeks）</item>
+        <item>任意列：教員（教員/先生/teacher）、教室、種別、備考</item>
+        <item>時限は 2 通り：1 列に「1-2」、または「開始時限」「終了時限」の 2 列</item>
+        <item>曜日は 1-7、月、Monday どれでも可</item>
+        <item>週は 1-16、2-5,7-9、11,13,15 に対応。複数範囲は複数の授業に展開</item>
+        <item>任意の「開始時間」「終了時間」列（HH:mm）：インポート時に実際の時間割として自動適用</item>
+        <item>種別は 0/1/2 または 毎週/奇数週/偶数週</item>
+    </string-array>
+    <string name="format_csv_example" formatted="false">course,teacher,room,weekday,period,weeks,type\nCalculus,John,A101,Monday,1-2,1-16,weekly\nEnglish,Mary,B202,3,3-4,1-16,odd</string>
+
+    <string name="format_html_when">時間割ページを .html として保存したもの、コピーしたテーブルのソース、またはファイルマネージャーで .html をタップして Sleepy を選択。</string>
+    <string-array name="format_html_spec">
+        <item>テキストは &lt;!DOCTYPE、&lt;html、&lt;table などのタグで始まる必要がある —— 前に普通の文章があると認識されない、削除して貼る</item>
+        <item>ページ内にテーブルがあり、ヘッダー行に「科目」(course) を含むこと</item>
+        <item>列名は CSV と同じ：科目、曜日、時限、週が必須。教員、教室、種別、備考は任意</item>
+        <item>CSV と同様：任意の「開始時間」「終了時間」列、インポート時に自動適用</item>
+        <item>月〜日を列にしたグリッド型時間割は解析不可。「1 行 1 科目」の縦長テーブルが必要</item>
+    </string-array>
+    <string name="format_html_example" formatted="false">&lt;table&gt;\n&lt;tr&gt;&lt;td&gt;course&lt;/td&gt;&lt;td&gt;teacher&lt;/td&gt;&lt;td&gt;room&lt;/td&gt;&lt;td&gt;weekday&lt;/td&gt;&lt;td&gt;period&lt;/td&gt;&lt;td&gt;weeks&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td&gt;Calculus&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;td&gt;A101&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1-2&lt;/td&gt;&lt;td&gt;1-16&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;</string>
+
+    <string name="format_plain_when">Sleepyネイティブ形式（sleepy-v1）：コンパクトで整然、寛容性が高い。手入力にも、AI によるスクショ変換（下のプロンプト参照）にも最適。旧のタブ区切り形式も引き続きインポート可能。</string>
+    <string-array name="format_plain_spec">
+        <item>1行目は必ず #sleepy-v1</item>
+        <item>科目行の書式：C科目名|曜日|コマ|週|教員|教室|色|備考|時刻|グループ の10列・縦棒9個</item>
+        <item>空の列は空のまま、縦棒は省略しない</item>
+        <item>曜日は 1-7（月曜=1）。コマは範囲 1-2、単一コマは 6</item>
+        <item>週の列は5形態：1-16（毎週）、1-15单（奇数）、2-16双（偶数）、3-4定（区間指定）、10定（単週）</item>
+        <item>色の列は空で自動色。時刻の列は固定時刻の科目のみ HH:mm-HH:mm</item>
+        <item>テキストに | \ \" &lt; { ( が含まれる場合は各文字の前に \ を付ける</item>
+        <item>時限行（省略可）：N番号|開始|終了（例 N3|10:00|10:45）。内蔵既定と同じなら Nd の1行で代用可</item>
+        <item>テーブル行（省略可）：T名前|開始日|総週数|1日コマ数。開始日は第1週の月曜日</item>
+        <item>認識できない行はインポートプレビューに列挙され、黙って捨てられることはない</item>
+    </string-array>
+    <string name="format_plain_example" formatted="false">#sleepy-v1\nT私の時間割|2026-03-02|20|12\nNd\nC高等数学A|1|1-2|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC体育|4|5-6|3-4定||||||\nC影视鉴赏|7|6|10-16双||||||</string>
+    <string name="import_dropped_title">%1$d 行を認識できませんでした</string>
+    <string name="import_dropped_hint">これらの行はスキップされました。形式を確認して再インポートしてください：</string>
+    <string name="import_warnings_title">ヒント</string>
+    <string name="export_native_title">Sleepy ネイティブ</string>
+    <string name="export_native_subtitle">完全バックアップ · 最小サイズ · 移行に最適</string>
+    <string name="import_start_date_required">学期開始日を入力してください</string>
+    <string name="start_date_format">日付形式はYYYY-MM-DDで入力してください</string>
+    <string name="slot_time_required">第%1$d時限の時間が必要です</string>
+    <string name="slot_time_invalid">第%1$d時限の時間が無効です（開始は終了より前である必要があります）</string>
+    <string name="expand">タップして展開</string>
+    <string name="collapse">タップして閉じる</string>
+    <string name="n_periods">%1$d時限</string>
+
+    <string name="course_detail_title">授業詳細</string>
+    <string name="course_detail_edit">編集</string>
+    <string name="course_detail_delete">削除</string>
+    <string name="course_detail_edit_course">この授業を編集</string>
+    <string name="course_field_name">授業</string>
+    <string name="course_field_teacher">教員</string>
+    <string name="course_field_room">教室</string>
+    <string name="course_field_note">メモ</string>
+    <string name="course_field_week">時間</string>
+    <string name="course_field_color">色</string>
+
+    <string name="edit_course">授業を編集</string>
+    <string name="create_course">授業を作成</string>
+    <string name="course_basic_info">基本情報</string>
+    <string name="course_basic_info_sub">教員・教室は共通。1つの授業に複数の時限を設定できます</string>
+    <string name="course_name_required">授業名 *</string>
+    <string name="course_teacher">教員</string>
+    <string name="course_room">教室</string>
+    <string name="course_note">メモ（任意）</string>
+    <string name="week_range">週次範囲</string>
+    <string name="week_range_sub">コマのデフォルト週範囲。「すべてのコマに適用」で一括上書きできます</string>
+    <string name="start_week">開始週</string>
+    <string name="end_week">終了週</string>
+    <string name="meeting_slots">時限</string>
+    <string name="meeting_slots_sub">任意の数の時限を追加できます。各時限で複数の曜日を選択可能</string>
+    <string name="slot_n">時限 %1$d</string>
+    <string name="slot_week_range">週範囲</string>
+    <string name="slot_week_order">コマ %1$d の開始週は終了週より後にはできません</string>
+    <string name="apply_to_all_slots">すべてのコマに適用</string>
+    <string name="week_every">毎週</string>
+    <string name="week_odd">奇数週</string>
+    <string name="week_even">偶数週</string>
+    <string name="week_custom">週指定</string>
+    <string name="add_slot">時限を追加</string>
+    <string name="save_course">保存</string>
+    <string name="delete_course">授業を削除</string>
+    <string name="delete_course_confirm">授業「%1$s」を削除しますか？この操作は取り消せません。</string>
+    <string name="select_at_least_one_day">少なくとも1日選択してください</string>
+    <string name="delete_slot">時限を削除</string>
+    <string name="start_node">開始時限</string>
+    <string name="step_count">時限数</string>
+    <string name="start_time">開始時刻</string>
+    <string name="end_time">終了時刻</string>
+    <string name="mode_by_node">時限で</string>
+    <string name="mode_by_time">時刻で</string>
+    <string name="course_name_empty">授業名が必要です</string>
+    <string name="week_must_be_positive">週は0より大きくなければなりません</string>
+    <string name="slot_at_least_one_day">スロット %1$d は最低1日必要です</string>
+    <string name="slot_start_node_positive">スロット %1$d の開始時限は0より大きくなければなりません</string>
+    <string name="slot_step_positive">スロット %1$d の連続時限数は0より大きくなければなりません</string>
+    <string name="slot_step_exceeds_max">スロット %1$d の %2$d-%3$d 時限は時間割の最大時限（%4$d）を超えています</string>
+    <string name="slot_step_clamped_hint">入力が最大時限を超えています（現在の時間割は %3$d 時限まで）。時限数を増やすには、時間割管理画面で現在の時間割を編集してください</string>
+    <string name="slot_time_format">スロット %1$d の開始/終了時間はHH:mm形式である必要があります</string>
+    <string name="slot_time_order">スロット %1$d の開始時間は終了時間より前である必要があります</string>
+    <string name="conflict_detail_title">既存の授業と時間が重複しています</string>
+    <string name="conflict_detail_save_anyway">それでも保存</string>
+    <string name="conflict_detail_go_back">戻って修正</string>
+    <string name="conflict_detail_line">%4$s と衝突 — %1$s %2$s限目、%3$s</string>
+    <string name="slot_time_overlap">スロット %1$d とスロット %2$d が %3$s で重複しています</string>
+    <string name="fix_issues_first">最初にこれらの問題を修正してください</string>
+    <string name="more_unexpanded">他に %1$d 件あります</string>
+    <string name="create_course_btn">作成</string>
+    <string name="selected_days">選択中：%1$s</string>
+    <string name="time_format_hint">形式 HH:mm</string>
+
+    <string name="mine_title">マイ</string>
+    <string name="mine_subtitle">時間割と設定を管理</string>
+    <string name="mine_export">エクスポート</string>
+    <string name="mine_stat_tables">時間割数</string>
+    <string name="mine_stat_courses">授業数</string>
+    <string name="mine_stat_week">現在の週</string>
+
+        <string name="settings_high_refresh">高リフレッシュレート</string>
+    <string name="settings_nav_style">下部バーのスタイル</string>
+    <string name="settings_nav_style_docked">下部固定</string>
+    <string name="settings_nav_style_floating">フローティング</string>
+    <string name="settings_section_display">画面</string>
+    <string name="settings_language">言語 / Language</string>
+    <string name="settings_display_mode">時間表示</string>
+    <string name="settings_display_node">時限</string>
+    <string name="settings_display_node_sub">すべての授業を「第N時限」と表示</string>
+    <string name="settings_display_time">時刻</string>
+    <string name="settings_display_time_sub">すべての授業を「HH:mm–HH:mm」と表示</string>
+    <string name="settings_start_view">起動時の表示</string>
+    <string name="settings_start_view_full">週表示</string>
+    <string name="settings_start_view_cards">グリッド</string>
+    <string name="settings_start_view_sub">起動時に表示されるビューの設定です。時間割ページ上部でいつでも切り替えできます</string>
+    <string name="settings_grid_sub_info">グリッドカードの補足情報</string>
+    <string name="settings_grid_sub_room">教室</string>
+    <string name="settings_grid_sub_room_sub">コマ名の下に教室を表示（未設定なら非表示）</string>
+    <string name="settings_grid_sub_teacher">教員</string>
+    <string name="settings_grid_sub_teacher_sub">コマ名の下に担当教員を表示（未設定なら非表示）</string>
+    <string name="settings_grid_sub_none">なし</string>
+    <string name="settings_grid_sub_none_sub">グリッドカードは授業名のみ表示</string>
+<string name="settings_grid_card_content">授業カードの内容</string>
+<string name="settings_grid_card_content_sub">授業カード下部に表示する内容を選択（複数可。すべてオフで授業名のみ）</string>
+<string name="settings_grid_show_time">時刻を表示</string>
+<string name="settings_grid_show_room">教室を表示</string>
+<string name="settings_grid_show_teacher">教員を表示</string>
+<string name="settings_grid_gap_h">行間隔</string>
+<string name="settings_grid_gap_w">列間隔</string>
+
+    <string name="settings_pill">ホーム表示設定</string>
+    <string name="settings_pill_scale">グリッド表示の拡大率</string>
+    <string name="settings_pill_week_scale">週表示の拡大率</string>
+    <string name="settings_pill_corner">カードの角丸</string>
+    <string name="settings_week_two_column">週ビュー2列表示</string>
+    <string name="settings_week_two_column_days">日数で半分ずつ</string>
+    <string name="settings_week_two_column_balance">コマ数でバランス</string>
+    <string name="settings_week_hide_empty">週ビューで空き日を隠す</string>
+    <string name="settings_show_date">グリッドヘッダーに日付を表示</string>
+    <string name="settings_conflict_style">コマの重なり表示</string>
+    <string name="settings_conflict_stack">重ねてずらして表示</string>
+    <string name="settings_conflict_stack_sub">コマを重ねてずらし、下のコマの端を見せる</string>
+    <string name="settings_conflict_fold">折り返しマーク</string>
+    <string name="settings_conflict_fold_sub">カード右上に折り返しを付け、下にコマがあることを示す</string>
+    <string name="settings_conflict_rail">サイドレール</string>
+    <string name="settings_conflict_rail_sub">右端のカラーレールに並べ、授業名は縦書きで表示</string>
+    <string name="settings_conflict_stack_inset">重ねのずらし幅</string>
+    <string name="settings_conflict_rail_inset">右端の余白</string>
+    <string name="settings_conflict_fold_size">折り返しの大きさ</string>
+    <string name="settings_conflict_fold_size_sub">折り返しマークの大きさ。見た目とタップ領域が連動して変わります</string>
+    <string name="settings_visible_days">表示曜日</string>
+    <string name="settings_visible_days_sub">チェックを外した曜日は時間割ページとウィジェットで非表示になります</string>
+
+    <string name="theme_system">システムに従う</string>
+    <string name="theme_system_desc">Material You ダイナミックカラー (Android 12+)</string>
+
+    <string name="view_full">週表示</string>
+    <string name="view_cards">グリッド</string>
+
+    <string name="today_today">今日</string>
+    <string name="today_no_course">今日は授業がありません</string>
+    <string name="today_rest">休み / 自習 でもOK</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
+    <string name="delete">削除</string>
+    <string name="back">戻る</string>
+    <string name="action_settings">設定</string>
+    <string name="selected">選択済み</string>
+    <string name="confirm_delete">削除の確認</string>
+    <string name="no_course">空き</string>
+    <string name="n_courses">%1$d</string>
+    <string name="action_close">閉じる</string>
+
+    <!-- Widget / Common UI -->
+    <string name="widget_create_schedule">最初に時間割を作成してください</string>
+    <string name="widget_open_sleepy">Sleepyを開いて追加</string>
+    <string name="more_sections">他に %1$d コマ…</string>
+    <string name="tomorrow">明日</string>
+    <string name="n_course_periods">%1$dコマ</string>
+    <string name="course_node_format">第%1$s時限</string>
+    <string name="course_period_range">%1$d-%2$d時限</string>
+
+    <!-- JW Import -->
+    <string name="jw_no_url">教務URLが設定されていません</string>
+    <string name="jw_parse_empty">解析結果が空です。「個人時間割」ページに移動しているかご確認ください（トップ/ログインページではない）</string>
+    <!-- T7 — frame 抓取/渲染时序错误分类 -->
+    <string name="jw_err_cross_domain_iframe">クロスオリジンのフレームを検出したため時間割を読み込めません（%1$s）。キャンパス網/VPN で直接時間割ページを開いてから再試行してください</string>
+    <string name="jw_err_container_empty_after_delay">時間割領域は見つかりましたが、まだ読み込み中です。時間割が完全に表示されてから「このページをインポート」をもう一度タップしてください</string>
+    <string name="jw_err_iframe_nav_pending">時間割フレームがまだ読み込みを開始していません。時間割が完全に表示されてから「このページをインポート」をもう一度タップしてください</string>
+    <string name="jw_err_wrong_page">このページは時間割ページではありません。ログインして個人時間割を開いてください</string>
+    <string name="jw_err_session_expired">セッションが期限切れです。ページで再度ログインしてから「このページをインポート」をタップしてください</string>
+    <string name="jw_err_empty_semester">今学期の授業はありません。正しい学期を選択したか確認してください。画像形式の時間割はインポートできません</string>
+    <string name="jw_import_success">%1$d 件の授業をインポートしました</string>
+    <string name="jw_parse_failed">解析失敗：%1$s</string>
+    <string name="jw_parse_failed_hint">\n\nヒント：HEUの場合、ブラウザでログイン後「個人時間割」ページに移動してからインポートしてください</string>
+    <string name="jw_webview_not_ready">WebViewの準備ができていません</string>
+    <string name="jw_fetching">時間割を取得中…</string>
+    <string name="jw_fetch_failed_no_response">取得失敗：ページが応答しません（読み込み中かも）</string>
+    <string name="jw_fetch_format_error">取得データの形式が異常です</string>
+    <string name="jw_fetch_failed">取得失敗：%1$s</string>
+    <string name="jw_page_not_loaded">ページが完全に読み込まれていません</string>
+                <string name="jw_fetch_timeout">取得がタイムアウトしました：サーバーが長時間応答しません。ネットワークを確認して再試行してください</string>
+    <string name="jw_fetch_no_courses">取得は成功しましたが授業を解析できませんでした：ページに今学期の時間割が表示されているか、学期選択が正しいか確認してください</string>
+
+    <!-- School Select -->
+        <string name="search_school">学校を検索…</string>
+        <string name="loading">読み込み中…</string>
+                
+    <!-- Course Detail -->
+    <string name="course_week_range">%1$s (%2$d-%3$d週)</string>
+
+    <!-- Date/Time Pickers -->
+    <string name="select_date">日付を選択</string>
+    <string name="select_time">時間を選択</string>
+
+    <!-- Time Slot Editor -->
+    <string name="add_period">時限を追加</string>
+    <string name="start_label">開始</string>
+    <string name="end_label">終了</string>
+    <string name="delete_period">この時限を削除</string>
+
+    <string name="mine_about">情報</string>
+    <string name="mine_about_body">厦大時間割 v%1$s\n\nミニマルでクリーン、ローカルファーストの時間割アプリ。\nすべてのデータはデバイス内に保存され、サーバーにアップロードされません。\n\n· 広告なし\n· 追跡なし\n· WakeUp / ICS / CSV / HTML / プレーンテキスト インポート対応</string>
+
+    <string-array name="day_names">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </string-array>
+
+    <!-- Localized date / theme display -->
+    <string name="date_long_format">%1$d月%2$d日</string>
+    <string name="notif_title">今日の授業 — %1$s %2$s</string>
+    <string name="notif_text">タップして今日の時間割を表示</string>
+    <string name="theme_name_default">ライラック</string>
+    <string name="theme_name_spring">スプリング</string>
+    <string name="theme_name_ocean">オーシャン</string>
+    <string name="theme_name_peach">ピーチ</string>
+    <string name="theme_name_slate">スレート</string>
+<string name="default_table_with_num">デフォルト%1$d</string>
+    <string name="new_course">新規授業</string>
+    <string name="jw_import_title">インポート - %1$s</string>
+    <string name="month_day_format">%1$d/%2$d</string>
+    <string name="section_short">%1$d</string>
+    <string name="day_short_1">月</string>
+    <string name="day_short_2">火</string>
+    <string name="day_short_3">水</string>
+    <string name="day_short_4">木</string>
+    <string name="day_short_5">金</string>
+    <string name="day_short_6">土</string>
+    <string name="day_short_7">日</string>
+    <string name="section_node_format">第%1$d–%2$d限</string>
+    <string name="section_single">第%1$d限</string>
+    <string name="mine_appearance">外観とテーマ</string>
+    <string name="mine_general">一般</string>
+    <string name="theme_appearance">外観</string>
+    <string name="theme_mode_system">明暗はシステムに従う</string>
+    <string name="theme_mode_light">ライト</string>
+    <string name="theme_mode_dark">ダーク</string>
+    <string name="appearance_section_theme">テーマカラー</string>
+    <string name="appearance_section_display">授業の表示</string>
+    <string name="appearance_section_widget">ウィジェット</string>
+    <string name="about_update_latest">最新バージョン v%1$s です</string>
+    <string name="update_found_title">新しいバージョン v%1$s があります</string>
+    <string name="update_download">ダウンロード</string>
+    <string name="update_cancel">キャンセル</string>
+    <string name="update_downloading">ダウンロード中 %1$d%%</string>
+    <string name="update_installing">ダウンロード完了、インストーラーを起動中</string>
+    <string name="update_retry">再試行</string>
+    <string name="update_download_failed">ダウンロード失敗: %1$s</string>
+    <string name="about_author">作者</string>
+    <string name="about_author_name">Lingion</string>
+    <string name="about_license_body">取り込みアダプタは以下のオープンソース実装を参考にしています：WakeUp 課程表 (YZune, Apache-2.0) の JwCourse データ構造、WakeupSchedule_BUPT (dIT8Zv, Apache-2.0) のパーサー/学校ディレクトリ設計、WakeupSchedule_Kotlin (YZune, Apache-2.0) の週ビットマップ解析。厦門大学の時間割 API (金智 gsapp/wdkbapp) は本プロジェクトが独自に調査・検証しました（schedule/ 内のスクリプト）。</string>
+    <string name="about_license_detail">ライセンスと謝辞</string>
+    <string name="license_page_title">ライセンスと謝辞</string>
+    <string name="license_gpl_section">ライセンス</string>
+    <string name="license_gpl_body">Sleepy はオープンソースのスマート時間割アプリです。ソースコードは GNU General Public License v3.0 の下で公開されています。誰でも自由に使用、改変、配布できます。GitHub での貢献を歓迎します。</string>
+    <string name="license_attribution_section">教务システムアダプタの謝辞</string>
+    <string name="license_attribution_note">一部の教务システム取り込みアダプタは、以下のオープンソースプロジェクトの公開実装を参考にしています。皆様に感謝申し上げます。</string>
+    <string name="license_foundational_section">複数大学共通の基盤プロジェクト</string>
+    <string name="license_perschool_section">大学別の謝辞</string>
+    <string name="about_update_check">自動的にアップデートを確認</string>
+    <string name="about_update_check_detail">起動時に GitHub Releases を確認し、新バージョンがあれば「について」ページ上部にバナーを表示します</string>
+    <string name="about_update_available">新バージョン %1$s があります — タップで表示</string>
+    <string name="about_license_title">オープンソース宣言</string>
+    <string name="about_source">ソースコード</string>
+    <string name="about_source_url">github.com/lingion/sleepy</string>
+    <string name="about_feedback">フィードバックと提案</string>
+    <string name="about_feedback_detail">GitHub Issue でバグやアイデアを報告するか、メールで作者に連絡できます</string>
+    <string name="about_feedback_github">GitHub Issue</string>
+    <string name="about_feedback_email">メール</string>
+    <string name="about_feedback_email_subject">[Sleepy フィードバック]</string>
+    <string name="about_feedback_email_body">問題やアイデアを説明してください：\n\n— 環境 —\n（任意）\n</string>
+    <string name="about_feedback_no_mail_app">メールアプリが見つかりません。GitHub Issue を使用してください。</string>
+    <string name="about_title">について</string>
+    <string name="about_update">更新を確認</string>
+    <string name="about_update_checking">更新を確認中…</string>
+    <string name="about_update_detail">GitHub が利用できない場合は、自動でミラーにフォールバックします</string>
+    <string name="about_version">バージョン情報</string>
+    <string name="about_version_detail">バージョン %1$s（ビルド %2$d）</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_confirm">OK</string>
+    <string name="course_color">色</string>
+    <string name="export_copied_hint">共有パネルを開きました</string>
+    <string name="export_course_count">%1$d 授業</string>
+    <string name="export_failed">エクスポート失敗、再試行してください</string>
+    <string name="export_ics_subtitle">標準 iCalendar 形式、システムカレンダー / Google / Apple Calendar にインポート可能</string>
+    <string name="export_ics_title">ICS カレンダー</string>
+    <string name="export_json_subtitle">完全な時間割構造、WakeUp などの同種アプリから直接インポート可能</string>
+    <string name="export_json_title">WakeUp 互換 JSON</string>
+    <string name="export_no_table">エクスポート可能な時間割がありません</string>
+    <string name="export_pick_table">エクスポートする時間割を選択</string>
+    <string name="export_current_table_badge">現在の時間割</string>
+    <string name="export_saved_to">Download/Sleepy/%1$s に保存しました</string>
+    <string name="export_share_chooser">時間割を共有</string>
+    <string name="export_share_subtitle">短いテキスト形式、チャットアプリに貼り付け可能</string>
+    <string name="export_share_title">テキストを共有</string>
+    <string name="export_start_date">学期開始 %1$s</string>
+    <string name="export_title">時間割をエクスポート</string>
+    <string name="import_new_table_hint">（新しい時間割として作成されます）</string>
+    <string name="jw_config_confirm">インポートを確認</string>
+    <string name="jw_config_title">インポート前の確認</string>
+    <string name="jw_table_name_label">時間割名</string>
+    <string name="jw_pending_apply">対応をリクエスト</string>
+    <string name="jw_pending_close">閉じる</string>
+        <string name="jw_pending_input_url">URL を手動入力</string>
+        <string name="jw_pending_manual">手動で授業を追加</string>
+    <string name="jw_pending_msg">%1$s の教務システムは Sleepy の対応リストにありません。\n\n以下の方法があります：\n1.「対応をリクエスト」をタップして開発者に送信\n2.「URL を手動入力」をタップして WebView で開きログイン\n3. 一時的に HTML / CSV ファイルからインポート、または手動で授業を追加</string>
+        <string name="jw_pending_supported">対応済み</string>
+    <string name="jw_pending_title">この学校の教務インポートは未実装です</string>
+    <string name="jw_pending_use_csv">CSV ファイルからインポート</string>
+    <string name="jw_pending_use_html">HTML ファイルからインポート</string>
+    <string name="mine_refresh_widgets">すべてのウィジェットを更新</string>
+    <string name="mine_refresh_widgets_done">すべてのウィジェットを更新しました</string>
+    <string name="notif_before_class_text">次の授業：%1$s %2$s @ %3$s</string>
+    <string name="notif_before_class_text_with_teacher">次の授業：%1$s %2$s @ %3$s、担当：%4$s</string>
+    <string name="notif_before_class_title">授業前リマインダー</string>
+    <string name="notif_channel_before_class">授業前リマインダー</string>
+    <string name="notif_channel_before_class_desc">各授業の開始前に次の授業情報を通知します</string>
+    <string name="notif_channel_daily">毎日の時間割リマインダー</string>
+    <string name="notif_channel_daily_desc">指定した時刻に毎日の授業サマリーを通知します</string>
+    <string name="notif_channel_fluid">Fluid Cloud / Super Island</string>
+    <string name="notif_channel_fluid_desc">授業前に展開可能なリアルタイム授業カードを表示</string>
+    <string name="notif_daily_text_first">最初の授業：%1$s %2$s @ %3$s</string>
+    <string name="notif_daily_text_no_course">ゆっくり休んで、一日を楽しんでください！</string>
+    <string name="notif_daily_title">今日は %1$d 日、授業は %2$d コマです</string>
+    <string name="notif_daily_title_no_course">今日は %1$d 日、授業はありません</string>
+    <string name="notif_room_unknown">教室不明</string>
+    <string name="reminder_banner_sub">通知バーに授業前のバナーを表示</string>
+    <string name="reminder_banner_title">バナーリマインダー</string>
+    <string name="reminder_before_class_preview">例：次の授業 高等数学 08:00 @ 教学棟A101</string>
+    <string name="reminder_before_class_sub">各授業の開始前に次の授業情報をリマインド</string>
+    <string name="reminder_before_class_title">授業前リマインダー</string>
+    <string name="reminder_before_minutes_label">事前</string>
+    <string name="reminder_before_minutes_unit">分</string>
+    <string name="reminder_daily_preview">例：今日 15 日、授業は 3 コマ。最初の授業 高等数学 08:00 @ 教学棟A101</string>
+    <string name="reminder_daily_sub">指定した時刻に毎日の授業サマリーを通知</string>
+    <string name="reminder_daily_time_label">リマインダー時刻</string>
+    <string name="reminder_daily_title">毎日リマインダー</string>
+    <string name="reminder_fluid_field_name">授業名</string>
+    <string name="reminder_fluid_field_room">教室</string>
+    <string name="reminder_fluid_field_teacher">担当教員</string>
+    <string name="reminder_fluid_field_time">時刻</string>
+    <string name="reminder_fluid_fields">カプセルメイン表示内容</string>
+    <string name="reminder_fluid_fields_hint">メイン表示内容を選択</string>
+    <string name="reminder_fluid_note">通知をタップすると授業詳細を展開できます。Fluid Cloud / Super Island として表示されるかどうかは、スマホのシステム、通知権限、メーカーのサービス資格によって決まります。</string>
+    <string name="reminder_fluid_sub">対応する Xiaomi・OPPO スマホでリアルタイム授業カードを表示</string>
+    <string name="reminder_fluid_title">Fluid Cloud / Super Island</string>
+    <string name="reminder_master_sub">Sleepy に授業通知の送信を許可</string>
+    <string name="reminder_master_title">リマインダーを有効化</string>
+    <string name="reminder_pick_time">リマインダー時刻を選択</string>
+    <string name="reminder_title">リマインダー</string>
+    <string name="school_count_supported">対応 %1$d</string>
+            <string name="semester_out_of_range">現在は学期の範囲外です</string>
+    <string name="semester_not_started">学期はまだ始まっていません</string>
+    <string name="semester_ended">学期は終了しました</string>
+    <string name="schedule_week_prefix">第 %1$d 週</string>
+    <string name="today_semester_out_hint">学期範囲外のため、授業は参考です</string>
+    <string name="settings_vert_punct">ウィジェット縦書き記号</string>
+    <string name="settings_vert_punct_sub">ウィジェットでコマ名を縦書き表示する際、（）《》などを縦書き用の字形に置き換えます（実験的機能）</string>
+<string name="settings_widget_show_time">ウィジェットに時刻を表示</string>
+<string name="settings_widget_show_time_sub">ウィジェットの授業カードに時限/時刻を表示（オフ=授業名と場所のみ）</string>
+<string name="settings_widget_hide_weekend">週末を隠す</string>
+<string name="settings_widget_hide_weekend_sub">ウィジェットの土日列を非表示（ホームの課表設定とは独立）</string>
+<string name="settings_widget_grid_style">グリッドウィジェットの外観</string>
+<string name="settings_widget_grid_style_sub">ウィジェットのセル寸法はランチャーで固定。カード角丸・行間・列間・文字密度を調整できます</string>
+<string name="settings_widget_grid_corner">カード角丸</string>
+<string name="settings_widget_grid_gap_h">行間隔</string>
+<string name="settings_widget_grid_gap_w">列間隔</string>
+<string name="settings_widget_grid_font">文字密度</string>
+
+    <string name="settings_widget">ウィジェット設定</string>
+    <string name="settings_widget_colorless">ウィジェットの授業色を統一</string>
+    <string name="settings_widget_colorless_sub">ウィジェットのコマ背景色だけを中立色に統一。アプリ内やカスタム色には影響しません</string>
+    <string name="settings_course_colorless">アプリ内授業カプセルの色を統一</string>
+    <string name="settings_course_colorless_sub">アプリ内のコマカプセル色だけを中立色に統一。ウィジェットやカスタム色には影響しません</string>
+    <string name="settings_widget_separator">週ウィジェットの区切り線</string>
+    <string name="settings_holiday_holiday">祝日の授業をグレー表示</string>
+    <string name="settings_holiday_holiday_sub">祝日（国民の祝日など）の授業をグレーで表示します</string>
+    <string name="settings_holiday_entry_sub">グレー表示のルールを設定し、祝日・振替出勤日のデータを表示</string>
+    <string name="holiday_page_title">祝日と振替出勤日</string>
+    <string name="holiday_data_source">データソース</string>
+    <string name="holiday_source_label">unpkg.com/holiday-calendar · CN</string>
+    <string name="holiday_data_failed">祝日・振替出勤日データの取得に失敗しました。ネットワークを確認して再試行してください</string>
+    <string name="holiday_data_empty">この年の祝日・振替出勤日データはありません</string>
+    <string name="holiday_data_refresh">データを更新</string>
+    <string name="holiday_data_retry">再試行</string>
+    <string name="holiday_year_prev">前の年</string>
+    <string name="holiday_year_next">次の年</string>
+    <string name="holiday_list_holidays">法定祝日</string>
+    <string name="holiday_list_workdays">振替出勤日</string>
+    <string name="holiday_workday_badge">出勤日</string>
+    <string name="settings_holiday_title">祝日・週末のグレー表示</string>
+    <string name="settings_holiday_weekend">週末の授業をグレー表示</string>
+    <string name="settings_holiday_weekend_sub">土曜日と日曜日の授業を自動的に灰色で表示</string>
+    <string name="settings_holiday_style">表示スタイル</string>
+    <string name="settings_holiday_style_grey">灰色</string>
+    <string name="settings_holiday_style_strikethrough">灰色＋取り消し線</string>
+    <string name="settings_holiday_workday">振替出勤日を無視</string>
+    <string name="settings_holiday_workday_sub">週末のグレー表示が有効なとき、振替出勤日はグレー表示しません</string>
+    <string name="holiday_edit_title">カスタム日付を編集</string>
+    <string name="holiday_add_title">カスタム日付を追加</string>
+    <string name="holiday_name_label_date">開始日</string>
+    <string name="holiday_name_label">名前</string>
+    <string name="holiday_name_label_end">終了日</string>
+    <string name="holiday_date_invalid">日付が無効、または終了日が開始日より前です</string>
+    <string name="holiday_removed_section">削除済み</string>
+    <string name="holiday_restore">元に戻す</string>
+    <string name="holiday_delete_range">削除</string>
+    <string name="holiday_type_holiday">祝日</string>
+    <string name="holiday_type_workday">振替出勤日</string>
+    <string name="holiday_custom_badge">カスタム</string>
+    <string name="holiday_add_entry">カスタム日付を追加</string>
+    <string name="settings_widget_separator_sub">週リストウィジェットでコマ名の間に区切り線を表示するかどうか</string>
+    <!-- i18n: hardcoded string extraction -->
+    <string name="edit_period_input">入力</string>
+    <string name="edit_period_duration_label">1時限の時間</string>
+    <string name="unit_minutes">分</string>
+    <string name="edit_period_total_label">総時限数</string>
+    <string name="unit_periods">コマ</string>
+    <string name="edit_period_first_start">1時限目開始</string>
+    <string name="short_break">短い休み</string>
+    <string name="long_break">長い休み</string>
+    <string name="break_assign_hint">休み割り当て（タップで切替）</string>
+    <string name="preview">プレビュー</string>
+    <string name="break_min_two_periods">休みを割り当てるには最低2時限必要</string>
+    <string name="empty_placeholder">(空)</string>
+    <string name="period_format_node">第%1$s時限</string>
+    <string name="period_time_range">第%1$s時限  %2$s ~ %3$s</string>
+    <string name="break_continuous_0">  ↓ 0分連続</string>
+    <string name="break_continuous_n">  ↓ %1$d分 %2$s</string>
+    <string name="add_label">%1$sを追加</string>
+    <string name="mode_manual">手動モード</string>
+    <string name="mode_auto">自動モード</string>
+    <string name="label_from">開始</string>
+    <string name="schedule_jump_week">週にジャンプ</string>
+    <string name="schedule_empty_name">「%1$s」はまだ空です</string>
+    <string name="schedule_empty_name_hint">この時間割に授業を追加するか、新しい時間割をインポート</string>
+    <string name="course_count_format">%1$d コマ</string>
+    <string name="today_suffix"> ・今日</string>
+    <string name="no_course_today"> ・授業なし</string>
+    <string name="default_course_name">授業</string>
+    <string name="default_room">教室</string>
+    <string name="error_unknown">不明なエラー</string>
+    <string name="error_no_version_found">本サイトでもミラーでもバージョンが見つかりません</string>
+    <string name="error_empty_download">ダウンロードファイルが空です</string>
+    <string name="jw_fetch_failed_generic">取得に失敗しました。後でもう一度お試しください</string>
+    <string name="xmu_table_default_name">厦門大学 時間割</string>
+    <string name="settings_widget_grid_layout">ウィジェットのカード形式</string>
+    <string name="settings_widget_grid_layout_sub">グリッド：7 列の細長カード／ワイド行：時間・場所・教員を表示できる全幅カード</string>
+    <string name="settings_widget_grid_layout_grid">グリッド</string>
+    <string name="settings_widget_grid_layout_rows">ワイド行</string>
+    <string name="settings_widget_rows_style">ワイド行カードの外観</string>
+    <string name="settings_widget_rows_style_sub">ワイド行形式でのみ有効</string>
+    <string name="settings_widget_rows_corner">カードの角丸</string>
+    <string name="settings_widget_rows_card_gap">カードの間隔</string>
+    <string name="settings_widget_grid_row_scale">1時限あたりの行の高さ</string>
+    <string name="settings_widget_grid_row_scale_sub">大きくするとカードが高くなり、時間・場所・教員の情報をより多く表示できます</string>
+    <string name="settings_widget_rows_card_height">カードの最小の高さ</string>
+    <string name="settings_widget_rows_card_height_auto">自動</string>
+    <string name="settings_widget_rows_card_height_sub">大きくすると各カードが高くなり情報を多く表示（0 = 内容に合わせて自動）</string>
+</resources>

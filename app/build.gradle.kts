@@ -1,0 +1,158 @@
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")
+}
+
+android {
+    namespace = "com.lingion.sleepy"
+    // 注: 原 37 → 36。AGP 9.1.0 官方上限 36.1, 且本机 SDK 的 37 平台包在仓库里
+    // 命名为 android-37.0(AGP 找不到 hash android-37)。编译验证与出包以 36 为准。
+    compileSdk = 36
+
+    defaultConfig {
+        // 厦大专属版对外唯一标识。namespace 保持 com.lingion.sleepy(内部代码路径不变),
+        // 仅改 applicationId 使本应用与原版互不冲突、可并存安装。
+        applicationId = "com.arroghie.xmutimetable"
+        minSdk = 26
+        targetSdk = 36
+        versionCode = 52
+        versionName = "1.0.51"
+        vectorDrawables { useSupportLibrary = true }
+        androidResources {
+            localeFilters += listOf("zh-rCN", "zh-rTW", "en", "ja", "es")
+        }
+    }
+
+    buildTypes {
+        debug {
+            isMinifyEnabled = false
+            versionNameSuffix = "-debug"
+        }
+        release {
+            isMinifyEnabled = true
+            // 保留 R8 shrinking 能力但关闭混淆改名(避免反射/序列化类被重命名后崩溃)
+            // 真正的混淆(mangling)由 shrinkResources + 下面的 keep 规则共同保护
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE*",
+                "/META-INF/NOTICE*"
+            )
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86_64")
+            isUniversalApk = false
+        }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
+    }
+}
+
+dependencies {
+    val composeBom = platform("androidx.compose:compose-bom:2024.10.00")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    // Compose
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.animation:animation")
+    implementation("androidx.compose.foundation:foundation")
+
+    // Activity + Lifecycle
+    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-process:2.8.7")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
+    // DataStore (preferences)
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Room
+    val roomVersion = "2.7.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
+    // Kotlinx Serialization (JSON parsing for WakeUp JSON)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // jsoup (HTML parsing for 教务直连 import)
+    implementation("org.jsoup:jsoup:1.18.1")
+
+    // WorkManager (Daily notifications)
+    // Glance 依赖已随死代码删除移除(决策 D5-11): 5 个生产 widget 全走 RemoteViews + Canvas bitmap
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
+    // Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Coil (image loading)
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
+    // Test
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
+    testImplementation("org.json:json:20231013")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
