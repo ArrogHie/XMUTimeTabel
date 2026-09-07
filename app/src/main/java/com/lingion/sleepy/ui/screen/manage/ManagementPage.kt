@@ -12,23 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FileUpload
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,28 +32,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lingion.sleepy.R
-import com.lingion.sleepy.ui.screen.imports.ImportSheet
 import com.lingion.sleepy.ui.screen.schedule.ScheduleViewModel
 import com.lingion.sleepy.ui.theme.SleepyTheme
 import com.lingion.sleepy.ui.theme.noRippleClickable
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManagementPage(
     onJwImportRequested: () -> Unit,
     onCreateNewTableRequested: () -> Unit,
     onManualAdd: () -> Unit,
     onEditCurrentTable: () -> Unit,
-    onImported: () -> Unit,
-    viewModel: ScheduleViewModel = viewModel(),
-    autoShowImportSheet: Boolean = false
+    viewModel: ScheduleViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val colors = SleepyTheme.colors
     val table = state.currentTable
-
-    var showImportSheet by remember { mutableStateOf(autoShowImportSheet) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Box(
         modifier = Modifier
@@ -121,7 +108,7 @@ fun ManagementPage(
                         icon = Icons.Outlined.FileUpload,
                         title = stringResource(R.string.manage_import),
                         subtitle = stringResource(R.string.manage_import_sub),
-                        onClick = { showImportSheet = true }
+                        onClick = onJwImportRequested
                     )
                     ManageCard(
                         icon = Icons.Outlined.AutoAwesome,
@@ -144,19 +131,6 @@ fun ManagementPage(
                 }
             }
         }
-    }
-
-    if (showImportSheet) {
-        ImportSheet(
-            sheetState = sheetState,
-            onDismiss = { showImportSheet = false },
-            onJwImportRequested = {
-                showImportSheet = false
-                onJwImportRequested()
-            },
-            onImported = onImported,
-            viewModel = viewModel
-        )
     }
 }
 

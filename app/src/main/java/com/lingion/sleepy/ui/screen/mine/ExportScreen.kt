@@ -250,7 +250,7 @@ fun ExportScreen(
                                     ctx = ctx,
                                     fileName = "sleepy_${table.name}_${stamp()}.sleepy",
                                     mime = "text/plain",
-                                    // MIME 用 text/plain 规避 ImportReceiverActivity MIME 收窄问题(调查报告 P3)
+                                    // MIME 用 text/plain, 便于各分享目标接收
                                     content = SleepyNativeExporter.exportFile(
                                         table.name, table.startDate, table.maxWeek, table.nodesPerDay,
                                         table.timeJson, courses

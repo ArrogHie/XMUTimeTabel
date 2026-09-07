@@ -15,8 +15,8 @@ import java.net.URLEncoder
  */
 object FeedbackComposer {
 
-    const val GITHUB_REPO = "lingion/sleepy"
-    const val FALLBACK_EMAIL = "lingion@hrbeu.edu.cn"
+    const val GITHUB_REPO = "ArrogHie/XMUTimeTabel"
+    const val FALLBACK_EMAIL = "ArrogHie@gmail.com"
     private const val NEW_ISSUE_PATH = "/issues/new"
 
     /**

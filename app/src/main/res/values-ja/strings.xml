@@ -20,10 +20,9 @@
     <string name="schedule_current_week">第 %1$d 週</string>
     <string name="schedule_no_course_today">今日は授業がありません</string>
 
-    <string name="import_title">時間割をインポート</string>
     <string name="manage_current_table">現在の時間割</string>
     <string name="manage_import">インポート</string>
-    <string name="manage_import_sub">ファイル / テキスト / CSV からインポート</string>
+    <string name="manage_import_sub">厦门大学教务账号でワンクリック取り込み</string>
     <string name="manage_new_table">新規作成</string>
     <string name="manage_new_table_sub">空の時間割を作成し、手動で授業を追加</string>
     <string name="manage_edit_current">編集</string>
@@ -54,137 +53,11 @@
     <string name="edit_table_delete_confirm">削除の確認</string>
     <string name="edit_table_delete_msg">時間割「%1$s」を削除しますか？この操作は取り消せません。</string>
     <string name="edit_table_delete_msg_count">時間割「%1$s」を削除しますか？%2$d 件の授業も一緒に削除されます。この操作は元に戻せません。</string>    <string name="default_table_name">デフォルト</string>
-    <string name="import_paste">テキストを貼り付け</string>
-    <string name="import_paste_hint">時間割テキストを貼り付け…</string>
-    <string name="import_file">ファイルから</string>
-    <string name="import_qr">QRスキャン</string>
-    <string name="import_jw">XMU からインポート</string>
-    <string name="import_manual">手動追加</string>
-    <string name="import_success">インポート成功</string>
-    <string name="import_failed">インポート失敗：%1$s</string>
-    <string name="import_preview">プレビュー</string>
     <string name="import_parsing">解析中…</string>
-    <string name="import_supported_formats">対応形式</string>
-    <string name="import_preview_title">インポートプレビュー</string>
-    <string name="import_target_table">対象：%1$s</string>
-    <string name="import_courses">授業数</string>
     <string name="import_conflicts">競合</string>
-    <string name="import_appendable">追加可能</string>
-    <string name="import_table_name">時間割名</string>
-    <string name="import_start_date">学期開始日</string>
-    <string name="import_suggestion">提案</string>
-    <string name="import_no_conflict">競合なし — 追加または上書き可能</string>
-    <string name="import_conflict_count">%1$d 件の競合があります。新規時間割としてインポートするか、競合しない授業のみ追加することを推奨します。</string>
-    <string name="import_conflict_more">他 %1$d 件の競合…</string>
-    <string name="import_append_only">競合なしのみ追加</string>
-    <string name="import_as_new">新規時間割として追加</string>
-    <string name="import_overwrite">⚠ 現在のものを上書き（注意）</string>
-    <string name="import_append_as_new">新規時間割に統合</string>
-    <string name="import_append_conflict">衝突を含めて追加</string>
-    <string name="import_confirm_title">インポート前の確認</string>
-    <string name="import_confirm_body">学期開始日と時限時間を確認してください。現在の週が不正確になります。</string>
-    <string name="import_week_start">第1週の開始日</string>
-    <string name="import_confirm">インポート</string>
-    <string name="import_all_conflict">すべて競合しています — 追加できる授業がありません</string>
-    <string name="import_content_empty">内容が空です</string>
-    <string name="import_select_table">時間割を先に選択してください</string>
-    <string name="read_failed">読み取り失敗: %1$s</string>
-    <string name="cannot_read_file">ファイルを読み取れません</string>
-    <string name="import_preview_sub">最初にプレビュー、それからインポート</string>
-    <string name="format_wakeup_share">WakeUp 共有テキスト</string>
-    <string name="format_wakeup_desc">【来自WakeUp课程表】で始まる</string>
-    <string name="format_wakeup_json">WakeUp JSON</string>
-    <string name="format_json_desc">.jsonファイルをエクスポート</string>
-    <string name="format_ics">ICSカレンダー</string>
-    <string name="format_ics_desc">学校の教務課からエクスポート可能</string>
-    <string name="format_csv">CSVファイル</string>
-    <string name="format_csv_desc">ヘッダー付き.csv、カンマ区切り</string>
-    <string name="format_html">HTMLテーブル</string>
-    <string name="format_html_desc">&lt;table&gt;形式、ヘッダー検出後に行ごとに解析</string>
-    <string name="format_plain">プレーンテキスト</string>
-    <string name="format_plain_desc">Sleepyネイティブ形式、1行1科目、縦棒区切り</string>
-
     <!-- フォーマット詳細ダイアログ: 文言は ScheduleParser の実際の識別動作と一致させること -->
-    <string name="format_help_spec">識別条件</string>
-    <string name="format_help_example">例</string>
-    <string name="format_help_close">閉じる</string>
-    <string name="format_detail_content_desc">フォーマットの詳細を見る</string>
-    <string name="copy_prompt">プロンプトをコピー</string>
-    <string name="copied">コピーしました</string>
-    <string name="ai_prompt_title">AIにスクショを変換させる（Sleepyネイティブ形式）</string>
-    <string name="ai_prompt_hint">下のプロンプトをコピーして Doubao・ChatGPT などの AI に送り、時間割のスクリーンショットも一緒に送ってください。AI は #sleepy-v1 形式のテキストを出力するので、全体をコピーして上の入力欄に貼り付けるとインポートできます。</string>
-    <string name="ai_prompt_text">タスク：これから送る時間割のスクリーンショット（またはファイル内容）を、sleepy-v1 プレーンテキスト形式に変換して出力してください。変換結果以外は一切出力しないこと（説明・挨拶・Markdownコードフェンス禁止）。出力の1行目は必ず #sleepy-v1。\n\n========== 一、書式ルール ==========\n\n1行目は必ず：#sleepy-v1\n\n2行目以降は1行1レコード、列は縦棒 | で区切る。行は3種類：\n\n1. T 行（テーブル情報、省略可、最大1行）：\nTテーブル名|学期開始日|総週数|1日のコマ数\n· 開始日の形式は YYYY-MM-DD、第1週の月曜日であること\n· 時間割に明記されている項目のみ記入し、無い項目は空のまま。値がある列まで書けばOK（例：T|2026-03-02）\n· 時間割に全く言及がなければ T 行自体を出力しない。推測禁止\n\n2. N 行（各コマの開始・終了時刻、省略可、1コマ1行）：\nN番号|開始時刻|終了時刻\n· 例：N3|10:00|10:45\n· 時間割に時限表が明記されている場合のみ出力。時刻は24時間制 HH:mm（8:00 は 08:00 と書く）\n· 時限表がなければ N 行は一切出力しない\n\n3. C 行（科目、本体、1時限1行）：\nC科目名|曜日|コマ|週|教員|教室|色|備考|時刻|グループ\n常に10列・縦棒9個。空の列は空のまま、ただし縦棒は省略しない。各列の規則：\n  第1列 科目名：時間割の原文を一字一句そのまま写す（言語不問）\n  第2列 曜日：月〜日 = 1 2 3 4 5 6 7\n  第3列 コマ：3-4時限なら 3-4、単一時限は 6\n  第4列 週：「二、週のルール」参照\n  第5列 教員：時間割にあればそのまま、無ければ空\n  第6列 教室：同上\n  第7列 色：常に空\n  第8列 備考：時間割に備考があれば記入、無ければ空\n  第9列 時刻：時間割が科目ごとに具体的時刻（夜間授業など）を明記する場合のみ HH:mm-HH:mm、無ければ空\n  第10列 グループ：常に空\n\n========== 二、週のルール ==========\n\n各科目の開催週集合を抽出し、順に判定：\n1. 連続範囲かつ奇数・偶数の制約なし → S-E（例：1-16）\n2. 範囲内すべて奇数週（「奇数週」の表記）→ S-E单（例：1-15单）\n3. 範囲内すべて偶数週（「偶数週」の表記）→ S-E双（例：2-16双）\n4. 飛び飛びの週（例：1-8週、10週、12-16週）→ 連続する区間ごとに分割し、それぞれ独立した C 行に。他の列はそのままコピー：\n   · 全週の連続区間 → S-E（例：1-8、12-16）\n   · 孤立した単週 → S定（例：10定）\n   · 純奇数の連続 → S-E单、純偶数の連続 → S-E双\n   · 連続でなく純奇偶でもない → S-E定（例：6,7週 → 6-7定）\n5. 週の記載がなければ 1-16\n\n========== 三、抽出ルール ==========\n\n· 同じ科目が1週間に複数回（別日・別コマ）→ 複数の C 行、1時限1行。1行にまとめない\n· コマ番号は時間割の「X時限」から読む。時限がなく時刻のみなら、重複しない時間帯を朝から 1, 2, 3… と採番し、対応する N 行も出力\n· 科目名・教員・教室は原文のまま。テキストに | \ \" &amp;lt; { ( が含まれる場合は各文字の前に \ を付ける。文中の改行は \n の2文字、タブは \t\n· 時間割に無い情報はすべて空。教員・教室・時刻・週を捏造しないこと\n\n========== 四、出力セルフチェック（心中で確認。出力しない） ==========\n\n· 1行目が #sleepy-v1 で、他に余計な文字が一切ない\n· 各 C 行は正確に縦棒9個・10列\n· 曜日は 1-7 の数字。時刻は時が2桁（8:00 でなく 08:00）\n· 週の列は S-E、S-E单、S-E双、S-E定、S定 の5形態のみ\n· 科目名は時間割の原文と一致。捏造なし\n\n========== 五、出力例 ==========\n\n#sleepy-v1\nT|2026-03-02\nN1|08:00|08:45\nN2|08:55|09:40\nN3|10:00|10:45\nN4|10:55|11:40\nN5|14:00|14:45\nN6|14:55|15:40\nN7|16:00|16:45\nN8|16:55|17:40\nN9|19:00|19:45\nN10|19:55|20:40\nC高等数学A|1|1-2|1-16|张三|A101||||\nC高等数学A|3|3-4|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC数据结构|4|3-4|2-16双|王五|C302||||\nC体育|4|5-6|3-4定||||||\nCJava实战|3|9-10|1-16||机房|||19:00-21:30|\nC影视鉴赏|7|6|10-16双||||||\nC形势与政策|5|8-9|1-8||||||\nC形势与政策|5|8-9|12-16||||||</string>
-
-    <string name="format_wakeup_share_when">WakeUp アプリからの乗り換え。WakeUp の「コース共有」で生成されたテキスト全体をそのまま貼り付け。</string>
-    <string-array name="format_wakeup_share_spec">
-        <item>共有テキスト全体を先頭行の【来自WakeUp课程表】ごとコピー</item>
-        <item>courseDetailJson フィールドが含まれていること（WakeUp が自動で付与）</item>
-        <item>時間割名・学期開始日・科目ごとの色も一緒にインポートされる</item>
-    </string-array>
-    <string name="format_wakeup_share_example" formatted="false">【来自WakeUp课程表】\n课程分享:\n{"name":"My table","startDate":"2026-09-07","courseDetailJson":"%5B%7B%22name%22…%5D"}</string>
-
-    <string name="format_wakeup_json_when">WakeUp がエクスポートした .json ファイルの中身、または同じ構造で自分で書いた JSON。</string>
-    <string-array name="format_wakeup_json_spec">
-        <item>テキスト全体が JSON であること：{ で始まり courses 配列を含む</item>
-        <item>最上位：name（時間割名）、startDate（2026-09-07 形式）</item>
-        <item>各科目：name、teacher、position（教室）、day（1-7、1=月）、startNode（開始時限）、step（時限数）、startWeek/endWeek、type（0=毎週 / 1=奇数週 / 2=偶数週）</item>
-        <item>3-4時限の授業 = startNode 3、step 2（3 と 4 ではない）</item>
-        <item>color は省略可</item>
-    </string-array>
-    <string name="format_wakeup_json_example" formatted="false">{\n  "name": "My table",\n  "startDate": "2026-09-07",\n  "courses": [\n    {"name":"Calculus","teacher":"John","position":"A101","day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":0}\n  ]\n}</string>
-
-    <string name="format_ics_when">学校システムや WakeUp がエクスポートしたカレンダーファイル（.ics）。「ファイルからインポート」で選ぶか、ファイルマネージャーでタップして Sleepy を選択、またはテキストエディタで開いて全て貼り付け。</string>
-    <string-array name="format_ics_spec">
-        <item>テキストは BEGIN:VCALENDAR で始まること —— 1行目を落とすと識別できない</item>
-        <item>各授業は1イベント：SUMMARY=科目名、LOCATION=教室、教員は説明から自動識別</item>
-        <item>曜日はイベントの日付から推定。第1週 = 最初のイベントがある週の月曜日</item>
-        <item>時限は説明の「第X - Y節」を優先、なければ開始/終了時刻から推定</item>
-        <item>隔週イベントは自動的に1つに統合</item>
-    </string-array>
-    <string name="format_ics_example" formatted="false">BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:Calculus\nLOCATION:A101\nDESCRIPTION:第1 - 2節\\nA101\\nJohn\nDTSTART:20260907T010000Z\nDTEND:20260907T015500Z\nRRULE:FREQ=WEEKLY;UNTIL=20261227T010000Z\nEND:VEVENT\nEND:VCALENDAR</string>
-
-    <string name="format_csv_when">教務課からエクスポートされた表、または Excel で「CSV (カンマ区切り)」として保存した内容。</string>
-    <string-array name="format_csv_spec">
-        <item>最初の行はヘッダー。必須列：科目（科目/科目名/名称）、曜日（曜日/day）、時限、週（週/weeks）</item>
-        <item>任意列：教員（教員/先生/teacher）、教室、種別、備考</item>
-        <item>時限は 2 通り：1 列に「1-2」、または「開始時限」「終了時限」の 2 列</item>
-        <item>曜日は 1-7、月、Monday どれでも可</item>
-        <item>週は 1-16、2-5,7-9、11,13,15 に対応。複数範囲は複数の授業に展開</item>
-        <item>任意の「開始時間」「終了時間」列（HH:mm）：インポート時に実際の時間割として自動適用</item>
-        <item>種別は 0/1/2 または 毎週/奇数週/偶数週</item>
-    </string-array>
-    <string name="format_csv_example" formatted="false">course,teacher,room,weekday,period,weeks,type\nCalculus,John,A101,Monday,1-2,1-16,weekly\nEnglish,Mary,B202,3,3-4,1-16,odd</string>
-
-    <string name="format_html_when">時間割ページを .html として保存したもの、コピーしたテーブルのソース、またはファイルマネージャーで .html をタップして Sleepy を選択。</string>
-    <string-array name="format_html_spec">
-        <item>テキストは &lt;!DOCTYPE、&lt;html、&lt;table などのタグで始まる必要がある —— 前に普通の文章があると認識されない、削除して貼る</item>
-        <item>ページ内にテーブルがあり、ヘッダー行に「科目」(course) を含むこと</item>
-        <item>列名は CSV と同じ：科目、曜日、時限、週が必須。教員、教室、種別、備考は任意</item>
-        <item>CSV と同様：任意の「開始時間」「終了時間」列、インポート時に自動適用</item>
-        <item>月〜日を列にしたグリッド型時間割は解析不可。「1 行 1 科目」の縦長テーブルが必要</item>
-    </string-array>
-    <string name="format_html_example" formatted="false">&lt;table&gt;\n&lt;tr&gt;&lt;td&gt;course&lt;/td&gt;&lt;td&gt;teacher&lt;/td&gt;&lt;td&gt;room&lt;/td&gt;&lt;td&gt;weekday&lt;/td&gt;&lt;td&gt;period&lt;/td&gt;&lt;td&gt;weeks&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td&gt;Calculus&lt;/td&gt;&lt;td&gt;John&lt;/td&gt;&lt;td&gt;A101&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1-2&lt;/td&gt;&lt;td&gt;1-16&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;</string>
-
-    <string name="format_plain_when">Sleepyネイティブ形式（sleepy-v1）：コンパクトで整然、寛容性が高い。手入力にも、AI によるスクショ変換（下のプロンプト参照）にも最適。旧のタブ区切り形式も引き続きインポート可能。</string>
-    <string-array name="format_plain_spec">
-        <item>1行目は必ず #sleepy-v1</item>
-        <item>科目行の書式：C科目名|曜日|コマ|週|教員|教室|色|備考|時刻|グループ の10列・縦棒9個</item>
-        <item>空の列は空のまま、縦棒は省略しない</item>
-        <item>曜日は 1-7（月曜=1）。コマは範囲 1-2、単一コマは 6</item>
-        <item>週の列は5形態：1-16（毎週）、1-15单（奇数）、2-16双（偶数）、3-4定（区間指定）、10定（単週）</item>
-        <item>色の列は空で自動色。時刻の列は固定時刻の科目のみ HH:mm-HH:mm</item>
-        <item>テキストに | \ \" &lt; { ( が含まれる場合は各文字の前に \ を付ける</item>
-        <item>時限行（省略可）：N番号|開始|終了（例 N3|10:00|10:45）。内蔵既定と同じなら Nd の1行で代用可</item>
-        <item>テーブル行（省略可）：T名前|開始日|総週数|1日コマ数。開始日は第1週の月曜日</item>
-        <item>認識できない行はインポートプレビューに列挙され、黙って捨てられることはない</item>
-    </string-array>
-    <string name="format_plain_example" formatted="false">#sleepy-v1\nT私の時間割|2026-03-02|20|12\nNd\nC高等数学A|1|1-2|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC体育|4|5-6|3-4定||||||\nC影视鉴赏|7|6|10-16双||||||</string>
-    <string name="import_dropped_title">%1$d 行を認識できませんでした</string>
-    <string name="import_dropped_hint">これらの行はスキップされました。形式を確認して再インポートしてください：</string>
-    <string name="import_warnings_title">ヒント</string>
     <string name="export_native_title">Sleepy ネイティブ</string>
     <string name="export_native_subtitle">完全バックアップ · 最小サイズ · 移行に最適</string>
-    <string name="import_start_date_required">学期開始日を入力してください</string>
     <string name="start_date_format">日付形式はYYYY-MM-DDで入力してください</string>
     <string name="slot_time_required">第%1$d時限の時間が必要です</string>
     <string name="slot_time_invalid">第%1$d時限の時間が無効です（開始は終了より前である必要があります）</string>
@@ -341,7 +214,7 @@
 
     <!-- Widget / Common UI -->
     <string name="widget_create_schedule">最初に時間割を作成してください</string>
-    <string name="widget_open_sleepy">Sleepyを開いて追加</string>
+    <string name="widget_open_sleepy">厦大課表を開いて追加</string>
     <string name="more_sections">他に %1$d コマ…</string>
     <string name="tomorrow">明日</string>
     <string name="n_course_periods">%1$dコマ</string>
@@ -441,7 +314,7 @@
     <string name="update_retry">再試行</string>
     <string name="update_download_failed">ダウンロード失敗: %1$s</string>
     <string name="about_author">作者</string>
-    <string name="about_author_name">Lingion</string>
+    <string name="about_author_name">ArrogHie</string>
     <string name="about_license_body">取り込みアダプタは以下のオープンソース実装を参考にしています：WakeUp 課程表 (YZune, Apache-2.0) の JwCourse データ構造、WakeupSchedule_BUPT (dIT8Zv, Apache-2.0) のパーサー/学校ディレクトリ設計、WakeupSchedule_Kotlin (YZune, Apache-2.0) の週ビットマップ解析。厦門大学の時間割 API (金智 gsapp/wdkbapp) は本プロジェクトが独自に調査・検証しました（schedule/ 内のスクリプト）。</string>
     <string name="about_license_detail">ライセンスと謝辞</string>
     <string name="license_page_title">ライセンスと謝辞</string>
@@ -456,12 +329,12 @@
     <string name="about_update_available">新バージョン %1$s があります — タップで表示</string>
     <string name="about_license_title">オープンソース宣言</string>
     <string name="about_source">ソースコード</string>
-    <string name="about_source_url">github.com/lingion/sleepy</string>
+    <string name="about_source_url">github.com/ArrogHie/XMUTimeTabel</string>
     <string name="about_feedback">フィードバックと提案</string>
     <string name="about_feedback_detail">GitHub Issue でバグやアイデアを報告するか、メールで作者に連絡できます</string>
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">メール</string>
-    <string name="about_feedback_email_subject">[Sleepy フィードバック]</string>
+    <string name="about_feedback_email_subject">[厦大課表フィードバック]</string>
     <string name="about_feedback_email_body">問題やアイデアを説明してください：\n\n— 環境 —\n（任意）\n</string>
     <string name="about_feedback_no_mail_app">メールアプリが見つかりません。GitHub Issue を使用してください。</string>
     <string name="about_title">について</string>
@@ -489,7 +362,6 @@
     <string name="export_share_title">テキストを共有</string>
     <string name="export_start_date">学期開始 %1$s</string>
     <string name="export_title">時間割をエクスポート</string>
-    <string name="import_new_table_hint">（新しい時間割として作成されます）</string>
     <string name="jw_config_confirm">インポートを確認</string>
     <string name="jw_config_title">インポート前の確認</string>
     <string name="jw_table_name_label">時間割名</string>

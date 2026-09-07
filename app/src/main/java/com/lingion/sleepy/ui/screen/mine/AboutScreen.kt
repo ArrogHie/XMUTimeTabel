@@ -94,7 +94,7 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
 
     fun openGitHubFeedback() {
         val uri = FeedbackComposer.githubIssueUrl(
-            title = "[Sleepy] ",
+            title = "[厦大课表] ",
             body = "请描述你遇到的问题或建议：",
             diag = diagnostic(),
             template = "bug_report.yml",
@@ -208,7 +208,7 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
                     version = updateAvailable!!.version,
                     onClick = {
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://gh.qdp.qzz.io/lingion/sleepy/releases/tag/v${updateAvailable!!.version}"))
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/tag/v${updateAvailable!!.version}"))
                         )
                     }
                 )
@@ -328,7 +328,7 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
                     }
                     // IconButton 而非裸 Icon+clickable — 裸 20dp 图标的涟漪半径过小且无 48dp 最小触达区
                     IconButton(onClick = {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lingion")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ArrogHie")))
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Outlined.OpenInNew,
@@ -366,7 +366,7 @@ fun AboutScreen(onBack: () -> Unit, onOpenLicense: () -> Unit = {}) {
                         )
                     }
                     IconButton(onClick = {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/lingion/sleepy")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ArrogHie/XMUTimeTabel")))
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Outlined.OpenInNew,

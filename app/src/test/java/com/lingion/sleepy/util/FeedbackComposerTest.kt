@@ -19,7 +19,7 @@ class FeedbackComposerTest {
     @Test
     fun githubUrl_encodesTitleBodyAndAppendsDiagnostics() {
         val result = FeedbackComposer.githubIssueUrl("Bug: 中文 & 符号", "描述\n含 & 符号", diagnostic)
-        assertTrue(result.startsWith("https://github.com/lingion/sleepy/issues/new?"))
+        assertTrue(result.startsWith("https://github.com/ArrogHie/XMUTimeTabel/issues/new?"))
         assertTrue(result.contains("title="))
         assertTrue(result.contains("body="))
         assertFalse(result.contains(" "))
@@ -37,7 +37,7 @@ class FeedbackComposerTest {
     @Test
     fun mailtoUri_usesConfirmedAddressAndEncodesFields() {
         val result = FeedbackComposer.mailtoUri("中文标题", "内容\n和&符号", diagnostic)
-        assertTrue(result.startsWith("mailto:lingion@hrbeu.edu.cn?subject="))
+        assertTrue(result.startsWith("mailto:ArrogHie@gmail.com?subject="))
         assertTrue(result.contains("body="))
         assertFalse(result.contains(" "))
         assertTrue(result.contains("VersionCode%3A") || result.contains("VersionCode%3a"))

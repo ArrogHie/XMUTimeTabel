@@ -49,7 +49,7 @@ class UpdateInfoParseTest {
     // ─── 下载地址镜像改写(2026-09-05 用户令: api.github.com 可达 ≠ github.com 资产可达) ──
 
     private val githubAssetBody = """{"tag_name":"v1.0.47","body":"x","assets":[
-        {"name":"app-arm64-v8a-release.apk","browser_download_url":"https://github.com/lingion/sleepy/releases/download/v1.0.47/app-arm64-v8a-release.apk"}]}"""
+        {"name":"app-arm64-v8a-release.apk","browser_download_url":"https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"}]}"""
 
     @Test
     fun github_asset_url_is_rewritten_to_mirror() {
@@ -57,7 +57,7 @@ class UpdateInfoParseTest {
         // 下载地址必须改写到镜像, 镜像目录结构与 GitHub 1:1
         val info = parseReleaseJson(githubAssetBody, "1.0.46", "arm64-v8a")
         assertEquals(
-            "https://gh.qdp.qzz.io/lingion/sleepy/releases/download/v1.0.47/app-arm64-v8a-release.apk",
+            "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk",
             info.downloadUrl
         )
     }
@@ -73,8 +73,8 @@ class UpdateInfoParseTest {
     @Test
     fun github_direct_url_is_derived_from_mirror_url_for_fallback() {
         // 下载失败时的回退对: 镜像地址 → 原始 GitHub 直连地址
-        val mirror = "https://gh.qdp.qzz.io/lingion/sleepy/releases/download/v1.0.47/app-arm64-v8a-release.apk"
-        val direct = "https://github.com/lingion/sleepy/releases/download/v1.0.47/app-arm64-v8a-release.apk"
+        val mirror = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
+        val direct = "https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
         assertEquals(direct, toDirectGithubUrl(mirror))
         // 已是直连则原样返回(幂等)
         assertEquals(direct, toDirectGithubUrl(direct))
@@ -87,7 +87,7 @@ class UpdateInfoParseTest {
     private val mirrorPage = """
         <html><head><title>Release v1.0.39</title></head><body>
         <div data-pjax="true" data-test-selector="body-content" data-view-component="true" class="markdown-body tmp-my-3"><h2>v1.0.39</h2>
-        <p>Two changes: bug reported in <a class="issue-link" href="https://github.com/lingion/sleepy/issues/5">#5</a> is fixed.</p>
+        <p>Two changes: bug reported in <a class="issue-link" href="https://github.com/ArrogHie/XMUTimeTabel/issues/5">#5</a> is fixed.</p>
         <h3>New</h3>
         <p><strong>Each time slot keeps its own week range</strong></p>
         <ul>
@@ -117,7 +117,7 @@ class UpdateInfoParseTest {
         assertTrue(md.contains("### Fixes"))
         assertTrue(md.contains("- Every time slot carries its own start week."))
         assertTrue(md.contains("**Each time slot keeps its own week range**"))
-        assertTrue(md.contains("[#5](https://github.com/lingion/sleepy/issues/5)"))
+        assertTrue(md.contains("[#5](https://github.com/ArrogHie/XMUTimeTabel/issues/5)"))
     }
 
     @Test

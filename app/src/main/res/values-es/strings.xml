@@ -20,10 +20,9 @@
     <string name="schedule_current_week">Semana %1$d</string>
     <string name="schedule_no_course_today">No hay clases hoy</string>
 
-    <string name="import_title">Importar horario</string>
     <string name="manage_current_table">Horario actual</string>
     <string name="manage_import">Importar</string>
-    <string name="manage_import_sub">Importar desde archivo / texto / CSV</string>
+    <string name="manage_import_sub">Importación con un clic desde el sistema académico de XMU</string>
     <string name="manage_new_table">Nuevo horario</string>
     <string name="manage_new_table_sub">Crear un horario vacío, añadir cursos manualmente</string>
     <string name="manage_edit_current">Editar actual</string>
@@ -54,137 +53,11 @@
     <string name="edit_table_delete_confirm">Confirmar eliminación</string>
     <string name="edit_table_delete_msg">¿Eliminar horario \"%1$s\"? Esta acción no se puede deshacer.</string>
     <string name="edit_table_delete_msg_count">¿Eliminar el horario "%1$s"? Sus %2$d cursos también se eliminarán. Esto no se puede deshacer.</string>    <string name="default_table_name">Predeterminado</string>
-    <string name="import_paste">Pegar texto</string>
-    <string name="import_paste_hint">Pega el texto del horario…</string>
-    <string name="import_file">Importar archivo</string>
-    <string name="import_qr">Escanear QR</string>
-    <string name="import_jw">Importar desde XMU</string>
-    <string name="import_manual">Añadir manualmente</string>
-    <string name="import_success">Importación exitosa</string>
-    <string name="import_failed">Importación fallida: %1$s</string>
-    <string name="import_preview">Vista previa</string>
     <string name="import_parsing">Analizando…</string>
-    <string name="import_supported_formats">Formatos compatibles</string>
-    <string name="import_preview_title">Vista previa de importación</string>
-    <string name="import_target_table">Destino: %1$s</string>
-    <string name="import_courses">Cursos</string>
     <string name="import_conflicts">Conflictos</string>
-    <string name="import_appendable">Añadibles</string>
-    <string name="import_table_name">Nombre del horario</string>
-    <string name="import_start_date">Fecha de inicio</string>
-    <string name="import_suggestion">Sugerencia</string>
-    <string name="import_no_conflict">Sin conflictos — seguro añadir o sobrescribir</string>
-    <string name="import_conflict_count">Se encontraron %1$d conflicto(s). Considera importar como nuevo horario o añadir solo cursos sin conflicto.</string>
-    <string name="import_conflict_more">%1$d conflicto(s) más…</string>
-    <string name="import_append_only">Añadir sin conflictos</string>
-    <string name="import_as_new">Importar como nuevo horario</string>
-    <string name="import_overwrite">⚠ Sobrescribir actual (precaución)</string>
-    <string name="import_append_as_new">Fusionar en horario nuevo</string>
-    <string name="import_append_conflict">Añadir con conflictos</string>
-    <string name="import_confirm_title">Confirmar antes de importar</string>
-    <string name="import_confirm_body">Verifica la fecha de inicio y los horarios — de lo contrario la semana actual será incorrecta.</string>
-    <string name="import_week_start">La primera semana empieza el</string>
-    <string name="import_confirm">Confirmar importación</string>
-    <string name="import_all_conflict">Todos los cursos tienen conflictos — nada que añadir</string>
-    <string name="import_content_empty">El contenido está vacío</string>
-    <string name="import_select_table">Selecciona un horario primero</string>
-    <string name="read_failed">Error de lectura: %1$s</string>
-    <string name="cannot_read_file">No se puede leer el archivo</string>
-    <string name="import_preview_sub">Vista previa primero, luego importar</string>
-    <string name="format_wakeup_share">Texto compartido de WakeUp</string>
-    <string name="format_wakeup_desc">Comienza con 【来自WakeUp课程表】</string>
-    <string name="format_wakeup_json">WakeUp JSON</string>
-    <string name="format_json_desc">Archivo .json de exportación</string>
-    <string name="format_ics">Calendario ICS</string>
-    <string name="format_ics_desc">Exportable desde el registro escolar</string>
-    <string name="format_csv">Archivo CSV</string>
-    <string name="format_csv_desc">.csv con encabezados, separado por comas</string>
-    <string name="format_html">Tabla HTML</string>
-    <string name="format_html_desc">&lt;table&gt; formato, analizar por fila después de detectar encabezados</string>
-    <string name="format_plain">Texto plano</string>
-    <string name="format_plain_desc">Formato nativo de Sleepy, un curso por linea, separado por barras</string>
-
     <!-- Diálogos de detalle de formato: el texto debe coincidir con el comportamiento real de ScheduleParser -->
-    <string name="format_help_spec">Requisitos de reconocimiento</string>
-    <string name="format_help_example">Ejemplo</string>
-    <string name="format_help_close">Entendido</string>
-    <string name="format_detail_content_desc">Ver detalles del formato</string>
-    <string name="copy_prompt">Copiar prompt</string>
-    <string name="copied">Copiado</string>
-    <string name="ai_prompt_title">Deja que la IA convierta tu captura (formato nativo de Sleepy)</string>
-    <string name="ai_prompt_hint">Copia el prompt de abajo a cualquier IA (Doubao, ChatGPT…) junto con la captura de tu horario. La IA devolvera texto #sleepy-v1 - pegalo en el campo de arriba para importarlo.</string>
-    <string name="ai_prompt_text">Tarea: Convierte la captura del horario (o el contenido del archivo) que te envie a continuacion al formato de texto plano sleepy-v1. No escribas nada mas alla del resultado: sin explicaciones, sin saludos, sin bloques de codigo markdown. La primera linea debe ser #sleepy-v1.\n\n========== 1. Reglas de formato ==========\n\nLa primera linea es siempre: #sleepy-v1\n\nCada linea siguiente es un registro con columnas separadas por barra vertical |. Tres tipos de linea:\n\n1. Linea T (info de la tabla, opcional, maximo una):\nTnombre|fechaInicio|semanasTotales|clasesPorDia\n· La fecha tiene formato YYYY-MM-DD y debe ser el lunes de la semana 1\n· Rellena solo lo que el horario indique explicitamente; deja vacio lo demas. Puedes cortar tras la ultima columna con valor, p. ej. T|2026-03-02\n· Si el horario no menciona nada de esto, omite la linea T por completo. Prohibido inventar.\n\n2. Linea N (horas de cada clase, opcional, una por clase):\nNnumero|horaInicio|horaFin\n· Ej.: N3|10:00|10:45\n· Solo si el horario incluye una tabla de horas por clase. Formato 24h HH:mm; 8:00 se escribe 08:00\n· Sin tabla de horas -&gt; ninguna linea N\n\n3. Linea C (cursos, cuerpo principal, una por sesion):\nCnombre|dia|clases|semanas|profesor|aula|color|nota|hora|grupo\nSiempre 10 columnas / 9 barras. Las columnas vacias quedan vacias, pero las barras no se omiten. Reglas:\n  Col 1 nombre: copia el texto del horario literal, cualquier idioma\n  Col 2 dia: lunes..domingo = 1 2 3 4 5 6 7\n  Col 3 clases: clases 3-4 = 3-4; una sola clase 6 = 6\n  Col 4 semanas: ver \"2. Reglas de semanas\"\n  Col 5 profesor: copiar; vacio si no aparece\n  Col 6 aula: igual\n  Col 7 color: siempre vacia\n  Col 8 nota: solo si el horario indica una; si no, vacia\n  Col 9 hora: solo si el horario marca hora concreta para ese curso (p. ej. clase nocturna), HH:mm-HH:mm; si no, vacia\n  Col 10 grupo: siempre vacia\n\n========== 2. Reglas de semanas ==========\n\nExtrae el conjunto de semanas de cada curso y decide en orden:\n1. Rango continuo sin restriccion par/impar -&gt; S-E, p. ej. 1-16\n2. Todas impares dentro del rango -&gt; S-E单, p. ej. 1-15单\n3. Todas pares -&gt; S-E双, p. ej. 2-16双\n4. Semanas dispersas (p. ej. 1-8, 10, 12-16) -&gt; divide en tramos continuos maximos, una linea C por tramo, copiando las demas columnas:\n   · Tramo de semanas completas -&gt; S-E (p. ej. 1-8, 12-16)\n   · Semana aislada -&gt; S定 (p. ej. 10定)\n   · Tramo solo impar -&gt; S-E单; solo par -&gt; S-E双\n   · Tramo ni continuo ni par/impar puro -&gt; S-E定 (p. ej. semanas 6,7 -&gt; 6-7定)\n5. El horario no dice nada de semanas -&gt; 1-16\n\n========== 3. Reglas de extraccion ==========\n\n· Un curso que se repite varias veces por semana (distintos dias u horas) -&gt; varias lineas C, una por sesion; nunca fusionar\n· Lee el numero de clase del \"periodo X\" del horario; si solo hay horas, numera los tramos horarios 1, 2, 3... de arriba abajo y emite las lineas N correspondientes\n· Copia nombres, profesores y aulas literalmente; si un texto contiene | \ \" &amp;lt; { ( escapa cada uno con \ delante; salto de linea dentro de texto = los dos caracteres \n, tabulacion = \t\n· Lo que el horario no indique queda vacio. Prohibido inventar profesores, aulas, horas o semanas.\n\n========== 4. Autocomprobacion (mental, no imprimir) ==========\n\n· La primera linea es #sleepy-v1 y no hay texto sobrante\n· Cada linea C tiene exactamente 9 barras / 10 columnas\n· El dia es un digito 1-7; la hora lleva dos digitos (08:00, no 8:00)\n· La columna de semanas solo muestra S-E, S-E单, S-E双, S-E定 o S定\n· Los nombres coinciden con el horario; nada inventado\n\n========== 5. Ejemplo de salida ==========\n\n#sleepy-v1\nT|2026-03-02\nN1|08:00|08:45\nN2|08:55|09:40\nN3|10:00|10:45\nN4|10:55|11:40\nN5|14:00|14:45\nN6|14:55|15:40\nN7|16:00|16:45\nN8|16:55|17:40\nN9|19:00|19:45\nN10|19:55|20:40\nC高等数学A|1|1-2|1-16|张三|A101||||\nC高等数学A|3|3-4|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC数据结构|4|3-4|2-16双|王五|C302||||\nC体育|4|5-6|3-4定||||||\nCJava实战|3|9-10|1-16||机房|||19:00-21:30|\nC影视鉴赏|7|6|10-16双||||||\nC形势与政策|5|8-9|1-8||||||\nC形势与政策|5|8-9|12-16||||||</string>
-
-    <string name="format_wakeup_share_when">Migrar todo desde la app WakeUp. Copia el texto completo generado por "Compartir cursos" de WakeUp y pégalo tal cual.</string>
-    <string-array name="format_wakeup_share_spec">
-        <item>Copia todo el texto compartido, incluida la cabecera 【来自WakeUp课程表】</item>
-        <item>Debe contener un campo courseDetailJson (WakeUp lo añade automáticamente)</item>
-        <item>El nombre, la fecha de inicio y los colores por curso también se importan</item>
-    </string-array>
-    <string name="format_wakeup_share_example" formatted="false">【来自WakeUp课程表】\n课程分享:\n{"name":"Mi horario","startDate":"2026-09-07","courseDetailJson":"%5B%7B%22name%22…%5D"}</string>
-
-    <string name="format_wakeup_json_when">Contenido de un .json exportado por WakeUp, o JSON escrito por ti con esta estructura.</string>
-    <string-array name="format_wakeup_json_spec">
-        <item>Todo el texto debe ser JSON: empieza con { y contiene un array courses</item>
-        <item>Nivel superior: name (nombre), startDate (formato 2026-09-07)</item>
-        <item>Cada curso: name, teacher, position (aula), day (1-7, 1=lunes), startNode (primer periodo), step (cuántos periodos), startWeek/endWeek, type (0 semanal / 1 impar / 2 par)</item>
-        <item>Periodos 3-4 = startNode 3, step 2 (no 3 y 4)</item>
-        <item>color es opcional</item>
-    </string-array>
-    <string name="format_wakeup_json_example" formatted="false">{\n  "name": "Mi horario",\n  "startDate": "2026-09-07",\n  "courses": [\n    {"name":"Cálculo","teacher":"Juan","position":"A101","day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":0}\n  ]\n}</string>
-
-    <string name="format_ics_when">Archivos de calendario (.ics) exportados del sistema escolar o WakeUp. Selecciónalo con "Importar desde archivo", tócalo en tu gestor de archivos y elige Sleepy, o ábrelo en un editor de texto y pega todo.</string>
-    <string-array name="format_ics_spec">
-        <item>El texto debe empezar con BEGIN:VCALENDAR — si falta la primera línea no se reconoce</item>
-        <item>Cada clase es un evento: SUMMARY = curso, LOCATION = aula; el profesor se lee de la descripción</item>
-        <item>El día se deduce de la fecha del evento; semana 1 = el lunes de la semana del evento más antiguo</item>
-        <item>Los periodos se leen de la línea "第X - Y节" de la descripción, o se estiman por las horas</item>
-        <item>Los eventos bisemanales se fusionan automáticamente</item>
-    </string-array>
-    <string name="format_ics_example" formatted="false">BEGIN:VCALENDAR\nBEGIN:VEVENT\nSUMMARY:Cálculo\nLOCATION:A101\nDESCRIPTION:第1 - 2节\\nA101\\nJuan\nDTSTART:20260907T010000Z\nDTEND:20260907T015500Z\nRRULE:FREQ=WEEKLY;UNTIL=20261227T010000Z\nEND:VEVENT\nEND:VCALENDAR</string>
-
-    <string name="format_csv_when">Tablas exportadas del registro escolar, o Excel guardado como "CSV (delimitado por comas)".</string>
-    <string-array name="format_csv_spec">
-        <item>La primera línea es la cabecera. Columnas obligatorias: asignatura (curso/nombre), día (día/weekday), bloque, semana (semana/weeks)</item>
-        <item>Columnas opcionales: docente, aula, tipo, nota</item>
-        <item>Bloque, dos formas: una columna tipo 1-2, o dividida en "bloque inicio" + "bloque fin"</item>
-        <item>Día acepta 1-7, lunes, Monday</item>
-        <item>Semana admite 1-16, 2-5,7-9, 11,13,15 — los rangos múltiples se convierten en asignaturas separadas</item>
-        <item>Columnas opcionales "hora inicio" + "hora fin" (HH:mm): los horarios reales se aplican automáticamente al importar</item>
-        <item>Tipo acepta 0/1/2 o semanal/impar/par</item>
-    </string-array>
-    <string name="format_csv_example" formatted="false">curso,profesor,aula,día,periodo,semanas,tipo\nCálculo,Juan,A101,lunes,1-2,1-16,semanal\nInglés,María,B202,3,3-4,1-16,impar</string>
-
-    <string name="format_html_when">Páginas de horario guardadas como .html, código fuente de tablas copiado, o toca el archivo .html en tu gestor de archivos y elige Sleepy.</string>
-    <string-array name="format_html_spec">
-        <item>El texto debe empezar con una etiqueta como &lt;!DOCTYPE, &lt;html o &lt;table — cualquier texto normal antes rompe la detección, bórralo primero</item>
-        <item>La página debe contener una tabla cuya cabecera incluya la asignatura</item>
-        <item>Nombres de columnas iguales que CSV: asignatura, día, bloque, semana obligatorios; docente, aula, tipo, nota opcionales</item>
-        <item>Igual que CSV: columnas opcionales "hora inicio" + "hora fin", aplicadas automáticamente al importar</item>
-        <item>Las rejillas con columnas lunes-domingo no se pueden analizar; hace falta una tabla larga con una asignatura por fila</item>
-    </string-array>
-    <string name="format_html_example" formatted="false">&lt;table&gt;\n&lt;tr&gt;&lt;td&gt;curso&lt;/td&gt;&lt;td&gt;profesor&lt;/td&gt;&lt;td&gt;aula&lt;/td&gt;&lt;td&gt;día&lt;/td&gt;&lt;td&gt;periodo&lt;/td&gt;&lt;td&gt;semanas&lt;/td&gt;&lt;/tr&gt;\n&lt;tr&gt;&lt;td&gt;Cálculo&lt;/td&gt;&lt;td&gt;Juan&lt;/td&gt;&lt;td&gt;A101&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1-2&lt;/td&gt;&lt;td&gt;1-16&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;</string>
-
-    <string name="format_plain_when">Formato nativo de Sleepy (sleepy-v1): compacto, ordenado y tolerante. Ideal para escribir a mano y mejor aun para que una IA convierta una captura (ver el prompt de abajo). El formato antiguo con tabulaciones sigue importandose.</string>
-    <string-array name="format_plain_spec">
-        <item>La primera linea es siempre #sleepy-v1</item>
-        <item>Linea de curso: Cnombre|dia|clases|semanas|profesor|aula|color|nota|hora|grupo - exactamente 10 columnas / 9 barras</item>
-        <item>Las columnas vacias quedan vacias, pero las barras no se omiten</item>
-        <item>Dia 1-7 (lunes=1); clases como rango 1-2 o una sola 6</item>
-        <item>Cinco formas de semanas: 1-16 (todas), 1-15单 (impares), 2-16双 (pares), 3-4定 (rango), 10定 (una semana)</item>
-        <item>Color vacio = automatico; hora solo para cursos con horario fijo, HH:mm-HH:mm</item>
-        <item>Escapa | \ \" &lt; { ( en el texto con una barra invertida delante</item>
-        <item>Linea de horario (opcional): N&lt;numero&gt;|inicio|fin, p. ej. N3|10:00|10:45; o una linea Nd si coincide con el horario predefinido</item>
-        <item>Linea de tabla (opcional): Tnombre|fechaInicio|semanasTotales|clasesPorDia; la fecha debe ser el lunes de la semana 1</item>
-        <item>Las lineas no reconocidas se listan en la vista previa, nunca se descartan en silencio</item>
-    </string-array>
-    <string name="format_plain_example" formatted="false">#sleepy-v1\nTMi horario|2026-03-02|20|12\nNd\nC高等数学A|1|1-2|1-16|张三|A101||||\nC大学英语|2|3-4|1-15单|李四|C301||||\nC体育|4|5-6|3-4定||||||\nC影视鉴赏|7|6|10-16双||||||</string>
-    <string name="import_dropped_title">%1$d líneas no se pudieron analizar</string>
-    <string name="import_dropped_hint">Estas líneas se omitieron. Revisa su formato y vuelve a importar:</string>
-    <string name="import_warnings_title">Avisos</string>
     <string name="export_native_title">Nativo de Sleepy</string>
     <string name="export_native_subtitle">Copia completa · tamaño mínimo · ideal para migrar</string>
-    <string name="import_start_date_required">Por favor ingrese la fecha de inicio del semestre</string>
     <string name="start_date_format">El formato de fecha debe ser YYYY-MM-DD</string>
     <string name="slot_time_required">El tiempo del período %1$d es requerido</string>
     <string name="slot_time_invalid">Período %1$d tiempo inválido (el inicio debe ser anterior al final)</string>
@@ -341,7 +214,7 @@
 
     <!-- Widget / Common UI -->
     <string name="widget_create_schedule">Por favor cree un horario primero</string>
-    <string name="widget_open_sleepy">Abre Sleepy para agregar</string>
+    <string name="widget_open_sleepy">Abre 厦大课表 para agregar</string>
     <string name="more_sections">%1$d más...</string>
     <string name="tomorrow">Mañana</string>
     <string name="n_course_periods">%1$d períodos de curso</string>
@@ -441,7 +314,7 @@
     <string name="update_retry">Reintentar</string>
     <string name="update_download_failed">Error de descarga: %1$s</string>
     <string name="about_author">Autor</string>
-    <string name="about_author_name">Lingion</string>
+    <string name="about_author_name">ArrogHie</string>
     <string name="about_license_body">Los adaptadores de importación referencian implementaciones de código abierto: WakeUp Schedule (YZune, Apache-2.0) por la estructura de datos JwCourse; WakeupSchedule_BUPT (dIT8Zv, Apache-2.0) por el diseño de parsers y directorio de escuelas; WakeupSchedule_Kotlin (YZune, Apache-2.0) por el análisis de mapa de bits semanal. El flujo del API de horarios de XMU (Wisedu gsapp/wdkbapp) fue investigado y verificado por este proyecto (scripts en schedule/).</string>
     <string name="about_license_detail">Licencia y agradecimientos</string>
     <string name="license_page_title">Licencia y agradecimientos</string>
@@ -456,12 +329,12 @@
     <string name="about_update_available">Versión %1$s disponible — toca para ver</string>
     <string name="about_license_title">Declaración de código abierto</string>
     <string name="about_source">Código fuente</string>
-    <string name="about_source_url">github.com/lingion/sleepy</string>
+    <string name="about_source_url">github.com/ArrogHie/XMUTimeTabel</string>
     <string name="about_feedback">Comentarios y sugerencias</string>
     <string name="about_feedback_detail">Reporta errores o comparte ideas mediante un Issue de GitHub, o contacta al autor por correo</string>
     <string name="about_feedback_github">Issue de GitHub</string>
     <string name="about_feedback_email">Correo</string>
-    <string name="about_feedback_email_subject">[Sleepy Comentario]</string>
+    <string name="about_feedback_email_subject">[Comentario XMU Timetable]</string>
     <string name="about_feedback_email_body">Por favor describe el problema o la idea:\n\n— Entorno —\n(opcional)\n</string>
     <string name="about_feedback_no_mail_app">No se encontró ninguna app de correo. Usa un Issue de GitHub.</string>
     <string name="about_title">Acerca de</string>
@@ -489,7 +362,6 @@
     <string name="export_share_title">Compartir como texto</string>
     <string name="export_start_date">Inicio del semestre %1$s</string>
     <string name="export_title">Exportar horario</string>
-    <string name="import_new_table_hint">(se creará como un horario nuevo)</string>
     <string name="jw_config_confirm">Confirmar importación</string>
     <string name="jw_config_title">Confirmar antes de importar</string>
     <string name="jw_table_name_label">Nombre del horario</string>

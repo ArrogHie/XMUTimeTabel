@@ -18,9 +18,9 @@ import kotlin.coroutines.coroutineContext
 /** 拉 GitHub/镜像 release 信息、下载 APK、清理旧 APK。不含 UI 状态。 */
 object UpdateManager {
     private const val TAG = "UpdateManager"
-    private const val GITHUB_API = "https://api.github.com/repos/lingion/sleepy/releases/latest"
-    private const val MIRROR_RELEASE = "https://gh.qdp.qzz.io/lingion/sleepy/releases/latest"
-    private const val MIRROR_PREFIX = "https://gh.qdp.qzz.io/lingion/sleepy/releases/download/"
+    private const val GITHUB_API = "https://api.github.com/repos/ArrogHie/XMUTimeTabel/releases/latest"
+    private const val MIRROR_RELEASE = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/latest"
+    private const val MIRROR_PREFIX = "https://gh.qdp.qzz.io/ArrogHie/XMUTimeTabel/releases/download/"
 
     private fun currentAbiAsset(): String = when {
         Build.SUPPORTED_ABIS.any { it == "arm64-v8a" } -> "app-arm64-v8a-release.apk"
@@ -42,7 +42,7 @@ object UpdateManager {
         }
         // 镜像回退:正则取 tag,changelog 从页面 markdown-body 块提取
         val page = readText(MIRROR_RELEASE)
-        val tag = Regex("/lingion/sleepy/releases/tag/(v[0-9A-Za-z.+_-]+)").find(page)
+        val tag = Regex("/ArrogHie/XMUTimeTabel/releases/tag/(v[0-9A-Za-z.+_-]+)").find(page)
             ?.groupValues?.get(1)
             ?: throw IllegalStateException(context.getString(com.lingion.sleepy.R.string.error_no_version_found))
         val version = tag.removePrefix("v")

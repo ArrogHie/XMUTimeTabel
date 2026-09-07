@@ -84,12 +84,6 @@ class MainActivity : ComponentActivity() {
                 putExtra(EXTRA_COURSE_ID, courseId)
             }
         }
-        val pendingImportTextState: androidx.compose.runtime.MutableState<String?> =
-            androidx.compose.runtime.mutableStateOf(null)
-        @Volatile var incomingImportText: String? = null
-        var pendingImportText: String?
-            get() = pendingImportTextState.value
-            set(v) { pendingImportTextState.value = v }
     }
 
     private val editingCourseFromIntent = MutableStateFlow<CourseEntity?>(null)
@@ -130,9 +124,7 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     deepLinkCourse = deepLinkCourse,
-                    onDeepLinkConsumed = { editingCourseFromIntent.value = null },
-                    pendingImportText = pendingImportText,
-                    consumePendingImportText = { MainActivity.pendingImportText = null }
+                    onDeepLinkConsumed = { editingCourseFromIntent.value = null }
                 )
             }
         }
@@ -150,14 +142,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleDeepLinkIntent(intent: Intent?) {
-        val importText = intent?.getStringExtra(
-            com.lingion.sleepy.ui.screen.imports.ImportReceiverActivity.EXTRA_IMPORT_TEXT
-        ) ?: com.lingion.sleepy.MainActivity.incomingImportText
-        if (!importText.isNullOrBlank()) {
-            com.lingion.sleepy.MainActivity.pendingImportText = importText
-            com.lingion.sleepy.MainActivity.incomingImportText = null
-            intent?.removeExtra(com.lingion.sleepy.ui.screen.imports.ImportReceiverActivity.EXTRA_IMPORT_TEXT)
-        }
         val courseId = intent?.getLongExtra(EXTRA_COURSE_ID, -1L) ?: -1L
         if (courseId <= 0) return
         if (editingCourseFromIntent.value?.id == courseId) return
@@ -194,9 +178,7 @@ private fun AppRoot(
     themeMode: String = AppPrefs.THEME_MODE_SYSTEM,
     onThemeModeChange: (String) -> Unit = {},
     deepLinkCourse: CourseEntity? = null,
-    onDeepLinkConsumed: () -> Unit = {},
-    pendingImportText: String? = null,
-    consumePendingImportText: () -> Unit = {}
+    onDeepLinkConsumed: () -> Unit = {}
 ) {
     var currentTab by remember { mutableStateOf(Tab.Schedule) }
     var editingCourse by remember { mutableStateOf<CourseEntity?>(null) }
@@ -225,7 +207,6 @@ private fun AppRoot(
     var editTableId by rememberSaveable { mutableStateOf<Long?>(null) }
     var pendingNewTableId by rememberSaveable { mutableStateOf<Long?>(null) }
     var previousDefaultTableId by rememberSaveable { mutableStateOf<Long?>(null) }
-    var autoImportTriggered by remember { mutableStateOf(false) }
     // 底栏形态(贴底/悬浮 Dock): AppRoot 持真值 — 设置页改, 底栏即时切
     val context = LocalContext.current
     var navDock by remember { mutableStateOf(AppPrefs.isNavDock(context)) }
@@ -241,9 +222,6 @@ private fun AppRoot(
             generalSettingsRequest.value = 0
             if (topOverlay() != OverlayScreen.General) pushOverlay(OverlayScreen.General)
         }
-    }
-    androidx.compose.runtime.LaunchedEffect(pendingImportText) {
-        if (!autoImportTriggered && pendingImportText != null) { autoImportTriggered = true; currentTab = Tab.Manage }
     }
 
     // 返回键: 只处理"有 overlay 在栈上"或"编辑课程"两种拦截; 主页面留给双击退出
@@ -443,7 +421,7 @@ private fun MainTabs(
         Tab.Today -> TodayScreen(onEditCourse = { course -> editingCourse(course) })
         Tab.Manage -> {
             val ctx = LocalContext.current
-            ManagementPage(autoShowImportSheet = MainActivity.pendingImportText != null, onJwImportRequested = { ctx.startActivity(Intent(ctx, com.lingion.sleepy.ui.screen.imports.JwImportActivity::class.java)) }, onCreateNewTableRequested = onCreateNewTable, onManualAdd = { pushOverlay(OverlayScreen.AddCourse) }, onEditCurrentTable = { pushOverlay(OverlayScreen.EditTable) }, onImported = { setCurrentTab(Tab.Schedule) })
+            ManagementPage(onJwImportRequested = { ctx.startActivity(Intent(ctx, com.lingion.sleepy.ui.screen.imports.JwImportActivity::class.java)) }, onCreateNewTableRequested = onCreateNewTable, onManualAdd = { pushOverlay(OverlayScreen.AddCourse) }, onEditCurrentTable = { pushOverlay(OverlayScreen.EditTable) })
         }
         Tab.Mine -> MineScreen(
             onOpenAllTables = { pushOverlay(OverlayScreen.AllTables) },

@@ -18,6 +18,7 @@ private const val FORCE_FLAG = "SLEEPY_FORCE_UPDATE=true"
 /** 镜像下载前缀 — 目录结构与 github.com 1:1, 直接字符串替换即可改写。 */
 private const val MIRROR_HOST = "https://gh.qdp.qzz.io"
 private const val GITHUB_DOWNLOAD_HOST = "https://github.com"
+private const val RELEASE_DIR = "/ArrogHie/XMUTimeTabel/releases/download/"
 
 /**
  * 解析 GitHub releases/latest 的 JSON 为 [UpdateInfo](纯函数,无 IO)。
@@ -48,13 +49,13 @@ fun parseReleaseJson(json: String, currentVersion: String, abi: String): UpdateI
 
 /** github.com 下载地址 → 镜像地址; 非下载路径原样返回。 */
 private fun String.toMirrorDownloadUrl(): String =
-    if (startsWith("$GITHUB_DOWNLOAD_HOST/lingion/sleepy/releases/download/"))
+    if (startsWith("$GITHUB_DOWNLOAD_HOST$RELEASE_DIR"))
         replacePrefix(GITHUB_DOWNLOAD_HOST, MIRROR_HOST)
     else this
 
 /** 镜像下载地址 → github.com 直连(下载失败的回退); 其余原样返回。 */
 fun toDirectGithubUrl(url: String): String = when {
-    url.startsWith("$MIRROR_HOST/lingion/sleepy/releases/download/") ->
+    url.startsWith("$MIRROR_HOST$RELEASE_DIR") ->
         url.replacePrefix(MIRROR_HOST, GITHUB_DOWNLOAD_HOST)
     else -> url
 }

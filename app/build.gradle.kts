@@ -17,8 +17,8 @@ android {
         applicationId = "com.arroghie.xmutimetable"
         minSdk = 26
         targetSdk = 36
-        versionCode = 52
-        versionName = "1.0.51"
+        versionCode = 100
+        versionName = "1.0"
         vectorDrawables { useSupportLibrary = true }
         androidResources {
             localeFilters += listOf("zh-rCN", "zh-rTW", "en", "ja", "es")
