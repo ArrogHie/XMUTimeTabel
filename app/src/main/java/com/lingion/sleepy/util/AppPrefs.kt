@@ -88,6 +88,7 @@ object AppPrefs {
     const val KEY_WEEK_TWO_COLUMN_MODE = "week_two_column_mode" // "days"=按天对半分 / "balance"=按课程数动态平衡, issue#8
     const val KEY_WEEK_HIDE_EMPTY_DAYS = "week_hide_empty_days" // bool default false — 周视图隐藏无课日(仅两栏下生效, issue#8)
     const val KEY_UPDATE_CHECK_ENABLED = "update_check_enabled" // bool default true — 启动检查 GitHub releases latest
+    const val KEY_IGNORED_UPDATE_VERSION = "ignored_update_version" // string — 用户忽略的最新版本
     const val KEY_HIGH_REFRESH = "high_refresh_rate" // bool default true — 窗口 preferredDisplayModeId 钉屏幕最高刷率(流畅优先); 关=跟随系统省电调度
     const val KEY_NAV_DOCK = "nav_dock" // bool default false — 底栏形态: false=贴底(通栏), true=悬浮药丸(Dock, 底边留距)
     const val KEY_THEME_MODE = "theme_mode"  // light/dark/system
@@ -740,5 +741,15 @@ object AppPrefs {
 
     fun setUpdateCheckEnabled(ctx: Context, v: Boolean) {
         sp(ctx).edit().putBoolean(KEY_UPDATE_CHECK_ENABLED, v).apply()
+    }
+
+    /** 只忽略指定版本; 新版本号变化后会重新提示。 */
+    fun isUpdateVersionIgnored(ctx: Context, version: String): Boolean =
+        version.isNotBlank() && sp(ctx).getString(KEY_IGNORED_UPDATE_VERSION, "") == version
+
+    fun setIgnoredUpdateVersion(ctx: Context, version: String) {
+        if (version.isNotBlank()) {
+            sp(ctx).edit().putString(KEY_IGNORED_UPDATE_VERSION, version).apply()
+        }
     }
 }

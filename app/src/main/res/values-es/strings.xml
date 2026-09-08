@@ -308,6 +308,10 @@
     <string name="about_update_latest">Ya tienes la última versión v%1$s</string>
     <string name="update_found_title">Nueva versión v%1$s disponible</string>
     <string name="update_download">Descargar</string>
+    <string name="update_action">Actualizar</string>
+    <string name="update_ignore">Ignorar esta actualización</string>
+    <string name="update_remind_later">Recordarme más tarde</string>
+    <string name="update_changelog_unavailable">Las notas de la versión no están disponibles temporalmente. Inténtalo más tarde.</string>
     <string name="update_cancel">Cancelar</string>
     <string name="update_downloading">Descargando %1$d%%</string>
     <string name="update_installing">Descarga completa, abriendo instalador</string>
@@ -325,7 +329,7 @@
     <string name="license_foundational_section">Proyectos transversales</string>
     <string name="license_perschool_section">Agradecimientos por universidad</string>
     <string name="about_update_check">Buscar actualizaciones automáticamente</string>
-    <string name="about_update_check_detail">Comprueba GitHub Releases al iniciar; aparecerá un aviso en la página Acerca cuando haya una versión nueva</string>
+    <string name="about_update_check_detail">Comprueba GitHub al iniciar, recurre al espejo si agota el tiempo y muestra las notas en un diálogo</string>
     <string name="about_update_available">Versión %1$s disponible — toca para ver</string>
     <string name="about_license_title">Declaración de código abierto</string>
     <string name="about_source">Código fuente</string>

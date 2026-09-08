@@ -308,6 +308,10 @@
     <string name="about_update_latest">目前已是最新版本 v%1$s</string>
     <string name="update_found_title">發現新版本 v%1$s</string>
     <string name="update_download">下載</string>
+    <string name="update_action">更新</string>
+    <string name="update_ignore">忽略本次更新</string>
+    <string name="update_remind_later">稍後提醒</string>
+    <string name="update_changelog_unavailable">暫時無法取得更新內容，請稍後再試。</string>
     <string name="update_cancel">取消</string>
     <string name="update_downloading">下載中 %1$d%%</string>
     <string name="update_installing">下載完成，正在開啟安裝器</string>
@@ -325,7 +329,7 @@
     <string name="license_foundational_section">跨校普適項目</string>
     <string name="license_perschool_section">按學校致謝</string>
     <string name="about_update_check">自動檢查更新</string>
-    <string name="about_update_check_detail">啟動時自動檢查 GitHub Releases, 發現新版本會在「關於」頁頂部提示</string>
+    <string name="about_update_check_detail">啟動時優先檢查 GitHub，無回應時回退鏡像，並以彈窗顯示更新內容</string>
     <string name="about_update_available">新版 %1$s 可用,點此查看</string>
     <string name="about_license_title">開源聲明</string>
     <string name="about_source">開源網址</string>

@@ -57,6 +57,7 @@ import com.lingion.sleepy.ui.screen.mine.ExportScreen
 import com.lingion.sleepy.ui.screen.mine.ReminderScreen
 import com.lingion.sleepy.ui.screen.mine.AboutScreen
 import com.lingion.sleepy.ui.screen.mine.LicenseScreen
+import com.lingion.sleepy.ui.screen.mine.StartupUpdatePrompt
 import com.lingion.sleepy.ui.screen.schedule.ScheduleScreen
 import com.lingion.sleepy.ui.screen.today.TodayScreen
 import com.lingion.sleepy.ui.theme.SleepyTheme
@@ -112,20 +113,23 @@ class MainActivity : ComponentActivity() {
             val deepLinkCourse by editingCourseFlow.collectAsState()
             val themeKey by AppPrefs.themeKeyFlow(this@MainActivity).collectAsState(initial = AppPrefs.getThemeKey(this@MainActivity))
             SleepyThemeProvider(darkTheme = dark, themeKey = themeKey) {
-                AppRoot(
-                    themeMode = themeMode,
-                    onThemeModeChange = { mode ->
-                        AppPrefs.setThemeMode(this@MainActivity, mode)
-                        themeMode = mode
-                        applyTheme()
-                        // 手动切主题时联动刷新 widget(广播 APPWIDGET_UPDATE)
-                        lifecycleScope.launch {
-                            com.lingion.sleepy.widget.WidgetUpdater.notifyDataChanged(this@MainActivity)
-                        }
-                    },
-                    deepLinkCourse = deepLinkCourse,
-                    onDeepLinkConsumed = { editingCourseFromIntent.value = null }
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AppRoot(
+                        themeMode = themeMode,
+                        onThemeModeChange = { mode ->
+                            AppPrefs.setThemeMode(this@MainActivity, mode)
+                            themeMode = mode
+                            applyTheme()
+                            // 手动切主题时联动刷新 widget(广播 APPWIDGET_UPDATE)
+                            lifecycleScope.launch {
+                                com.lingion.sleepy.widget.WidgetUpdater.notifyDataChanged(this@MainActivity)
+                            }
+                        },
+                        deepLinkCourse = deepLinkCourse,
+                        onDeepLinkConsumed = { editingCourseFromIntent.value = null }
+                    )
+                    StartupUpdatePrompt()
+                }
             }
         }
     }

@@ -21,11 +21,15 @@ import kotlin.coroutines.coroutineContext
  * 网络策略(2026-09-07 实测调整): 单一镜像不可靠(gh.qdp.qzz.io TLS 失败 /
  * relv DNS 不存在 / gitclone 网关错误), 改为「候选地址列表逐个尝试」:
  *   - 信息检查: GitHub API 直连 → gh-proxy 代理的同一 API JSON
- *   - APK 下载: gh-proxy 加速 → GitHub 直连
+ *   - APK 下载: GitHub 直连 → gh-proxy 镜像兜底
  * 某个候选失败(超时/断连/HTTP 错)立即换下一个, 全挂才报错。
  */
 object UpdateManager {
     private const val TAG = "UpdateManager"
+    private const val INFO_CONNECT_TIMEOUT_MS = 5_000
+    private const val INFO_READ_TIMEOUT_MS = 10_000
+    private const val DOWNLOAD_CONNECT_TIMEOUT_MS = 15_000
+    private const val DOWNLOAD_READ_TIMEOUT_MS = 60_000
 
     private fun currentAbiAsset(): String = when {
         Build.SUPPORTED_ABIS.any { it == "arm64-v8a" } -> "app-arm64-v8a-release.apk"
@@ -47,9 +51,31 @@ object UpdateManager {
         var lastError: Throwable? = null
         for (url in candidates) {
             try {
-                val json = readText(url)
-                val info = parseReleaseJson(json, BuildConfig.VERSION_NAME, abi)
+                val json = readText(
+                    url,
+                    connectTimeoutMs = INFO_CONNECT_TIMEOUT_MS,
+                    readTimeoutMs = INFO_READ_TIMEOUT_MS
+                )
+                var info = parseReleaseJson(json, BuildConfig.VERSION_NAME, abi)
                 if (info.version.isBlank()) throw IllegalStateException("empty version")
+                if (info.changelog.isBlank()) {
+                    // 某些镜像的 API 转发会裁掉 body, 但 release 页面仍保留完整正文。
+                    // 这里继续走镜像页面, 不重新等待 GitHub 直连, 以保证回退链路闭合。
+                    val pageUrl = updateMirrorReleasePageUrl(info.version)
+                    runCatching {
+                        parseMirrorPage(
+                            readText(
+                                pageUrl,
+                                connectTimeoutMs = INFO_CONNECT_TIMEOUT_MS,
+                                readTimeoutMs = INFO_READ_TIMEOUT_MS
+                            )
+                        )
+                    }.onSuccess { notes ->
+                        if (notes.isNotBlank()) info = info.copy(changelog = notes)
+                    }.onFailure { e ->
+                        Log.w(TAG, "mirror release notes unavailable: $pageUrl", e)
+                    }
+                }
                 return@withContext info
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -64,7 +90,7 @@ object UpdateManager {
 
     /**
      * 下载 APK 到 cacheDir,带进度回调(0-100)。
-     * 候选列表: 代理加速 → GitHub 直连。协程 cancel 时删半截文件。
+     * 候选列表: GitHub 直连 → 镜像代理。协程 cancel 时删半截文件。
      */
     suspend fun downloadApk(
         context: Context, info: UpdateInfo, onProgress: (Int) -> Unit
@@ -93,7 +119,11 @@ object UpdateManager {
     private suspend fun downloadOnce(
         url: String, target: File, onProgress: (Int) -> Unit
     ) {
-        val conn = request(url)
+        val conn = request(
+            url,
+            connectTimeoutMs = DOWNLOAD_CONNECT_TIMEOUT_MS,
+            readTimeoutMs = DOWNLOAD_READ_TIMEOUT_MS
+        )
         val total = conn.contentLengthLong.coerceAtLeast(1L)
         try {
             conn.inputStream.use { input ->
@@ -133,16 +163,24 @@ object UpdateManager {
         context.startActivity(intent)
     }
 
-    private fun readText(url: String): String {
-        val conn = request(url)
+    private fun readText(
+        url: String,
+        connectTimeoutMs: Int,
+        readTimeoutMs: Int
+    ): String {
+        val conn = request(url, connectTimeoutMs, readTimeoutMs)
         return try { conn.inputStream.bufferedReader().use { it.readText() } }
         finally { conn.disconnect() }
     }
 
-    private fun request(url: String): HttpURLConnection {
+    private fun request(
+        url: String,
+        connectTimeoutMs: Int,
+        readTimeoutMs: Int
+    ): HttpURLConnection {
         val conn = URL(url).openConnection() as HttpURLConnection
-        conn.connectTimeout = 15_000
-        conn.readTimeout = 60_000
+        conn.connectTimeout = connectTimeoutMs
+        conn.readTimeout = readTimeoutMs
         conn.instanceFollowRedirects = true
         conn.setRequestProperty("User-Agent", "Sleepy/${BuildConfig.VERSION_NAME}")
         conn.setRequestProperty("Accept", "application/json,text/html,*/*")

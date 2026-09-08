@@ -39,11 +39,18 @@ fun updateInfoUrlCandidates(): List<String> =
     listOf(apiLatest(), "$PROXY_PREFIX${apiLatest()}")
 
 /**
- * APK 下载候选地址(调用方逐个尝试): 代理优先(加速), GitHub 直连兜底。
+ * 镜像 API 没有返回 release body 时的最后一道日志兜底。
+ * 这个页面仍然是 GitHub release 页, 但通过同一个镜像访问, 不要求 github.com 直连。
+ */
+fun updateMirrorReleasePageUrl(version: String): String =
+    "$PROXY_PREFIX$GITHUB/$REPO_FULL/releases/tag/v${version.removePrefix("v")}"
+
+/**
+ * APK 下载候选地址(调用方逐个尝试): GitHub 直连优先, 镜像代理兜底。
  * 仅当 [directUrl] 是 github release 下载地址时生成代理候选; 其它地址原样返回。
  */
 fun updateAssetUrlCandidates(directUrl: String): List<String> = when {
-    directUrl.startsWith(releaseDlPrefix()) -> listOf("$PROXY_PREFIX$directUrl", directUrl)
+    directUrl.startsWith(releaseDlPrefix()) -> listOf(directUrl, "$PROXY_PREFIX$directUrl")
     else -> listOf(directUrl)
 }
 
@@ -59,7 +66,7 @@ fun updateAssetUrlCandidates(directUrl: String): List<String> = when {
 fun parseReleaseJson(json: String, currentVersion: String, abi: String): UpdateInfo {
     val release = org.json.JSONObject(json)
     val version = release.optString("tag_name").removePrefix("v")
-    val body = release.optString("body")
+    val body = release.optString("body", "")
     val assetName = "app-$abi-release.apk"
     val downloadUrl = release.optJSONArray("assets")?.let { assets ->
         (0 until assets.length()).map { assets.getJSONObject(it) }
@@ -71,3 +78,68 @@ fun parseReleaseJson(json: String, currentVersion: String, abi: String): UpdateI
         VersionUtils.compare(version.ifBlank { "0" }, currentVersion) > 0
     return UpdateInfo(version, body, downloadUrl, isUpdateAvailable)
 }
+
+/**
+ * 从镜像返回的 GitHub release HTML 中提取正文。
+ *
+ * 大多数镜像会原样转发 releases/latest API 的 body；少数镜像只转发版本/资产字段，
+ * 这时再读取 release 页面，避免用户只能看到“更新日志在 GitHub”。解析只依赖
+ * GitHub release 页面稳定的 markdown-body 容器，失败时返回空串，由 UI 显示兜底文案。
+ */
+fun parseMirrorPage(pageHtml: String): String {
+    val open = Regex("""<div\b[^>]*class="[^"]*markdown-body[^"]*"[^>]*>""")
+        .find(pageHtml) ?: return ""
+    val contentStart = open.range.last + 1
+    val token = Regex("""</?div\b[^>]*>""", RegexOption.IGNORE_CASE)
+    var depth = 1
+    var contentEnd = pageHtml.length
+    for (match in token.findAll(pageHtml, contentStart)) {
+        if (match.value.startsWith("</", ignoreCase = true)) {
+            depth--
+            if (depth == 0) {
+                contentEnd = match.range.first
+                break
+            }
+        } else {
+            depth++
+        }
+    }
+    if (depth != 0) return ""
+    return htmlToMarkdown(pageHtml.substring(contentStart, contentEnd)).trim()
+}
+
+/** 将 release 页面正文中常见的 HTML 标签转换为 Markdown。 */
+private fun htmlToMarkdown(html: String): String {
+    var value = html
+        .replace(Regex("""<script\b[^>]*>.*?</script>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)), "")
+        .replace(Regex("""<style\b[^>]*>.*?</style>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)), "")
+    value = Regex("""<h([1-6])[^>]*>(.*?)</h\1>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match ->
+            "\n\n${"#".repeat(match.groupValues[1].toInt())} ${match.groupValues[2].trim()}\n\n"
+        }
+    value = Regex("""<li[^>]*>(.*?)</li>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "\n- ${match.groupValues[1].trim()}" }
+    value = Regex("""</?[uo]l[^>]*>""", RegexOption.IGNORE_CASE).replace(value, "\n")
+    value = Regex("""<p[^>]*>(.*?)</p>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "\n\n${match.groupValues[1].trim()}\n\n" }
+    value = Regex("""<(strong|b)[^>]*>(.*?)</\1>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "**${match.groupValues[2].trim()}**" }
+    value = Regex("""<(em|i)[^>]*>(.*?)</\1>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "*${match.groupValues[2].trim()}*" }
+    value = Regex("""<code[^>]*>(.*?)</code>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "`${match.groupValues[1].trim()}`" }
+    value = Regex("""<a\b[^>]*href="([^"]*)"[^>]*>(.*?)</a>""", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
+        .replace(value) { match -> "[${match.groupValues[2].trim()}](${match.groupValues[1]})" }
+    value = Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE).replace(value, "\n")
+    value = Regex("""<[^>]+>""").replace(value, "")
+    return decodeHtmlEntities(value).replace(Regex("""\n{3,}"""), "\n\n").trim()
+}
+
+private fun decodeHtmlEntities(value: String): String = value
+    .replace("&amp;", "&")
+    .replace("&lt;", "<")
+    .replace("&gt;", ">")
+    .replace("&quot;", "\"")
+    .replace("&#39;", "'")
+    .replace("&apos;", "'")
+    .replace("&nbsp;", " ")

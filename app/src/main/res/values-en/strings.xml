@@ -309,6 +309,10 @@
     <string name="about_update_latest">You\'re on the latest version v%1$s</string>
     <string name="update_found_title">New version v%1$s available</string>
     <string name="update_download">Download</string>
+    <string name="update_action">Update</string>
+    <string name="update_ignore">Ignore this update</string>
+    <string name="update_remind_later">Remind me later</string>
+    <string name="update_changelog_unavailable">Release notes are temporarily unavailable. Please try again later.</string>
     <string name="update_cancel">Cancel</string>
     <string name="update_downloading">Downloading %1$d%%</string>
     <string name="update_installing">Download complete, opening installer</string>
@@ -326,7 +330,7 @@
     <string name="license_foundational_section">Cross-university foundational projects</string>
     <string name="license_perschool_section">Per-school acknowledgements</string>
     <string name="about_update_check">Check for updates automatically</string>
-    <string name="about_update_check_detail">Checks GitHub Releases on app start; a banner appears on the About page when a new version is found</string>
+    <string name="about_update_check_detail">Checks GitHub first on startup, falls back to the mirror if it times out, and shows the release notes in a dialog</string>
     <string name="about_update_available">Version %1$s is available — tap to view</string>
     <string name="about_license_title">Open Source License</string>
     <string name="about_source">Source Code</string>

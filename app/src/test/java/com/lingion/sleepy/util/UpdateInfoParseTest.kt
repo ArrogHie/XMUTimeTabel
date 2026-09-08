@@ -59,10 +59,10 @@ class UpdateInfoParseTest {
     }
 
     @Test
-    fun github_download_asset_candidates_are_proxy_then_direct() {
+    fun github_download_asset_candidates_are_direct_then_proxy() {
         val direct = "https://github.com/ArrogHie/XMUTimeTabel/releases/download/v1.0.47/app-arm64-v8a-release.apk"
         val urls = updateAssetUrlCandidates(direct)
-        assertEquals(listOf("https://gh-proxy.com/$direct", direct), urls)
+        assertEquals(listOf(direct, "https://gh-proxy.com/$direct"), urls)
     }
 
     @Test
@@ -88,5 +88,32 @@ class UpdateInfoParseTest {
     fun blank_download_url_yields_single_direct_candidate() {
         // 找不到对应 ABI asset → downloadUrl 空 → 单候选空串(下载层直接报错, 不产生幽灵代理 URL)
         assertEquals(listOf(""), updateAssetUrlCandidates(""))
+    }
+
+    @Test
+    fun mirror_release_page_provides_changelog_when_api_body_is_missing() {
+        val page = """
+            <div class="markdown-body px-3">
+              <h2>v1.1.3</h2>
+              <p>修复 &amp; 优化</p>
+              <ul><li>课程表刷新</li><li>更新提示</li></ul>
+              <div class="nested"><p>附加说明</p></div>
+            </div>
+        """.trimIndent()
+
+        val notes = parseMirrorPage(page)
+
+        assertTrue(notes.contains("## v1.1.3"))
+        assertTrue(notes.contains("修复 & 优化"))
+        assertTrue(notes.contains("- 课程表刷新"))
+        assertTrue(notes.contains("附加说明"))
+    }
+
+    @Test
+    fun mirror_release_page_url_keeps_version_tag() {
+        assertEquals(
+            "https://gh-proxy.com/https://github.com/ArrogHie/XMUTimeTabel/releases/tag/v1.1.3",
+            updateMirrorReleasePageUrl("v1.1.3")
+        )
     }
 }

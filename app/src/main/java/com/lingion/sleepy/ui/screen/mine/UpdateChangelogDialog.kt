@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -44,7 +45,10 @@ fun UpdateChangelogDialog(
     onDismiss: () -> Unit,
     onDownload: (String, String, String) -> Unit,
     onCancelDownload: () -> Unit,
-    onRetry: (String, String, String) -> Unit
+    onRetry: (String, String, String) -> Unit,
+    isStartupPrompt: Boolean = false,
+    onIgnore: () -> Unit = onDismiss,
+    onRemindLater: () -> Unit = onDismiss
 ) {
     val colors = SleepyTheme.colors
     when (state) {
@@ -121,17 +125,40 @@ fun UpdateChangelogDialog(
                                 textColor = colors.onSurfaceVariant,
                                 accentColor = colors.primary
                             )
+                        } else if (state is UpdateUiState.UpdateAvailable) {
+                            Text(
+                                stringResource(R.string.update_changelog_unavailable),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = colors.onSurfaceVariant
+                            )
                         }
                     }
                 },
                 confirmButton = {
                     when (state) {
                         is UpdateUiState.UpdateAvailable -> {
-                            TextButton(onClick = onDismiss) {
-                                Text(stringResource(R.string.update_cancel))
-                            }
-                            Button(onClick = { onDownload(version, changelog, url) }) {
-                                Text(stringResource(R.string.update_download))
+                            if (isStartupPrompt) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalAlignment = Alignment.End
+                                ) {
+                                    TextButton(onClick = onIgnore) {
+                                        Text(stringResource(R.string.update_ignore))
+                                    }
+                                    TextButton(onClick = onRemindLater) {
+                                        Text(stringResource(R.string.update_remind_later))
+                                    }
+                                    Button(onClick = { onDownload(version, changelog, url) }) {
+                                        Text(stringResource(R.string.update_action))
+                                    }
+                                }
+                            } else {
+                                TextButton(onClick = onDismiss) {
+                                    Text(stringResource(R.string.update_cancel))
+                                }
+                                Button(onClick = { onDownload(version, changelog, url) }) {
+                                    Text(stringResource(R.string.update_download))
+                                }
                             }
                         }
                         is UpdateUiState.Downloading -> {
