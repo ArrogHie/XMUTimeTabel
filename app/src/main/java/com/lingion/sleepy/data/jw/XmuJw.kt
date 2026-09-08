@@ -26,7 +26,7 @@ object XmuJw {
     val PORTAL_SERVICE: String =
         JW_BASE + "/login?service=" + JW_BASE + "/new/index.html"
 
-    /** 教务登录入口(WebView 打开此地址; CAS 302 到统一身份认证) */
+    /** 教务登录入口(CAS 302 到统一身份认证；当前账号密码通道不打开浏览器) */
     const val LOGIN_URL = JW_BASE + "/login"
 
     /**
@@ -34,7 +34,8 @@ object XmuJw {
      *
      * 厦大统一身份认证 / 教务门户按 UA 渲染: 手机 UA 会落到移动版页面, 与
      * schedule/fetch_xmu_schedule.py 验证过的桌面版接口时序不符 → 登录后抓取失败。
-     * 手动登录 WebView 与自动登录客户端必须共用同一桌面 UA(与脚本一致)。
+     * 自动登录客户端固定使用桌面版 UA(与脚本一致)，让教务服务返回桌面版页面。
+     * 这只是 HTTP 请求头，不代表应用启动了 Chrome 或用户的默认浏览器。
      */
     const val DESKTOP_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         + "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")

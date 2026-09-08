@@ -556,8 +556,8 @@
     <string name="xmu_auto_password_label">密码</string>
     <string name="xmu_auto_login_button">登录并导入课表</string>
     <string name="xmu_auto_logging_in">正在登录并抓取课表，请稍候…</string>
-    <string name="xmu_auto_failed">自动登录失败，请改用手动登录</string>
-    <string name="xmu_auto_tip">提示：若教务启用了图形验证码或二次验证，自动登录会失败，请改用手动登录方式。</string>
+    <string name="xmu_auto_failed">自动登录失败，请检查账号信息后重试</string>
+    <string name="xmu_auto_tip">提示：自动登录会直接请求教务认证服务，不会打开系统浏览器。若教务启用了图形验证码或二次验证，登录可能失败。</string>
     <string name="jw_fetch_failed_generic">抓取失败，请稍后重试</string>
     <string name="xmu_table_default_name">厦门大学课表</string>
     <string name="settings_widget_grid_layout">小组件卡片形态</string>

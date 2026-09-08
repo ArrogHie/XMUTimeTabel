@@ -24,6 +24,9 @@ q*.json
 *.tmp
 *.bak
 .claude/
+.zcode/
+.codex/
+.superpowers/
 
 # User-private SOPs (internal only, never push)
 # 用户的内部 SOP，永久不纳入 git 跟踪，禁止 push 到任何远端。

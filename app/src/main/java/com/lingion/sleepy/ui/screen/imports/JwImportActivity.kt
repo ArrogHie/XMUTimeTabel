@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,14 +22,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -91,6 +93,17 @@ class JwImportActivity : ComponentActivity() {
                 var errorMsg by remember { mutableStateOf<String?>(null) }
                 var statusMsg by remember { mutableStateOf<String?>(null) }
                 var importFinished by remember { mutableStateOf(false) }
+                val errorSnackbarHostState = remember { SnackbarHostState() }
+
+                // 错误只做短时反馈，不再用覆盖整个页面且不会自动消失的卡片。
+                LaunchedEffect(errorMsg) {
+                    val message = errorMsg ?: return@LaunchedEffect
+                    errorSnackbarHostState.showSnackbar(
+                        message = message,
+                        duration = SnackbarDuration.Short,
+                    )
+                    errorMsg = null
+                }
 
                 fun rememberAccount() {
                     if (account.isNotBlank()) AppPrefs.setJwAccount(this@JwImportActivity, account)
@@ -161,51 +174,39 @@ class JwImportActivity : ComponentActivity() {
                     }
                 }
 
-                if (importFinished) {
-                    LaunchedEffect(Unit) { finish() }
-                } else {
-                    XmuAutoLoginScreen(
-                        account = account,
-                        onAccountChange = { account = it },
-                        onStart = { acct, password -> runAutoLogin(acct, password) },
-                        onBack = { finish() }
-                    )
-                }
+                Box(modifier = Modifier.fillMaxSize()) {
+                    if (importFinished) {
+                        LaunchedEffect(Unit) { finish() }
+                    } else {
+                        XmuAutoLoginScreen(
+                            account = account,
+                            onAccountChange = { account = it },
+                            onStart = { acct, password -> runAutoLogin(acct, password) },
+                            onBack = { finish() }
+                        )
+                    }
 
-                // 错误与状态提示: 中央 errorMsg 卡片 + 底部 statusMsg
-                errorMsg?.let { msg ->
-                    Box(
+                    // 登录过程状态仍显示在底部；错误由上面的短时 Snackbar 处理。
+                    statusMsg?.let { msg ->
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            Snackbar(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(msg)
+                            }
+                        }
+                    }
+
+                    SnackbarHost(
+                        hostState = errorSnackbarHostState,
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(32.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = SleepyTheme.colors.errorContainer
-                            )
-                        ) {
-                            Text(
-                                text = msg,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                color = SleepyTheme.colors.onErrorContainer
-                            )
-                        }
-                    }
-                }
-                statusMsg?.let { msg ->
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-                        Snackbar(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Text(msg)
-                        }
-                    }
+                            .align(Alignment.Center)
+                            .imePadding()
+                            .padding(16.dp)
+                    )
                 }
             }
         }

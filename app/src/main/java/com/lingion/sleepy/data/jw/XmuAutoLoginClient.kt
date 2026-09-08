@@ -31,8 +31,8 @@ import org.json.JSONObject
  *
  * 安全约定:
  *  - 密码只在进程内存中存在一个请求周期, 不落盘、不进日志;
- *  - ids 若出现图形验证码 / 双因素登录, 本通道会以 [LoginException] 失败并提示改用
- *    WebView 手动登录通道。
+ *  - ids 若出现图形验证码 / 双因素登录, 本通道会以 [LoginException] 失败并提示具体原因；
+ *    当前厦大导入页没有启动外部浏览器或 WebView 的备用登录入口。
  */
 class XmuAutoLoginClient(
     private val account: String,
@@ -55,7 +55,7 @@ class XmuAutoLoginClient(
     // ------------------------------------------------------------------ 主流程(会话已就绪)
     private fun fetchFromEstablishedSession(): XmuFetchResult {
         val xh = account
-        // 巩固门户会话(与 login() 成功后一致; 手动登录通道用户已到过门户, 幂等无害)
+        // 巩固门户会话(与 login() 成功后一致, 幂等无害)
         try {
             request(XmuJw.JW_BASE + "/new/index.html", method = "GET")
         } catch (e: Exception) {
@@ -129,7 +129,7 @@ class XmuAutoLoginClient(
         if (salt == null || execution == null) {
             // salt/execution 缺失说明登录页形态已变(常见于引入图形验证码/新流程)
             throw LoginException(
-                "登录页缺少加密参数, 教务可能已要求图形验证码, 请改用「手动登录」",
+                "登录页缺少加密参数：教务可能已要求图形验证码或登录流程已变更，请稍后重试",
                 LoginException.Kind.CAPTCHA_REQUIRED,
             )
         }
@@ -155,15 +155,19 @@ class XmuAutoLoginClient(
                 "Referer" to loginUrl,
                 "Origin" to XmuJw.IDP_BASE,
             ),
+            // 认证服务在登录失败时可能用 HTTP 500 返回包含具体原因的登录页。
+            // 先保留响应正文，不能让 request() 直接把它压缩成一个错误码。
+            failOnHttpError = false,
         )
+        val tip = extractLoginTip(resp.body)
+        if (resp.status >= 400) {
+            val failure = classifyLoginFailure(resp.status, tip)
+            throw LoginException(failure.message, failure.kind)
+        }
         if (!resp.finalUrl.contains("jw.xmu.edu.cn")) {
-            // 未跳到门户 → 账号密码错误(ids 在响应里给 showErrorTip)
-            val tip = Regex("""id="showErrorTip"[^>]*>\s*([^<]{0,120})""")
-                .find(resp.body)?.groupValues?.get(1)?.trim()
-            throw LoginException(
-                "登录未成功: ${tip?.ifBlank { "请检查学号与密码" }}",
-                LoginException.Kind.INVALID_CREDENTIALS,
-            )
+            // 未跳到门户 → 账号密码错误或认证流程拒绝了请求。
+            val failure = classifyLoginFailure(resp.status, tip)
+            throw LoginException(failure.message, failure.kind)
         }
         // 请求一次门户首页, 确保门户会话 cookie 完整建立
         request(XmuJw.JW_BASE + "/new/index.html", method = "GET")
@@ -182,6 +186,7 @@ class XmuAutoLoginClient(
         method: String,
         body: String? = null,
         headers: Map<String, String> = emptyMap(),
+        failOnHttpError: Boolean = true,
     ): Resp {
         var currentUrl = urlStr
         var currentMethod = method
@@ -243,15 +248,18 @@ class XmuAutoLoginClient(
             val finalUrl = conn.url.toString()
             conn.disconnect()
 
-            if (status >= 400) {
+            if (status >= 400 && failOnHttpError) {
                 throw LoginException(
-                    "教务服务返回 HTTP $status, 请稍后重试或改用「手动登录」",
+                    serviceFailureMessage(status),
                     LoginException.Kind.SERVICE,
                 )
             }
             return Resp(status, bodyText, finalUrl, respHeaders)
         }
-        throw LoginException("登录跳转次数过多, 请改用「手动登录」", LoginException.Kind.SERVICE)
+        throw LoginException(
+            "登录跳转次数过多，认证流程可能已变更，请稍后重试",
+            LoginException.Kind.SERVICE,
+        )
     }
 
     private fun readBody(conn: HttpURLConnection): String {
@@ -278,6 +286,97 @@ class XmuAutoLoginClient(
         val err = LoginException("网络请求失败: $msg", LoginException.Kind.NETWORK)
         err.initCause(e)
         return err
+    }
+
+    private fun serviceFailureMessage(status: Int): String = when (status) {
+        401, 403 ->
+            "教务服务拒绝了请求（HTTP $status），登录状态可能已失效，请重新尝试登录"
+        404 ->
+            "教务登录地址不存在（HTTP 404），学校登录流程可能已经变更"
+        in 500..599 ->
+            "教务服务器暂时异常（HTTP $status），可能是服务维护或登录流程变更，请稍后重试"
+        else ->
+            "教务服务返回 HTTP $status，可能是网络或服务异常，请稍后重试"
+    }
+
+    private data class LoginFailure(val message: String, val kind: LoginException.Kind)
+
+    /**
+     * 从统一身份认证的失败页面提取用户能看懂的提示。
+     * 不依赖完整 DOM 解析器：认证服务的错误提示在不同版本中既可能放在
+     * #showErrorTip 中，也可能通过 showErrorTip("...") 的脚本调用传递。
+     */
+    private fun extractLoginTip(html: String): String? {
+        if (html.isBlank()) return null
+        val candidates = listOf(
+            Regex(
+                """(?is)<[^>]*\bid\s*=\s*["']showErrorTip["'][^>]*>(.*?)</[^>]+>""",
+            ),
+            Regex(
+                """(?is)<[^>]*\bclass\s*=\s*["'][^"']*(?:error|error-tip|errortip)[^"']*["'][^>]*>(.*?)</[^>]+>""",
+            ),
+            Regex("""(?is)\bshowErrorTip\s*\(\s*["'](.*?)["']\s*\)"""),
+        )
+        return candidates.asSequence()
+            .mapNotNull { it.find(html)?.groupValues?.getOrNull(1) }
+            .map(::cleanLoginTip)
+            .firstOrNull { it.isNotBlank() && !it.contains("showErrorTip", ignoreCase = true) }
+    }
+
+    private fun cleanLoginTip(raw: String): String = raw
+        .replace(Regex("(?is)<script.*?</script>"), " ")
+        .replace(Regex("(?is)<style.*?</style>"), " ")
+        .replace(Regex("<[^>]*>"), " ")
+        .replace("&nbsp;", " ", ignoreCase = true)
+        .replace("&amp;", "&", ignoreCase = true)
+        .replace("&lt;", "<", ignoreCase = true)
+        .replace("&gt;", ">", ignoreCase = true)
+        .replace("&quot;", "\"", ignoreCase = true)
+        .replace("&#39;", "'", ignoreCase = true)
+        .replace(Regex("\\s+"), " ")
+        .trim()
+        .trim('"', '\'')
+        .take(160)
+
+    private fun classifyLoginFailure(status: Int, tip: String?): LoginFailure {
+        val reason = tip.orEmpty()
+        val normalized = reason.lowercase()
+        return when {
+            listOf("验证码", "图形码", "二次验证", "双因素", "captcha", "verify code")
+                .any(normalized::contains) -> LoginFailure(
+                "登录失败：教务认证要求验证码或二次验证，请完成验证后重试",
+                LoginException.Kind.CAPTCHA_REQUIRED,
+            )
+            listOf("用户名或密码", "账号或密码", "密码错误", "用户不存在", "用户名不存在", "invalid credentials")
+                .any(normalized::contains) -> LoginFailure(
+                "登录失败：学号或密码错误，请检查后重试",
+                LoginException.Kind.INVALID_CREDENTIALS,
+            )
+            listOf("锁定", "冻结", "disabled", "locked").any(normalized::contains) -> LoginFailure(
+                "登录失败：账号可能已被锁定或冻结，请联系学校信息中心",
+                LoginException.Kind.INVALID_CREDENTIALS,
+            )
+            status in 500..599 -> LoginFailure(
+                "登录失败（HTTP $status）：认证服务器可能暂时异常、登录会话已失效或登录流程已变更，请稍后重试",
+                LoginException.Kind.SERVICE,
+            )
+            status == 401 || status == 403 -> LoginFailure(
+                "登录失败（HTTP $status）：认证服务器拒绝了请求，可能是登录会话失效或账号信息不正确，请重试",
+                LoginException.Kind.INVALID_CREDENTIALS,
+            )
+            !tip.isNullOrBlank() -> LoginFailure(
+                "登录失败：认证服务器提示“$reason”，请检查账号信息；若信息无误，请稍后重试",
+                LoginException.Kind.INVALID_CREDENTIALS,
+            )
+            status in 200..299 -> LoginFailure(
+                "登录未成功：认证服务没有跳转到教务门户，可能是学号或密码错误、需要验证码，或登录流程已变更，请检查后重试",
+                LoginException.Kind.INVALID_CREDENTIALS,
+            )
+            else -> LoginFailure(
+                "登录失败（HTTP $status）：可能是账号信息不正确或认证服务异常，请稍后重试",
+                LoginException.Kind.SERVICE,
+            )
+        }
     }
 
     private fun hostOf(url: String): String = URL(url).host
