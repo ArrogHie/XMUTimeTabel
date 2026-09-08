@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.lingion.sleepy.MainActivity
 import com.lingion.sleepy.R
 import com.lingion.sleepy.SleepyApp
+import com.lingion.sleepy.widget.WidgetUpdater
 import com.lingion.sleepy.data.entity.CourseEntity
 import com.lingion.sleepy.data.entity.TimeTableEntity
 import com.lingion.sleepy.util.AppPrefs
@@ -517,7 +518,11 @@ class BeforeClassNotifyReceiver : BroadcastReceiver() {
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED
-            || intent.action == Intent.ACTION_MY_PACKAGE_REPLACED) {
+            || intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
+            || intent.action == Intent.ACTION_TIME_CHANGED
+            || intent.action == Intent.ACTION_TIMEZONE_CHANGED) {
+            // RTC 闹钟在重启、更新或用户修改时间/时区后需要按新的本地日期重新计算。
+            WidgetUpdater.schedule(context)
             if (AppPrefs.isReminderEnabled(context)) {
                 SleepyApp.get().notificationScheduler.scheduleAll()
             }

@@ -51,6 +51,7 @@ class WeekGridWidgetProvider : AppWidgetProvider() {
      * 系统广播 ANR 阈值(前台~10s/后台~60s)由 goAsync 续命, 实际工作在 Dispatchers.Default。
      */
     override fun onUpdate(context: Context, awm: AppWidgetManager, ids: IntArray) {
+        WidgetUpdater.schedule(context)
         val pending = goAsync()
         ioScope.launch {
             try {
@@ -62,6 +63,11 @@ class WeekGridWidgetProvider : AppWidgetProvider() {
                 pending.finish()
             }
         }
+    }
+
+    override fun onDisabled(context: Context) {
+        WidgetUpdater.onProviderDisabled(context)
+        super.onDisabled(context)
     }
 
     override fun onAppWidgetOptionsChanged(

@@ -55,6 +55,7 @@ open class TwoDayWidgetReceiver : AppWidgetProvider() {
     }
 
     override fun onUpdate(context: Context, awm: AppWidgetManager, ids: IntArray) {
+        WidgetUpdater.schedule(context)
         val pending = goAsync()
         ioScope.launch {
             try {
@@ -64,6 +65,11 @@ open class TwoDayWidgetReceiver : AppWidgetProvider() {
                 }
             } finally { pending.finish() }
         }
+    }
+
+    override fun onDisabled(context: Context) {
+        WidgetUpdater.onProviderDisabled(context)
+        super.onDisabled(context)
     }
 
     override fun onAppWidgetOptionsChanged(

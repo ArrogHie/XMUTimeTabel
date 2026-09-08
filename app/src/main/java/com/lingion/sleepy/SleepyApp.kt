@@ -54,6 +54,7 @@ class SleepyApp : Application() {
             }
         )
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            WidgetUpdater.schedule(this@SleepyApp)
             WidgetUpdater.notifyDataChanged(this@SleepyApp)
         }
         // 后台预取节假日数据
