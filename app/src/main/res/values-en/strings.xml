@@ -340,6 +340,7 @@
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">Email</string>
     <string name="about_title">About</string>
+    <string name="help_title">Help</string>
     <string name="about_update">Check for Updates</string>
     <string name="about_update_checking">Checking for updates…</string>
     <string name="about_update_detail">If GitHub is unavailable, the app will fall back to the mirror automatically</string>

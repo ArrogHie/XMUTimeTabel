@@ -56,6 +56,7 @@ import com.lingion.sleepy.ui.screen.mine.HolidaySettingsScreen
 import com.lingion.sleepy.ui.screen.mine.ExportScreen
 import com.lingion.sleepy.ui.screen.mine.ReminderScreen
 import com.lingion.sleepy.ui.screen.mine.AboutScreen
+import com.lingion.sleepy.ui.screen.mine.HelpScreen
 import com.lingion.sleepy.ui.screen.mine.LicenseScreen
 import com.lingion.sleepy.ui.screen.mine.StartupUpdatePrompt
 import com.lingion.sleepy.ui.screen.schedule.ScheduleScreen
@@ -168,7 +169,7 @@ private enum class Tab(val labelRes: Int, val icon: ImageVector) {
 }
 
 private enum class OverlayScreen {
-    AddCourse, AllTables, EditTable, Theme, General, Holiday, Export, Reminder, About, License
+    AddCourse, AllTables, EditTable, Theme, General, Holiday, Export, Reminder, About, License, Help
 }
 
 /**
@@ -315,6 +316,10 @@ private fun AppRoot(
         LicenseScreen(onBack = { popOverlay() })
         return
     }
+    if (topOverlay() == OverlayScreen.Help) {
+        HelpScreen(onBack = { popOverlay() })
+        return
+    }
 
     // 底栏双形态(用户 2026-09-04 定版):
     // 贴底 = Scaffold bottomBar 占位(原样, 内容止于栏上沿);
@@ -433,6 +438,7 @@ private fun MainTabs(
             onOpenGeneral = { pushOverlay(OverlayScreen.General) },
             onOpenExport = { pushOverlay(OverlayScreen.Export) },
             onOpenReminder = { pushOverlay(OverlayScreen.Reminder) },
+            onOpenHelp = { pushOverlay(OverlayScreen.Help) },
             onOpenAbout = { pushOverlay(OverlayScreen.About) })
     }
 }

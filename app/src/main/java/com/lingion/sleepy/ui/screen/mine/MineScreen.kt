@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Palette
@@ -56,6 +57,7 @@ fun MineScreen(
     onOpenGeneral: () -> Unit = {},
     onOpenExport: () -> Unit = {},
     onOpenReminder: () -> Unit = {},
+    onOpenHelp: () -> Unit = {},
     onOpenAbout: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
@@ -121,6 +123,8 @@ fun MineScreen(
                     SettingsItem(icon = Icons.Outlined.Palette, label = stringResource(R.string.mine_appearance), onClick = onOpenAppearance)
                     Divider()
                     SettingsItem(icon = Icons.Outlined.Tune, label = stringResource(R.string.mine_general), onClick = onOpenGeneral)
+                    Divider()
+                    SettingsItem(icon = Icons.Outlined.HelpOutline, label = stringResource(R.string.help_title), onClick = onOpenHelp)
                     Divider()
                     SettingsItem(icon = Icons.Outlined.Info, label = stringResource(R.string.about_title), onClick = onOpenAbout)
                 }

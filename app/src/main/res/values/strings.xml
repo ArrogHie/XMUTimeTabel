@@ -440,6 +440,7 @@
 
     <!-- 关于页面 -->
     <string name="about_title">关于</string>
+    <string name="help_title">帮助</string>
     <string name="about_version">版本信息</string>
     <string name="about_version_detail">版本 %1$s（构建 %2$d）</string>
     <string name="about_update">获取更新</string>

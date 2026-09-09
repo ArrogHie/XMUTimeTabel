@@ -43,7 +43,7 @@ object AppPrefs {
     const val KEY_BEFORE_CLASS_FLUID_PRIMARY = "before_class_fluid_primary" // name/time/room
     const val KEY_THEME = "theme_key"
     const val KEY_LANG = "language"
-    const val KEY_DISPLAY_MODE = "display_mode" // "node" or "time"
+    const val KEY_DISPLAY_MODE = "display_mode" // "node" or "time" — 默认 "time"(用户 2026-09-09 指令)
     const val KEY_GRID_SUB_INFO = "grid_sub_info" // "room" / "teacher" / "none" — 旧网格卡片副信息(单三选一); v1.0.51-xmu2 起被 KEY_GRID_SHOW_* 取代, 仅作迁移源
     // ===== 网格卡片内容开关(自由多开, 取代 KEY_GRID_SUB_INFO 三选一) =====
     const val KEY_GRID_SHOW_ROOM = "grid_show_room" // bool 默认 true — 卡片底部显示教室
@@ -251,7 +251,7 @@ object AppPrefs {
     // ===== 显示模式：节次 / 时间 =====
 
     fun getDisplayMode(ctx: Context): String =
-        sp(ctx).getString(KEY_DISPLAY_MODE, "node") ?: "node"
+        sp(ctx).getString(KEY_DISPLAY_MODE, "time") ?: "time"
 
     fun setDisplayMode(ctx: Context, mode: String) {
         sp(ctx).edit().putString(KEY_DISPLAY_MODE, mode).apply()

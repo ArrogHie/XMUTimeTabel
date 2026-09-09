@@ -75,7 +75,7 @@ data class TimeSlot(
     val nodeEnd: Int
 ) {
     // nodeString 死属性已删（恒返回 "N-N" 且全库零调用; 界面用的是 CourseEntity.nodeString 本地化版本）
-    val timeString: String get() = "$displayStart-$displayEnd"
+    // timeString 死属性已删（"HH:mm-HH:mm" 单行在时间列内放不下被截断, 改为 displayStart/displayEnd 两行渲染）
 }
 
 /**
@@ -166,7 +166,8 @@ fun CardsGridView(
     // 布局常量（全 dp, 乘 scale）
     val headH = d(52f)
     val timeW = d(68f)
-    val slotH = d(52f)
+    // 时间列三行(第N节 / 起始 / 结束) — 比表头高一点, 给两行时刻留出余量
+    val slotH = d(62f)
     val gapH = d(gapHDp)
     val gapW = d(gapWDp)
     val rowH = slotH + gapH
@@ -380,13 +381,19 @@ private fun SingleTimeHeadCell(slot: TimeSlot, scale: Float = 1f, modifier: Modi
                     color = colors.onSurface,
                     maxLines = 1
                 )
-                Spacer(modifier = Modifier.height(sd(1f)))
+                Spacer(modifier = Modifier.height(sd(2f)))
+                // 起始/结束时刻分两行 — 单行 "08:00-08:45" 在时间列宽内放不下会被截断
                 Text(
-                    text = slot.timeString,
+                    text = slot.displayStart,
                     style = SleepyTextStyle.micro().copy(fontSize = (9 * scale).sp, lineHeight = (11 * scale).sp),
                     color = colors.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = 1
+                )
+                Text(
+                    text = slot.displayEnd,
+                    style = SleepyTextStyle.micro().copy(fontSize = (9 * scale).sp, lineHeight = (11 * scale).sp),
+                    color = colors.onSurfaceVariant,
+                    maxLines = 1
                 )
             }
         }

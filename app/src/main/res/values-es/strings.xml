@@ -339,6 +339,7 @@
     <string name="about_feedback_github">Issue de GitHub</string>
     <string name="about_feedback_email">Correo</string>
     <string name="about_title">Acerca de</string>
+    <string name="help_title">Ayuda</string>
     <string name="about_update">Buscar actualizaciones</string>
     <string name="about_update_checking">Comprobando actualizaciones…</string>
     <string name="about_update_detail">Si GitHub no está disponible, la app recurrirá automáticamente al espejo</string>

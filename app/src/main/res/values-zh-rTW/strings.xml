@@ -339,6 +339,7 @@
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">電子郵件</string>
     <string name="about_title">關於</string>
+    <string name="help_title">說明</string>
     <string name="about_update">取得更新</string>
     <string name="about_update_checking">正在檢查更新…</string>
     <string name="about_update_detail">GitHub 主站不可用時，自動回退鏡像下載</string>

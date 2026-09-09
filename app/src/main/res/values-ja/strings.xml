@@ -339,6 +339,7 @@
     <string name="about_feedback_github">GitHub Issue</string>
     <string name="about_feedback_email">メール</string>
     <string name="about_title">について</string>
+    <string name="help_title">ヘルプ</string>
     <string name="about_update">更新を確認</string>
     <string name="about_update_checking">更新を確認中…</string>
     <string name="about_update_detail">GitHub が利用できない場合は、自動でミラーにフォールバックします</string>
