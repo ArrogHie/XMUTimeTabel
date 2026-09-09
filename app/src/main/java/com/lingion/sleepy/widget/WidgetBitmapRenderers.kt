@@ -71,7 +71,7 @@ object WidgetBitmapRenderers {
     private fun drawCourse(
         c: Canvas, p: Paint, course: CourseEntity, timeJson: String, x: Float, y: Float, w: Float, h: Float,
         scheme: Scheme, density: Float, fontSizeSp: Float = 11f, colorless: Boolean = false,
-        displayMode: String = "node", showTime: Boolean = true
+        showTime: Boolean = true
     ) {
         // 统一取色入口 (决策 D3) — colorless 灰底传 scheme.surfaceVariant 的 Int 值
         val bgColor = CourseColorUtil.pickCourseColorInt(course, scheme.isDark, scheme.surfaceVariant, colorless)
@@ -82,21 +82,17 @@ object WidgetBitmapRenderers {
         c.drawRoundRect(RectF(x, y, x + w, y + h), 8f * density, 8f * density, p)
 
         // 时间 + 地点 — 先算 meta 文本 (需要知道是否有第二行才能居中)
-        // displayMode (决策 D5-12, 对齐 CourseTableView.LessonRow):
-        //   "time" → 具体时间段 "08:00-09:35"; "node"(默认) → 节次 "3-4节"
+        // 卡内时间行恒定显示具体时间段 "08:00-09:35"(不再有「节次/时间」设置项,
+        // 与 App 内课程行同规则); 取不到时刻(表无作息/节次超界)才回退节次文本。
         // showTime (v1.0.51-xmu2): widget_show_time=false 时去掉时间/节次行, 只保留地点
-        val rawTimeStr = if (displayMode == "time" && timeJson.isNotBlank()) {
-            TimeTableUtils.courseTimeString(
-                courseStartNode = course.startNode,
-                courseStep = course.step,
-                timeJson = timeJson,
-                ownTime = course.ownTime,
-                startTime = course.startTime,
-                endTime = course.endTime
-            ) ?: course.shortNodeString(SleepyApp.get())
-        } else {
-            course.shortNodeString(SleepyApp.get())
-        }
+        val rawTimeStr = TimeTableUtils.courseTimeString(
+            courseStartNode = course.startNode,
+            courseStep = course.step,
+            timeJson = timeJson,
+            ownTime = course.ownTime,
+            startTime = course.startTime,
+            endTime = course.endTime
+        ) ?: course.shortNodeString(SleepyApp.get())
         val timeStr = if (showTime) rawTimeStr else ""
         val hasMeta = timeStr.isNotBlank() || course.room.isNotBlank()
 
@@ -255,8 +251,6 @@ object WidgetBitmapRenderers {
         val h = (hDp * density).toInt()
         val s = scheme(context, data.themeKey, data.isDark)
         val colorless = AppPrefs.isWidgetColorless(context)
-        // 用户显示设置 (决策 D5-12, 读法对齐 WeekGridWidgetProvider.loadWeekData L660-662)
-        val displayMode = AppPrefs.getDisplayMode(context)
         // v1.0.51-xmu2: 全局"小组件显示时间"开关 → 去掉卡内节次/时间 meta
         val showTime = AppPrefs.isWidgetShowTime(context)
         val showDate = AppPrefs.isShowDate(context)
@@ -342,7 +336,7 @@ object WidgetBitmapRenderers {
         laneRows.forEach { row ->
             if (row.laneCount == 1) {
                 drawCourse(canvas, p, row.courses[0], data.timeJson, pad, y, rowW, rowH, s, density,
-                    fontSizeSp = 12f, colorless = colorless, displayMode = displayMode, showTime = showTime)
+                    fontSizeSp = 12f, colorless = colorless, showTime = showTime)
                 y += rowH + rowGap
             } else {
                 val laneGap = 5f * density
@@ -367,7 +361,7 @@ object WidgetBitmapRenderers {
                     var ly = y
                     laneCourses.forEachIndexed { ci, laneCourse ->
                         drawCourse(canvas, p, laneCourse, data.timeJson, laneX, ly, laneW, rowH, s, density,
-                            fontSizeSp = 10f, colorless = colorless, displayMode = displayMode, showTime = showTime)
+                            fontSizeSp = 10f, colorless = colorless, showTime = showTime)
                         ly += rowH
                         if (ci < laneCourses.size - 1) ly += stackGap
                     }
@@ -1053,8 +1047,6 @@ object WidgetBitmapRenderers {
         val h = (hDp * density).toInt()
         val s = scheme(context, data.themeKey, data.isDark)
         val colorless = AppPrefs.isWidgetColorless(context)
-        // 用户显示设置 (决策 D5-12, 读法对齐 WeekGridWidgetProvider.loadWeekData L660-662)
-        val displayMode = AppPrefs.getDisplayMode(context)
         // v1.0.51-xmu2: 全局"小组件显示时间"开关 → 去掉卡内节次/时间 meta
         val showTime = AppPrefs.isWidgetShowTime(context)
         val showDate = AppPrefs.isShowDate(context)
@@ -1151,7 +1143,7 @@ object WidgetBitmapRenderers {
                 laneRows.forEach { row ->
                     if (row.laneCount == 1) {
                         drawCourse(canvas, p, row.courses[0], day.timeJson, colX, cy, colW, maxRowH, s, density,
-                            fontSizeSp = 10f, colorless = colorless, displayMode = displayMode, showTime = showTime)
+                            fontSizeSp = 10f, colorless = colorless, showTime = showTime)
                         cy += maxRowH + rowGap
                     } else {
                         val laneW = (colW - laneGap * (row.laneCount - 1)) / row.laneCount
@@ -1172,7 +1164,7 @@ object WidgetBitmapRenderers {
                             var ly = cy
                             laneCourses.forEach { laneCourse ->
                                 drawCourse(canvas, p, laneCourse, day.timeJson, laneX, ly, laneW, maxRowH, s, density,
-                                    fontSizeSp = 9f, colorless = colorless, displayMode = displayMode, showTime = showTime)
+                                    fontSizeSp = 9f, colorless = colorless, showTime = showTime)
                                 ly += maxRowH
                                 if (ly < cy + laneRowTotalH) ly += stackGap
                             }

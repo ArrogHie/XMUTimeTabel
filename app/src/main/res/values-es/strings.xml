@@ -143,11 +143,6 @@
     <string name="settings_nav_style_floating">Flotante</string>
     <string name="settings_section_display">Pantalla</string>
     <string name="settings_language">Idioma / Language</string>
-    <string name="settings_display_mode">Visualización de hora</string>
-    <string name="settings_display_node">Períodos</string>
-    <string name="settings_display_node_sub">Todos los cursos muestran \"Período N\"</string>
-    <string name="settings_display_time">Horas</string>
-    <string name="settings_display_time_sub">Todos los cursos muestran \"HH:mm–HH:mm\"</string>
     <string name="settings_start_view">Vista al iniciar</string>
     <string name="settings_start_view_full">Vista semanal</string>
     <string name="settings_start_view_cards">Cuadrícula</string>

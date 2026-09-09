@@ -143,11 +143,6 @@
     <string name="settings_nav_style_floating">懸浮</string>
     <string name="settings_section_display">畫面</string>
     <string name="settings_language">語言 / Language</string>
-    <string name="settings_display_mode">課程時間顯示</string>
-    <string name="settings_display_node">節次</string>
-    <string name="settings_display_node_sub">所有課程顯示為「第N節」</string>
-    <string name="settings_display_time">時間</string>
-    <string name="settings_display_time_sub">所有課程顯示為「HH:mm–HH:mm」</string>
     <string name="settings_start_view">啟動預設頁</string>
     <string name="settings_start_view_full">週檢視</string>
     <string name="settings_start_view_cards">網格</string>

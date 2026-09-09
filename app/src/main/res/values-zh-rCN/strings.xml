@@ -173,11 +173,6 @@
     <string name="settings_nav_style_floating">悬浮</string>
     <string name="settings_section_display">画面</string>
     <string name="settings_language">语言 / Language</string>
-    <string name="settings_display_mode">课程时间显示</string>
-    <string name="settings_display_node">节次</string>
-    <string name="settings_display_node_sub">所有课程显示为「第N节」</string>
-    <string name="settings_display_time">时间</string>
-    <string name="settings_display_time_sub">所有课程显示为「HH:mm–HH:mm」</string>
     <string name="settings_start_view">启动默认页</string>
     <string name="settings_start_view_full">周视图</string>
     <string name="settings_start_view_cards">网格</string>
@@ -545,20 +540,20 @@
     <string name="settings_widget_rows_card_height_sub">调大让每张课程卡固定更高，容纳更多信息（设为 0 则按内容自适应）</string>
     <string name="license_project_source">本项目源码</string>
     <string name="license_upstream_project">上游项目（本 fork 基于其开发）</string>
-    <string name="manage_star">在 GitHub 上点个 Star</string>
-    <string name="manage_star_sub">喜欢本项目，给个 Star 支持作者继续维护</string>
+    <string name="manage_star">Star</string>
+    <string name="manage_star_sub">喜欢本项目，点个 Star 让作者方便统计用户量</string>
     <string name="about_email_copied">邮箱地址已复制</string>
 
     <!-- 赞赏码 + 赞赏提醒 -->
     <string name="donate_title">赞赏作者</string>
-    <string name="donate_subtitle">如果觉得好用，可以请作者喝瓶可乐</string>
-    <string name="donate_wechat">微信支付</string>
+    <string name="donate_subtitle">如果觉得好用，求求投喂一下，不然我只能卖沟子支付 Token 账单了</string>
+    <string name="donate_wechat">微信</string>
     <string name="donate_alipay">支付宝</string>
-    <string name="donate_qr_hint">扫码即可赞赏，感谢支持</string>
+    <string name="donate_qr_hint">感谢支持</string>
     <string name="donate_prompt_title">觉得好用吗？</string>
-    <string name="donate_prompt_message">已经用了 %1$d 天啦。如果这个课表帮到了你，欢迎去 GitHub 点个 Star，或者扫赞赏码请作者喝瓶可乐。</string>
-    <string name="donate_prompt_github">去 GitHub 点 Star</string>
-    <string name="donate_prompt_donate">赞赏作者</string>
-    <string name="donate_prompt_later">下次提醒</string>
-    <string name="donate_prompt_never">再也不要显示</string>
+    <string name="donate_prompt_message">已经用了 %1$d 天啦。如果这个课表帮到了你，欢迎去 GitHub 点个 Star，或者投喂一下作者。</string>
+    <string name="donate_prompt_github">Github点个Star</string>
+    <string name="donate_prompt_donate">投喂</string>
+    <string name="donate_prompt_later">下次一定</string>
+    <string name="donate_prompt_never">破弹窗别弹了</string>
 </resources>

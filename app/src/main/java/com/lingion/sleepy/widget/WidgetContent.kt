@@ -131,7 +131,8 @@ data class WeekData(
     val hasTable: Boolean,
     val isDark: Boolean = false,
     val themeKey: String = ThemePresets.KEY_DEFAULT,
-    // displayMode 死字段已删（renderer 各自直读 AppPrefs.getDisplayMode, 传入字段从未被消费）
+    // displayMode 死字段已删（renderer 各自直读 AppPrefs, 传入字段从未被消费;
+    // 「课程时间显示」设置已移除, 课程时间信息恒定按时刻显示）
     val showDate: Boolean = false,
     val visibleDays: Set<Int> = (1..7).toSet(),
     /** 学期状态（v1.0.37）: 学期外时列头加状态行 */

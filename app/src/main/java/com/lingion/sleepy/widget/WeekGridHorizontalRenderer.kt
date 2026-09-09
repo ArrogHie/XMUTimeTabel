@@ -217,7 +217,7 @@ internal fun renderWeekGridBitmap(
     val x = outerPad.toFloat()
     var y = outerPad.toFloat()
 
-    // ── 表头(星期 + 日期/节数), 收短 ──
+    // ── 表头(星期 + 日期; 小字只显示日期, 不再显示课数 — 与 App 网格表头同规则) ──
     p.textAlign = Paint.Align.CENTER
     if (timeW > 0) {
         p.color = bgSurface
@@ -234,7 +234,6 @@ internal fun renderWeekGridBitmap(
         val cellX = x + timeW + gapW + idx * (dayW + gapW)
         val isToday = dow == todayDow
         val dayData = data.days.firstOrNull { it.dayOfWeek == dow }
-        val count = dayData?.courses?.size ?: 0
         val dateStr = if (data.showDate && dayData != null) DateUtils.shortDate(dayData.date) else null
         p.color = if (isToday) bgToday else bgSurface
         c.drawRoundRect(RectF(cellX, y, cellX + dayW, y + headH), dp(12f).toFloat(), dp(12f).toFloat(), p)
@@ -248,8 +247,9 @@ internal fun renderWeekGridBitmap(
         p.textSize = (headH * 0.20f).coerceAtMost(dp(9f).toFloat()).coerceAtLeast(dp(6f).toFloat())
         p.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
         p.color = fgOnSurfaceVar
-        val sub = dateStr ?: if (count > 0) "$count" else "—"
-        c.drawText(sub, cx, y + headH * 0.72f, p)
+        if (dateStr != null) {
+            c.drawText(dateStr, cx, y + headH * 0.72f, p)
+        }
     }
 
     // ── 主体 ──

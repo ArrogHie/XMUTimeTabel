@@ -87,7 +87,6 @@ fun GeneralSettingsScreen(
     fun toggleSection(key: String) {
         expandedSections = if (key in expandedSections) expandedSections - key else expandedSections + key
     }
-    var displayMode by remember { mutableStateOf(AppPrefs.getDisplayMode(context)) }
     var gridShowRoom by remember { mutableStateOf(AppPrefs.isGridShowRoom(context)) }
     var gridShowTeacher by remember { mutableStateOf(AppPrefs.isGridShowTeacher(context)) }
     var gridShowTime by remember { mutableStateOf(AppPrefs.isGridShowTime(context)) }
@@ -158,22 +157,6 @@ fun GeneralSettingsScreen(
             // ── 分组① 课程显示 ──
             item {
                 SectionHeader(title = stringResource(R.string.appearance_section_display))
-            }
-
-            // 课程时间显示: 节次 / 时间 — 二选一, 标题行右侧 tab 切换(用户 2026-09-03 指令)
-            item {
-                SettingsFlatCard(
-                    title = stringResource(R.string.settings_display_mode),
-                    options = listOf(
-                        stringResource(R.string.settings_display_node),
-                        stringResource(R.string.settings_display_time)
-                    ),
-                    selectedKey = if (displayMode == "node") 0 else 1,
-                    onSelect = { i ->
-                        val v = if (i == 0) "node" else "time"
-                        displayMode = v; AppPrefs.setDisplayMode(context, v); refreshWidgets()
-                    }
-                )
             }
 
             // 网格卡片底部内容: 时间 / 教室 / 老师 三个独立开关, 可自由组合(取代旧三选一)

@@ -216,6 +216,7 @@ fun CardsGridView(
                 ) {
                     Spacer(modifier = Modifier.width(timeW))
                     for (day in sortedDays) {
+                        // 表头小字只显示日期(不再显示课数/节次回退), 是否显示由「表头显示日期」开关控制
                         val dateStr = if (showDate && startDate.isNotBlank()) {
                             try {
                                 val ds = DateUtils.dateOfWeek(startDate, currentWeek, day)
@@ -226,7 +227,6 @@ fun CardsGridView(
                             day = day,
                             isToday = day == today,
                             isGrey = day in greyDays,
-                            courseCount = courses.count { it.day == day },
                             dateStr = dateStr,
                             scale = scale,
                             cornerRatio = cornerRatio,
@@ -501,7 +501,7 @@ private fun CourseOverlayCard(
 }
 
 @Composable
-private fun DayHeadCell(day: Int, isToday: Boolean, isGrey: Boolean = false, courseCount: Int, dateStr: String? = null, dayLabel: String = DateUtils.localizedDay(day, androidx.compose.ui.platform.LocalContext.current), modifier: Modifier = Modifier, scale: Float = 1f, cornerRatio: Float = 1f) {
+private fun DayHeadCell(day: Int, isToday: Boolean, isGrey: Boolean = false, dateStr: String? = null, dayLabel: String = DateUtils.localizedDay(day, androidx.compose.ui.platform.LocalContext.current), modifier: Modifier = Modifier, scale: Float = 1f, cornerRatio: Float = 1f) {
     val colors = SleepyTheme.colors
     val sd = { v: Float -> (v * scale).dp }
     val bg = if (isToday) colors.primaryContainer else colors.surface
@@ -530,17 +530,11 @@ private fun DayHeadCell(day: Int, isToday: Boolean, isGrey: Boolean = false, cou
                 color = fg,
                 maxLines = 1
             )
+            // 表头小字只显示日期(用户指令: 该位置不再显示课数/「无课」等节次信息)
             if (dateStr != null) {
                 Text(
                     text = dateStr,
                     style = SleepyTextStyle.micro().copy(fontSize = (10 * scale).sp, lineHeight = (11 * scale).sp),
-                    color = subFg,
-                    maxLines = 1
-                )
-            } else {
-                Text(
-                    text = if (courseCount == 0) stringResource(R.string.no_course) else stringResource(R.string.course_count_format, courseCount),
-                    style = SleepyTextStyle.micro().copy(fontSize = (9 * scale).sp, lineHeight = (11 * scale).sp),
                     color = subFg,
                     maxLines = 1
                 )
@@ -564,7 +558,6 @@ private fun DayHeadCell(day: Int, isToday: Boolean, isGrey: Boolean = false, cou
 fun FullWeekView(
     courses: List<CourseEntity>,
     visibleDays: Set<Int> = (1..7).toSet(),
-    displayMode: String = "node",
     timeJson: String = "",
     today: Int = DateUtils.todayDayOfWeek(),
     onCourseClick: (CourseEntity) -> Unit,
@@ -607,7 +600,6 @@ fun FullWeekView(
         DetailPanel(
             byDay = byDay,
             visibleDays = visibleDays,
-            displayMode = displayMode,
             timeJson = timeJson,
             today = today,
             onCourseClick = onCourseClick,
@@ -748,7 +740,6 @@ private fun DetailPanel(
     byDay: Map<Int, List<CourseEntity>>,
     today: Int,
     visibleDays: Set<Int>,
-    displayMode: String,
     timeJson: String,
     onCourseClick: (CourseEntity) -> Unit,
     greyDays: Set<Int> = emptySet(),
@@ -792,7 +783,7 @@ private fun DetailPanel(
         ) {
             DayColumn(
                 days = split.first,
-                byDay = byDay, today = today, displayMode = displayMode, timeJson = timeJson,
+                byDay = byDay, today = today, timeJson = timeJson,
                 onCourseClick = onCourseClick, greyDays = greyDays,
                 scale = scale, cornerRatio = cornerRatio,
                 modifier = Modifier.weight(1f)
@@ -800,7 +791,7 @@ private fun DetailPanel(
             if (split.second.isNotEmpty()) {
                 DayColumn(
                     days = split.second,
-                    byDay = byDay, today = today, displayMode = displayMode, timeJson = timeJson,
+                    byDay = byDay, today = today, timeJson = timeJson,
                     onCourseClick = onCourseClick, greyDays = greyDays,
                     scale = scale, cornerRatio = cornerRatio,
                     modifier = Modifier.weight(1f)
@@ -823,7 +814,6 @@ private fun DetailPanel(
                     day = day,
                     courses = dayCourses,
                     isToday = day == today,
-                    displayMode = displayMode,
                     timeJson = timeJson,
                     onCourseClick = onCourseClick,
                     isGrey = day in greyDays,
@@ -841,7 +831,6 @@ private fun DayColumn(
     days: List<Int>,
     byDay: Map<Int, List<CourseEntity>>,
     today: Int,
-    displayMode: String,
     timeJson: String,
     onCourseClick: (CourseEntity) -> Unit,
     greyDays: Set<Int>,
@@ -865,7 +854,6 @@ private fun DayColumn(
                 day = day,
                 courses = dayCourses,
                 isToday = day == today,
-                displayMode = displayMode,
                 timeJson = timeJson,
                 onCourseClick = onCourseClick,
                 isGrey = day in greyDays,
@@ -882,7 +870,6 @@ private fun DetailDayCard(
     courses: List<CourseEntity>,
     isToday: Boolean,
     isGrey: Boolean = false,
-    displayMode: String = "node",
     timeJson: String = "",
     onCourseClick: (CourseEntity) -> Unit,
     scale: Float = 1f,
@@ -930,7 +917,7 @@ private fun DetailDayCard(
                 rows.forEach { row ->
                     if (row.laneCount == 1) {
                         LessonRow(
-                            course = row.courses[0], displayMode = displayMode, timeJson = timeJson,
+                            course = row.courses[0], timeJson = timeJson,
                             onClick = { onCourseClick(row.courses[0]) }, isGrey = isGrey,
                             scale = scale, cornerRatio = cornerRatio
                         )
@@ -968,7 +955,7 @@ private fun DetailDayCard(
                                         Column(verticalArrangement = Arrangement.spacedBy(sd(5f))) {
                                             laneCourses.forEach { laneCourse ->
                                                 LessonRow(
-                                                    course = laneCourse, displayMode = displayMode,
+                                                    course = laneCourse,
                                                     timeJson = timeJson,
                                                     onClick = { onCourseClick(laneCourse) },
                                                     isGrey = isGrey, scale = scale, cornerRatio = cornerRatio,
@@ -1012,7 +999,6 @@ internal fun weekLaneHideSideLabel(laneW: Dp): Boolean = laneW < 110.dp
 @Composable
 private fun LessonRow(
     course: CourseEntity,
-    displayMode: String,
     timeJson: String,
     onClick: () -> Unit,
     isGrey: Boolean = false,
@@ -1041,8 +1027,9 @@ private fun LessonRow(
     val holidayStyle = AppPrefs.getHolidayStyle(context)
     val textDecoration = if (isGrey && holidayStyle == "strikethrough") androidx.compose.ui.text.style.TextDecoration.LineThrough else null
 
-    // time 模式：「08:00-\n08:45」——时间段在连字符后折行，行距收紧读成一个整体
-    val timeParts = if (displayMode == "time" && timeJson.isNotBlank()) {
+    // 侧栏恒显示时刻:「08:00-\n08:45」——时间段在连字符后折行, 行距收紧读成一个整体。
+    // 取不到时刻(表无作息/节次超界)才回退节次文本, 不再有「节次/时间」设置项可切。
+    val timeParts = if (timeJson.isNotBlank()) {
         TimeTableUtils.courseTimeParts(course.startNode, course.step, timeJson, course.ownTime, course.startTime, course.endTime)
     } else null
     val nodeLabel = course.shortNodeString(context)
