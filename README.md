@@ -22,6 +22,8 @@
 
 ---
 
+![Users](https://img.shields.io/endpoint?url=https://xmutimele-stats-kofzxxbrwy.cn-hangzhou.fcapp.run)
+
 ## 简介
 
 厦大课表是为厦门大学学生定制的课程表应用：账号密码登录厦门大学统一身份认证后，自动从教务系统（jw.xmu.edu.cn）抓取本学期课表并落库，支持手动添加、多课表管理与课程提醒。
