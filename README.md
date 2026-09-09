@@ -22,7 +22,7 @@
 
 ---
 
-![Users](https://img.shields.io/endpoint?url=https://xmutimele-stats-kofzxxbrwy.cn-hangzhou.fcapp.run)
+![Users](https://img.shields.io/endpoint?url=https://xmutimele-stats-kofzxxbrwy.cn-hangzhou.fcapp.run&cacheSeconds=300)
 
 ## 简介
 
