@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 条带行 — 高度必须 == ScrollStripService.STRIP_DP (48dp)。
-     条带宽 == widget 宽 → 1:1; scaleType=centerCrop: 万一上报宽度与实际略有出入,
-     只做等比 + 轻微裁边, 绝不拉伸变形(字形"宽扁"根因是 fitXY 强拉)。 -->
+<!-- 条带行 — 高度必须 == ScrollStripService.STRIP_DP (48dp), 与切片位图高度一致。
+     scaleType=fitXY: 条带是**一张长图横向切出的连续片段**, 必须按原比例铺满 —
+     用 centerCrop 时, 一旦上报宽度与实际容器略有出入, 会等比放大后**裁掉每条带上下两端**,
+     导致文字被切、相邻条带错位(高度越小越明显); 高度达标后走静态整图分支, 故看起来"正常"。
+     fitXY 与壳图(widget_scroll_twoday)同一缩放语义 → 滚动位置 0 与壳图逐像素对齐。 -->
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_row_bitmap"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:scaleType="centerCrop"
+    android:scaleType="fitXY"
     android:adjustViewBounds="false" />

@@ -106,6 +106,10 @@ object AppPrefs {
     const val KEY_HOLIDAY_IGNORE_WORKDAY = "holiday_ignore_workday" // bool default true (补班日忽略)
     const val KEY_HOLIDAY_OVERRIDES = "holiday_overrides"           // JSON — 用户范围化覆盖(编辑/新增/删除节日段)
     const val KEY_CONFLICT_DEFAULT_TOP = "conflict_default_top"      // JSON {"day:startNode:step": layerRepId} — 冲突簇默认置顶图层; 默认空 = 全由 primaryComparator 决
+    // ===== 赞赏提醒(用户 2026-09-09 指令: 使用满 5 天后弹一次) =====
+    const val KEY_DONATE_FIRST_DAY = "donate_first_day"       // Long epochDay — 首次使用日(记录一次, 不覆盖)
+    const val KEY_DONATE_SNOOZE_UNTIL = "donate_snooze_until" // Long epochDay — "下次提醒" 前不再弹
+    const val KEY_DONATE_DISMISSED = "donate_dismissed"       // bool — "再也不要显示"
 
     private fun sp(ctx: Context): SharedPreferences =
         ctx.applicationContext.getSharedPreferences(FILE, Context.MODE_PRIVATE)
@@ -751,5 +755,31 @@ object AppPrefs {
         if (version.isNotBlank()) {
             sp(ctx).edit().putString(KEY_IGNORED_UPDATE_VERSION, version).apply()
         }
+    }
+
+    // ===== 赞赏提醒 =====
+
+    /** 记录首次使用日(仅首次写入, 后续调用不覆盖)。返回记录的 epochDay。 */
+    fun markFirstUseDay(ctx: Context, today: Long = java.time.LocalDate.now().toEpochDay()): Long {
+        val existing = sp(ctx).getLong(KEY_DONATE_FIRST_DAY, -1L)
+        if (existing > 0L) return existing
+        sp(ctx).edit().putLong(KEY_DONATE_FIRST_DAY, today).apply()
+        return today
+    }
+
+    fun getFirstUseDay(ctx: Context): Long = sp(ctx).getLong(KEY_DONATE_FIRST_DAY, -1L)
+
+    fun getDonateSnoozeUntil(ctx: Context): Long = sp(ctx).getLong(KEY_DONATE_SNOOZE_UNTIL, -1L)
+
+    fun isDonateDismissed(ctx: Context): Boolean = sp(ctx).getBoolean(KEY_DONATE_DISMISSED, false)
+
+    /** "下次提醒" — 推迟到 [DonateReminder.SNOOZE_DAYS] 天后再弹。 */
+    fun snoozeDonatePrompt(ctx: Context, today: Long = java.time.LocalDate.now().toEpochDay()) {
+        sp(ctx).edit().putLong(KEY_DONATE_SNOOZE_UNTIL, today + DonateReminder.SNOOZE_DAYS).apply()
+    }
+
+    /** "再也不要显示" — 永久关闭赞赏提醒。 */
+    fun dismissDonateForever(ctx: Context) {
+        sp(ctx).edit().putBoolean(KEY_DONATE_DISMISSED, true).apply()
     }
 }

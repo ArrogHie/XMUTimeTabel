@@ -87,7 +87,13 @@ object RemoteViewsWidgetHelper {
         )
         views.setOnClickPendingIntent(R.id.widget_bitmap, pi)
         awm.updateAppWidget(widgetId, views)
-        bmp.recycle()
+        // NOTE: 不能 bmp.recycle()!
+        // RemoteViews.setImageViewBitmap 把 bitmap 放进 RemoteViews.mBitmapCache,
+        // 通过 binder 传给系统 AppWidgetService; 大尺寸 bitmap 在系统进程内常以 ashmem
+        // 共享方式持有, 本进程 recycle 会立刻释放 native pixel memory →
+        // 启动器渲染时 setImageBitmap 抛 "trying to use a recycled bitmap" →
+        // RemoteViews.apply() 失败 → AppWidgetHostView 回落到 "无法加载微件" 错误视图。
+        // 改成 next onUpdate 推送新 RemoteViews 时旧 bitmap 自然随 mBitmapCache 一起被 GC。
         Log.d(tag, "renderAndPush id=$widgetId ${wDp}x${hDp}dp → ${wPx}x${hPx}px")
     }
 
@@ -131,7 +137,49 @@ object RemoteViewsWidgetHelper {
 
         awm.updateAppWidget(widgetId, views)
         awm.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_strip_list)
-        shellBitmap.recycle()
+        // 同样不能 recycle: 壳图经 setImageViewBitmap 持有, 由 RemoteViews.mBitmapCache 引用,
+        // 启动器渲染期间 native pixel 必须有效 (见 renderAndPush 同注释)。
         Log.d(tag, "pushScrollable id=$widgetId scope=$scopeExtra")
+    }
+
+    /**
+     * 纯内部渲染窗口推送(用户 2026-09-09 指令: 「最近两天」直接采用与「本周课程」相同的
+     * 渲染方式 — 内部再开窗口渲染)。
+     *
+     * 与 [pushScrollable] 的区别: **不推壳图**。整个小组件就是一个 ListView, 每个 Item 是
+     * 内容长图按行带切出的片段; 容器只做视口, 不做任何缩放/裁剪 → 任意高度都不变形、不裁切、
+     * 不出现壳图与条带对不齐的错位(那是"壳图按容器高渲染、条带按自然高渲染"两套几何的产物)。
+     *
+     * @param layoutRes 纯窗口容器布局(只含 widget_strip_list)
+     */
+    fun pushWindow(
+        context: Context,
+        awm: AppWidgetManager,
+        widgetId: Int,
+        tag: String,
+        layoutRes: Int,
+        scopeExtra: String
+    ) {
+        val views = RemoteViews(context.packageName, layoutRes)
+
+        val svcIntent = Intent(context, ScrollStripService::class.java).apply {
+            putExtra(ScrollStripService.StripFactory.EXTRA_WIDGET_ID, widgetId)
+            putExtra(ScrollStripService.StripFactory.EXTRA_SCOPE, scopeExtra)
+            data = android.net.Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+        }
+        views.setRemoteAdapter(R.id.widget_strip_list, svcIntent)
+
+        val template = PendingIntent.getActivity(
+            context, widgetId,
+            Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        views.setPendingIntentTemplate(R.id.widget_strip_list, template)
+
+        awm.updateAppWidget(widgetId, views)
+        awm.notifyAppWidgetViewDataChanged(widgetId, R.id.widget_strip_list)
+        Log.d(tag, "pushWindow id=$widgetId scope=$scopeExtra")
     }
 }

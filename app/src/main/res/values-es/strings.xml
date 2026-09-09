@@ -530,4 +530,17 @@
     <string name="manage_star">Da una estrella en GitHub</string>
     <string name="manage_star_sub">¿Te gusta? Da una estrella para apoyar el desarrollo</string>
     <string name="about_email_copied">Dirección de correo copiada</string>
+
+    <!-- Donación + recordatorio de apoyo -->
+    <string name="donate_title">Apoyar al autor</string>
+    <string name="donate_subtitle">Si te resulta útil, puedes invitar al autor a una Coca-Cola</string>
+    <string name="donate_wechat">WeChat Pay</string>
+    <string name="donate_alipay">Alipay</string>
+    <string name="donate_qr_hint">Escanea para donar — gracias por tu apoyo</string>
+    <string name="donate_prompt_title">¿Te está gustando?</string>
+    <string name="donate_prompt_message">Ya llevas %1$d días usándola. Si este horario te ha ayudado, dale una estrella en GitHub o escanea el código QR para invitar al autor a una Coca-Cola.</string>
+    <string name="donate_prompt_github">Estrella en GitHub</string>
+    <string name="donate_prompt_donate">Apoyar al autor</string>
+    <string name="donate_prompt_later">Recordar más tarde</string>
+    <string name="donate_prompt_never">No mostrar nunca</string>
 </resources>

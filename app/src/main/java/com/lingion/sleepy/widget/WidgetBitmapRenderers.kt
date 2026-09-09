@@ -503,6 +503,57 @@ object WidgetBitmapRenderers {
     }
 
     /**
+     * 「最近两天」内部渲染窗口的行带几何(px) — 用户 2026-09-09 指令:
+     * 直接采用与「本周课程」相同的渲染方式(内部开窗口渲染)。
+     *
+     * 小组件本体 = 一个 ListView(内部视口), 内容长图按 [TWO_DAY_SLICE_DP] 等分切片,
+     * 每个 Item 承载一片; Item 高度 = 该片位图像素高 → 逐像素拼接, 无缩放、无裁切。
+     * 内容长图高度取"自然内容高度"(与容器上报高度无关), 并在容器更高时向下补齐,
+     * 保证窗口始终铺满容器(短内容也不露出底色断层)。
+     *
+     * @param minHeightPx 容器实际高度(px) — 长图不足此高时向下补齐
+     */
+    internal class TwoDayBands(
+        val sliceTopPx: IntArray,
+        val sliceHeightPx: IntArray,
+        val fullHeightPx: Int
+    )
+
+    /** 切片高度(dp) — 与「本周课程」窗口同一节奏; 行布局高度必须由 setMinimumHeight 覆盖 */
+    internal const val TWO_DAY_SLICE_DP = 48f
+
+    /**
+     * 行带几何(纯函数, density 注入 → 可纯 JVM 单测)。
+     *
+     * @param density     显示密度(dp→px)
+     * @param contentHdp  自然内容高度(dp)
+     * @param minHeightPx 容器实际高度(px); 长图不足此高时向下补齐
+     */
+    internal fun twoDayBands(
+        density: Float,
+        contentHdp: Float,
+        minHeightPx: Int,
+    ): TwoDayBands {
+        val slicePx = (TWO_DAY_SLICE_DP * density).toInt().coerceAtLeast(1)
+        val contentPx = (contentHdp * density).toInt().coerceAtLeast(1)
+        val target = maxOf(contentPx, minHeightPx.coerceAtLeast(1))
+        val count = ((target + slicePx - 1) / slicePx).coerceAtLeast(1)
+        val full = count * slicePx
+        return TwoDayBands(
+            sliceTopPx = IntArray(count) { it * slicePx },
+            sliceHeightPx = IntArray(count) { slicePx },
+            fullHeightPx = full
+        )
+    }
+
+    internal fun twoDayBands(context: Context, data: TwoDayData, minHeightPx: Int): TwoDayBands =
+        twoDayBands(
+            density = context.resources.displayMetrics.density,
+            contentHdp = twoDayContentHeightDp(data),
+            minHeightPx = minHeightPx,
+        )
+
+    /**
      * WeekList 内容全展开高度(dp) — 可滚动条带渲染用。常量镜像 renderWeekList。
      */
     fun weekListContentHeightDp(context: Context, data: WeekData): Float {

@@ -18,40 +18,29 @@ import java.time.LocalDate
  * 桌面 TwoDay 小组件 — 同步 RemoteViews + Canvas (v1.0.29 起, 从 Glance 移植)。
  * 原因见 [TodayWidgetReceiver] 注释。
  *
- * v1.0.36: 内容装得下走静态 renderAndPush; 超出走 pushScrollable(壳图+条带)。
+ * 用户 2026-09-09 指令: 直接采用与「本周课程」相同的渲染方式 — **内部再开窗口渲染**。
+ * 小组件本体 = ListView(内部视口), 内容长图按行带切片喂给各 Item, 容器不缩放不裁剪 →
+ * 任意高度(含默认小尺寸)都不变形/不裁切/不出现壳图与条带错位。
+ * (旧实现按"内容装得下"二选一: 静态整图 fitXY / 壳图+条带; 两套几何在小尺寸下对不齐。)
  *
  * Glance 版 TwoDayWidget 类已删除(决策 D5-11); loadDataSync 自 Glance companion 迁入本类。
  */
 open class TwoDayWidgetReceiver : AppWidgetProvider() {
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    /** 小组件排版档位 — 基类默认 REGULAR(现有变体); 「最近两天 · 小」子类覆写为 SMALL */
-    open val variantHint: WidgetVariant = WidgetVariant.REGULAR
+    // variantHint 死属性已删: 内部渲染窗口统一走全量排版, 不再有 SMALL 变体分支
+    // (v1.0.52-xmu4 已精简小变体, 用户 2026-09-09 改窗口渲染后连分支都不存在)。
 
     private fun push(context: Context, awm: AppWidgetManager, id: Int) {
-        val data = loadDataSync(context)
-        val opts = awm.getAppWidgetOptions(id)
-        val (wDp, hDp) = RemoteViewsWidgetHelper.computeSizeDp(opts)
-        val contentH = WidgetBitmapRenderers.twoDayContentHeightDp(data)
-        // SMALL 变体: compact 分支内部还有 150dp 升档闸, 这里直接传 variant
-        val variant = variantHint
-        if (contentH <= hDp) {
-            RemoteViewsWidgetHelper.renderAndPush(
-                context, awm, id, TAG,
-                loadData = { data },
-                renderBitmap = { d, w, h ->
-                    WidgetBitmapRenderers.renderTwoDay(context, d, w, h, variant)
-                }
-            )
-        } else {
-            val shell = WidgetBitmapRenderers.renderTwoDay(context, data, wDp.toFloat(), hDp.toFloat(), variant)
-            RemoteViewsWidgetHelper.pushScrollable(
-                context, awm, id, TAG,
-                layoutRes = com.lingion.sleepy.R.layout.widget_scroll_twoday,
-                shellBitmap = shell,
-                scopeExtra = ScrollStripService.StripFactory.SCOPE_TWODAY
-            )
-        }
+        // 用户 2026-09-09 指令: 直接采用与「本周课程」相同的渲染方式 — 内部再开窗口渲染。
+        // 不再按"内容是否装得下"二选一(静态整图 / 壳图+条带); 那个分支正是小尺寸错位的根源:
+        // 静态分支把整图 fitXY 压进容器, 可滚动分支的壳图按容器高渲染、条带按自然高渲染,
+        // 两套几何不一致 → 高度越小越明显。现在统一 = ListView 内部视口, 容器不缩放不裁剪。
+        RemoteViewsWidgetHelper.pushWindow(
+            context, awm, id, TAG,
+            layoutRes = com.lingion.sleepy.R.layout.widget_scroll_twoday,
+            scopeExtra = ScrollStripService.StripFactory.SCOPE_TWODAY
+        )
     }
 
     override fun onUpdate(context: Context, awm: AppWidgetManager, ids: IntArray) {

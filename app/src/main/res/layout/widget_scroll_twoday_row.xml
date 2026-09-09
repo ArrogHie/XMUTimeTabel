@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 「最近两天」可滚动窗口的 Item 行 — 同 widget_scroll_weekgrid_row 思路:
+     高度 wrap_content + 渲染时 setMinimumHeight(位图像素高) → ListView 行高 == 切片位图
+     真实像素高, 与内容逐像素一致, 杜绝测高不匹配导致的错位/重叠。
+     scaleType=fitXY: 切片是长图的连续片段, 必须按原始纵向比例铺满(绝不纵向裁切),
+     宽度若有出入只做轻微横向拉伸 —— centerCrop 会在宽度变大时纵向裁掉两端, 正是错位根因。 -->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_row_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="false"
+    android:contentDescription="@string/widget_twoday_label" />

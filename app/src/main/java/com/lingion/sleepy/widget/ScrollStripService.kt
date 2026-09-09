@@ -52,6 +52,8 @@ class ScrollStripService : RemoteViewsService() {
         private var strips: List<Bitmap> = emptyList()
         // v1.0.52-xmu11: 本周课程行带切片(位图) — 每个 Item 一个行带, 高度取位图像素高
         private var weekGridRows: List<Bitmap> = emptyList()
+        // 用户 2026-09-09: 「最近两天」也走内部渲染窗口 — 内容长图按行带切片
+        private var twoDayRows: List<Bitmap> = emptyList()
 
         override fun onCreate() {}
 
@@ -78,10 +80,20 @@ class ScrollStripService : RemoteViewsService() {
                     full = WidgetBitmapRenderers.renderToday(context, d, wDp.toFloat(), renderH)
                 }
                 SCOPE_TWODAY -> {
+                    // 用户 2026-09-09: 「最近两天」= 内部渲染窗口(同本周课程)。
+                    // 内容长图按行带切片, 每片一张位图; 高度不足容器时向下补齐,
+                    // 保证窗口始终铺满容器。不再走"壳图+48dp等宽横切"老路径。
                     val d = TwoDayWidgetReceiver.loadDataSync(context)
-                    contentHdp = WidgetBitmapRenderers.twoDayContentHeightDp(d)
-                    val renderH = ceil(contentHdp / STRIP_DP) * STRIP_DP
-                    full = WidgetBitmapRenderers.renderTwoDay(context, d, wDp.toFloat(), renderH)
+                    val wPx = (wDp * density).toInt()
+                    val bands = WidgetBitmapRenderers.twoDayBands(context, d, (hDp * density).toInt())
+                    full = WidgetBitmapRenderers.renderTwoDay(context, d, wPx / density, bands.fullHeightPx / density)
+                    twoDayRows = bands.sliceTopPx.indices.map { i ->
+                        Bitmap.createBitmap(full, 0, bands.sliceTopPx[i], full.width, bands.sliceHeightPx[i])
+                    }
+                    contentHdp = (bands.fullHeightPx / density).toFloat()
+                    strips = emptyList()
+                    android.util.Log.d("ScrollStrip",
+                        "twoday id=$widgetId ${wDp}x${hDp}dp bands=${twoDayRows.size} full=${bands.fullHeightPx}px")
                 }
                 SCOPE_WEEKLIST -> {
                     // v1.0.52-xmu4: 周列表不再是独立小组件, 条带通道保留给周列表(从课表微件转列表形态)
@@ -108,8 +120,8 @@ class ScrollStripService : RemoteViewsService() {
                 else -> return
             }
 
-            // 非 WEEKGRID: 仍按 48dp 等宽横切(共享像素缓冲, 不复制)
-            if (scope != SCOPE_WEEKGRID) {
+            // 非 WEEKGRID / 非 TWODAY: 仍按 48dp 等宽横切(共享像素缓冲, 不复制)
+            if (scope != SCOPE_WEEKGRID && scope != SCOPE_TWODAY) {
                 val count = full.height / stripPx
                 strips = (0 until count).map { i ->
                     Bitmap.createBitmap(full, 0, i * stripPx, full.width, stripPx)
@@ -119,13 +131,27 @@ class ScrollStripService : RemoteViewsService() {
             }
         }
 
-        override fun getCount(): Int = if (scope == SCOPE_WEEKGRID) weekGridRows.size else strips.size
+        override fun getCount(): Int = when (scope) {
+            SCOPE_WEEKGRID -> weekGridRows.size
+            SCOPE_TWODAY -> twoDayRows.size
+            else -> strips.size
+        }
 
         override fun getViewAt(position: Int): RemoteViews {
             if (scope == SCOPE_WEEKGRID) {
                 val bmp = weekGridRows[position]
                 // 行高 = 位图像素高(wrap_content + 显式 min), 与内容逐像素一致; 杜绝测高不匹配重叠
                 return RemoteViews(context.packageName, R.layout.widget_scroll_weekgrid_row).apply {
+                    setImageViewBitmap(R.id.widget_row_bitmap, bmp)
+                    setInt(R.id.widget_row_bitmap, "setMinimumWidth", bmp.width)
+                    setInt(R.id.widget_row_bitmap, "setMinimumHeight", bmp.height)
+                    setOnClickFillInIntent(R.id.widget_row_bitmap, Intent())
+                }
+            }
+            if (scope == SCOPE_TWODAY) {
+                val bmp = twoDayRows[position]
+                // 同本周课程: 行高 = 位图像素高, 逐像素拼接, 容器只做视口(不缩放不裁剪)
+                return RemoteViews(context.packageName, R.layout.widget_scroll_twoday_row).apply {
                     setImageViewBitmap(R.id.widget_row_bitmap, bmp)
                     setInt(R.id.widget_row_bitmap, "setMinimumWidth", bmp.width)
                     setInt(R.id.widget_row_bitmap, "setMinimumHeight", bmp.height)
@@ -141,7 +167,7 @@ class ScrollStripService : RemoteViewsService() {
 
         override fun getLoadingView(): RemoteViews? = null
 
-        override fun getViewTypeCount(): Int = if (scope == SCOPE_WEEKGRID) 1 else 1
+        override fun getViewTypeCount(): Int = 1
 
         override fun getItemId(position: Int): Long = position.toLong()
 

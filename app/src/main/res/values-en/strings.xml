@@ -531,4 +531,17 @@
     <string name="manage_star">Star this project on GitHub</string>
     <string name="manage_star_sub">Enjoy it? Give a star to support ongoing development</string>
     <string name="about_email_copied">Email address copied</string>
+
+    <!-- Donation + support prompt -->
+    <string name="donate_title">Support the author</string>
+    <string name="donate_subtitle">If this app helps you, you can buy the author a Coke</string>
+    <string name="donate_wechat">WeChat Pay</string>
+    <string name="donate_alipay">Alipay</string>
+    <string name="donate_qr_hint">Scan to donate — thank you for your support</string>
+    <string name="donate_prompt_title">Enjoying the app?</string>
+    <string name="donate_prompt_message">You\'ve been using it for %1$d days. If this schedule app helped you, please star it on GitHub or scan the QR code to buy the author a Coke.</string>
+    <string name="donate_prompt_github">Star on GitHub</string>
+    <string name="donate_prompt_donate">Support the author</string>
+    <string name="donate_prompt_later">Remind me later</string>
+    <string name="donate_prompt_never">Never show again</string>
 </resources>

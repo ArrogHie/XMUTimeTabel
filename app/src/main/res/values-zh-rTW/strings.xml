@@ -530,4 +530,17 @@
     <string name="manage_star">在 GitHub 上點個 Star</string>
     <string name="manage_star_sub">喜歡本專案，給個 Star 支持作者持續維護</string>
     <string name="about_email_copied">電子郵件地址已複製</string>
+
+    <!-- 讚賞碼 + 讚賞提醒 -->
+    <string name="donate_title">讚賞作者</string>
+    <string name="donate_subtitle">如果覺得好用，可以請作者喝瓶可樂</string>
+    <string name="donate_wechat">微信支付</string>
+    <string name="donate_alipay">支付寶</string>
+    <string name="donate_qr_hint">掃碼即可讚賞，感謝支持</string>
+    <string name="donate_prompt_title">覺得好用嗎？</string>
+    <string name="donate_prompt_message">已經用了 %1$d 天啦。如果這個課表幫到了你，歡迎去 GitHub 點個 Star，或者掃讚賞碼請作者喝瓶可樂。</string>
+    <string name="donate_prompt_github">去 GitHub 點 Star</string>
+    <string name="donate_prompt_donate">讚賞作者</string>
+    <string name="donate_prompt_later">下次提醒</string>
+    <string name="donate_prompt_never">不要再顯示</string>
 </resources>

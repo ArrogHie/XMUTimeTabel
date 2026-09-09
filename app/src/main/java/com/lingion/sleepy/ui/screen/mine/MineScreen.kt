@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +59,7 @@ fun MineScreen(
     onOpenExport: () -> Unit = {},
     onOpenReminder: () -> Unit = {},
     onOpenHelp: () -> Unit = {},
+    onOpenDonate: () -> Unit = {},
     onOpenAbout: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
@@ -106,7 +108,7 @@ fun MineScreen(
                 )
             }
 
-            // 设置项 (5 个导航项扁平列表)
+            // 设置项 (导航项扁平列表 — 课表/导出/提醒/外观/通用/帮助/关于)
             item {
                 Column(
                     modifier = Modifier
@@ -130,6 +132,11 @@ fun MineScreen(
                 }
             }
 
+            // 赞赏作者 — 独立卡片(用户 2026-09-09 指令: 入口放在「我的」页面, 不并入设置列表)
+            item {
+                DonateEntryCard(onClick = onOpenDonate)
+            }
+
             // 动作区: 刷新所有小组件 (FilledTonalButton, 与上方导航项物理隔离)
             item {
                 FilledTonalButton(
@@ -146,6 +153,12 @@ fun MineScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.mine_refresh_widgets))
                 }
+            }
+
+            // debug 专用: 手动触发赞赏提醒弹窗(用户 2026-09-09 指令 — 应用内按钮, 不依赖 adb 广播)。
+            // 实现按源集切换: src/debug = 真按钮, src/release = 空实现 → 正式包无此入口与文案。
+            item {
+                DebugDonateTrigger()
             }
         }
         SnackbarHost(snackbar, modifier = Modifier.align(Alignment.BottomCenter))
@@ -197,4 +210,47 @@ private fun Divider(vertical: Boolean = false) {
     val colors = SleepyTheme.colors
     if (vertical) androidx.compose.material3.VerticalDivider(Modifier.height(36.dp).width(1.dp), color = colors.outline.copy(alpha = SleepyTheme.Alpha.hairline))
     else androidx.compose.material3.HorizontalDivider(Modifier.padding(start = 72.dp), color = colors.outline.copy(alpha = SleepyTheme.Alpha.hairline))
+}
+
+/** 「赞赏作者」独立卡片 — 图标 + 标题 + 副标题, 与上方设置列表物理分离(用户 2026-09-09 指令)。 */
+@Composable
+private fun DonateEntryCard(onClick: () -> Unit) {
+    val colors = SleepyTheme.colors
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(SleepyTheme.shapes.large)
+            .background(colors.surfaceContainer)
+            .noRippleClickable(onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(SleepyTheme.shapes.medium)
+                .background(colors.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                Icons.Outlined.VolunteerActivism,
+                contentDescription = null,
+                tint = colors.onPrimaryContainer,
+                modifier = Modifier.size(22.dp)
+            )
+        }
+        Column(modifier = Modifier.weight(1f).padding(start = 14.dp)) {
+            Text(
+                text = stringResource(R.string.donate_title),
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                color = colors.onSurface
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = stringResource(R.string.donate_subtitle),
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.onSurfaceVariant
+            )
+        }
+    }
 }

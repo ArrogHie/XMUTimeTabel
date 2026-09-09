@@ -548,4 +548,17 @@
     <string name="manage_star">在 GitHub 上点个 Star</string>
     <string name="manage_star_sub">喜欢本项目，给个 Star 支持作者继续维护</string>
     <string name="about_email_copied">邮箱地址已复制</string>
+
+    <!-- 赞赏码 + 赞赏提醒 -->
+    <string name="donate_title">赞赏作者</string>
+    <string name="donate_subtitle">如果觉得好用，可以请作者喝瓶可乐</string>
+    <string name="donate_wechat">微信支付</string>
+    <string name="donate_alipay">支付宝</string>
+    <string name="donate_qr_hint">扫码即可赞赏，感谢支持</string>
+    <string name="donate_prompt_title">觉得好用吗？</string>
+    <string name="donate_prompt_message">已经用了 %1$d 天啦。如果这个课表帮到了你，欢迎去 GitHub 点个 Star，或者扫赞赏码请作者喝瓶可乐。</string>
+    <string name="donate_prompt_github">去 GitHub 点 Star</string>
+    <string name="donate_prompt_donate">赞赏作者</string>
+    <string name="donate_prompt_later">下次提醒</string>
+    <string name="donate_prompt_never">再也不要显示</string>
 </resources>

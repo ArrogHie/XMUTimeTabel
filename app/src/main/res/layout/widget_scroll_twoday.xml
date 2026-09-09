@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 可滚动 TwoDay — 同 widget_scroll_today 结构 -->
+<!-- 「最近两天」小组件本体 = 内部渲染窗口(用户 2026-09-09 指令: 直接采用与「本周课程」
+     相同的渲染方式 — 内部再开窗口渲染)。
+     不再推"整张位图由外层 ImageView 拉伸/裁剪": 整个小组件就是一个 ListView,
+     每条 = 内容长图按行带切出的片段, ListView 即内部视口 → 任意高度都不变形、不裁切。
+     FrameLayout clipToOutline 圆角裁剪(圆角由切片位图自身绘制)。 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_scroll_clip"
     android:outlineProvider="background"
     android:clipToOutline="true">
-    <ImageView
-        android:id="@+id/widget_shell"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="false" />
     <ListView
         android:id="@+id/widget_strip_list"
         android:layout_width="match_parent"

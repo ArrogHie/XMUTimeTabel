@@ -90,9 +90,9 @@ class WidgetVariantRenderTest {
 
     @Test
     fun `kept receivers default to REGULAR variant`() {
-        // v1.0.52-xmu4: 小尺寸同名变体已精简, 保留的接收器恒为 REGULAR 档
+        // v1.0.52-xmu4: 小尺寸同名变体已精简, 保留的接收器恒为 REGULAR 档。
+        // TwoDay 用户 2026-09-09 改内部渲染窗口后已无 variantHint(统一全量排版)。
         assertEquals(WidgetVariant.REGULAR, TodayWidgetReceiver().variantHint)
-        assertEquals(WidgetVariant.REGULAR, com.lingion.sleepy.widget.TwoDayWidgetReceiver().variantHint)
     }
 
     /** TwoDayData fixture — 字段以 WidgetContent.kt 真实定义为准(days: List<DayData>) */

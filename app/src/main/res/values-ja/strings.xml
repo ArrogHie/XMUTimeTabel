@@ -530,4 +530,17 @@
     <string name="manage_star">GitHub で Star を付ける</string>
     <string name="manage_star_sub">気に入ったら Star で開発を応援しましょう</string>
     <string name="about_email_copied">メールアドレスをコピーしました</string>
+
+    <!-- 投げ銭 + サポートのお願い -->
+    <string name="donate_title">作者を支援</string>
+    <string name="donate_subtitle">役に立ったら、作者にコーラを一本おごれます</string>
+    <string name="donate_wechat">WeChat Pay</string>
+    <string name="donate_alipay">Alipay</string>
+    <string name="donate_qr_hint">QR コードを読み取って支援できます。ありがとうございます</string>
+    <string name="donate_prompt_title">使い心地はいかがですか？</string>
+    <string name="donate_prompt_message">もう %1$d 日使っていただきました。この時間割アプリが役に立ったら、GitHub で Star を付けるか、QR コードから作者にコーラをおごってください。</string>
+    <string name="donate_prompt_github">GitHub で Star を付ける</string>
+    <string name="donate_prompt_donate">作者を支援</string>
+    <string name="donate_prompt_later">後で通知</string>
+    <string name="donate_prompt_never">今後表示しない</string>
 </resources>

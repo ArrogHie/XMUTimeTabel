@@ -56,6 +56,8 @@ import com.lingion.sleepy.ui.screen.mine.HolidaySettingsScreen
 import com.lingion.sleepy.ui.screen.mine.ExportScreen
 import com.lingion.sleepy.ui.screen.mine.ReminderScreen
 import com.lingion.sleepy.ui.screen.mine.AboutScreen
+import com.lingion.sleepy.ui.screen.mine.DonatePromptHost
+import com.lingion.sleepy.ui.screen.mine.DonateScreen
 import com.lingion.sleepy.ui.screen.mine.HelpScreen
 import com.lingion.sleepy.ui.screen.mine.LicenseScreen
 import com.lingion.sleepy.ui.screen.mine.StartupUpdatePrompt
@@ -130,6 +132,10 @@ class MainActivity : ComponentActivity() {
                         onDeepLinkConsumed = { editingCourseFromIntent.value = null }
                     )
                     StartupUpdatePrompt()
+                    DonatePromptHost(
+                        onOpenDonatePage = { donatePageRequest.value = donatePageRequest.value + 1 },
+                        debugRequest = com.lingion.sleepy.ui.screen.mine.donatePromptDebugRequest.value,
+                    )
                 }
             }
         }
@@ -169,7 +175,7 @@ private enum class Tab(val labelRes: Int, val icon: ImageVector) {
 }
 
 private enum class OverlayScreen {
-    AddCourse, AllTables, EditTable, Theme, General, Holiday, Export, Reminder, About, License, Help
+    AddCourse, AllTables, EditTable, Theme, General, Holiday, Export, Reminder, About, License, Help, Donate
 }
 
 /**
@@ -177,6 +183,12 @@ private enum class OverlayScreen {
  * AppRoot 观察到后把通用设置页压栈打开。值取单调递增的 elapsedRealtime, 避免相同请求被跳过。
  */
 private val generalSettingsRequest = androidx.compose.runtime.mutableLongStateOf(0L)
+
+/**
+ * 赞赏弹窗 → 打开 App 内赞赏页的请求(文件级一次性状态)。
+ * DonatePromptHost 挂在 AppRoot 外层拿不到 pushOverlay, 用同款请求转交 AppRoot 消费。
+ */
+private val donatePageRequest = androidx.compose.runtime.mutableLongStateOf(0L)
 
 @Composable
 private fun AppRoot(
@@ -226,6 +238,13 @@ private fun AppRoot(
         if (generalSettingsRequest.value > 0) {
             generalSettingsRequest.value = 0
             if (topOverlay() != OverlayScreen.General) pushOverlay(OverlayScreen.General)
+        }
+    }
+    // 赞赏弹窗点"赞赏作者" → 压栈赞赏页(消费后复位)
+    androidx.compose.runtime.LaunchedEffect(donatePageRequest.value) {
+        if (donatePageRequest.value > 0) {
+            donatePageRequest.value = 0
+            if (topOverlay() != OverlayScreen.Donate) pushOverlay(OverlayScreen.Donate)
         }
     }
 
@@ -318,6 +337,10 @@ private fun AppRoot(
     }
     if (topOverlay() == OverlayScreen.Help) {
         HelpScreen(onBack = { popOverlay() })
+        return
+    }
+    if (topOverlay() == OverlayScreen.Donate) {
+        DonateScreen(onBack = { popOverlay() })
         return
     }
 
@@ -439,6 +462,7 @@ private fun MainTabs(
             onOpenExport = { pushOverlay(OverlayScreen.Export) },
             onOpenReminder = { pushOverlay(OverlayScreen.Reminder) },
             onOpenHelp = { pushOverlay(OverlayScreen.Help) },
+            onOpenDonate = { pushOverlay(OverlayScreen.Donate) },
             onOpenAbout = { pushOverlay(OverlayScreen.About) })
     }
 }
