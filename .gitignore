@@ -41,3 +41,10 @@ schedule/
 keystore/
 keystore.properties
 
+# iOS
+ios/.theos/
+ios/packages/
+ios-ref/
+artifacts/*.deb
+artifacts/*.ipa
+ios/reference-android/

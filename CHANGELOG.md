@@ -1,5 +1,28 @@
 # Changelog
 
+## iOS v1.0.0-beta.1 — 越狱/免签首测
+
+> 面向越狱 / TrollStore 用户的 iOS 测试版，不依赖 Apple 签名与 App Store。
+
+### 新增
+- **iOS 原生应用（SwiftUI + Theos）**：包名 `com.arroghie.xmutimetable`，最低 iOS 15.0，arm64。
+- **课表主界面**：今日 / 周视图 / 网格视图，多课表切换与管理。
+- **课程管理**：手动添加、编辑、删除；节次时间、单双周与周次区间。
+- **导入导出**：`.sleepy` 文本导入导出、ICS 日历导出、系统分享。
+- **厦大教务直连**：统一身份认证账号密码自动登录（**无需验证码**），拉取课表与节次时间。
+- **本地提醒**：课前 N 分钟提醒 + 每日本地通知。
+- **桌面小组件（WidgetKit）**：今日课程（小/中）、最近两天（中）、周课表网格（大）；随主 App 嵌入 `PlugIns/XMUTimeTableWidget.appex`。
+
+### 分发
+- `deb`：Sileo / Zebra / dpkg 安装到 `/Applications`。
+- `ipa`：TrollStore 安装。
+- 构建：WSL + Theos + iPhoneOS 16.5 SDK，`ios/scripts/package.sh`。
+
+### 与 Android 差异
+- 未包含 OPPO 流体云、动态岛 Live Activity、APK 自更新。
+- 小组件刷新为系统 Timeline 预算，非 Android RemoteViews 即时推送。
+
+
 ## v1.1.5 — 移除课程时间显示设置 · 表头只显日期
 
 ### 修复

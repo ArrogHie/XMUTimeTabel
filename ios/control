@@ -1,0 +1,10 @@
+Package: com.arroghie.xmutimetable
+Name: 厦大课表
+Version: 1.0.0-beta.1
+Architecture: iphoneos-arm64
+Description: 厦门大学课程表 iOS 版（越狱/免签分发）
+Maintainer: ArrogHie <arroghie@local>
+Author: ArrogHie
+Section: Productivity
+Depends: firmware (>= 15.0)
+Homepage: https://github.com/ArrogHie/XMUTimeTabel
