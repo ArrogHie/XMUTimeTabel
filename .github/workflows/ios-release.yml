@@ -1,0 +1,84 @@
+name: iOS Release
+
+on:
+  push:
+    tags:
+      - "ios-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect artifacts
+        id: assets
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          VER="${TAG#ios-v}"
+          mkdir -p /tmp/rel
+          DEB="artifacts/com.arroghie.xmutimetable_${VER}_iphoneos-arm64.deb"
+          IPA="artifacts/XMUTimeTable_${VER}.ipa"
+          # fallback: any beta deb/ipa in artifacts
+          if [ ! -f "$DEB" ]; then
+            DEB=$(ls artifacts/com.arroghie.xmutimetable_*_iphoneos-arm64.deb 2>/dev/null | tail -1 || true)
+          fi
+          if [ ! -f "$IPA" ]; then
+            IPA=$(ls artifacts/XMUTimeTable_*.ipa 2>/dev/null | tail -1 || true)
+          fi
+          if [ -z "${DEB:-}" ] || [ ! -f "$DEB" ]; then
+            echo "Missing deb in artifacts/" >&2
+            ls -la artifacts || true
+            exit 1
+          fi
+          if [ -z "${IPA:-}" ] || [ ! -f "$IPA" ]; then
+            echo "Missing ipa in artifacts/" >&2
+            ls -la artifacts || true
+            exit 1
+          fi
+          cp -f "$DEB" /tmp/rel/
+          cp -f "$IPA" /tmp/rel/
+          echo "ver=${VER}" >> "$GITHUB_OUTPUT"
+          ls -la /tmp/rel
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: iOS 测试版 ${{ steps.assets.outputs.ver }}
+          prerelease: true
+          draft: false
+          body: |
+            ## 厦大课表 iOS 测试版 ${{ steps.assets.outputs.ver }}
+
+            面向 **越狱 / TrollStore** 用户，无需 Apple 签名与 App Store。
+
+            ### 安装
+            | 文件 | 方式 |
+            |---|---|
+            | `*.deb` | Sileo / Zebra / dpkg → `/Applications` |
+            | `*.ipa` | TrollStore |
+
+            - 最低系统：iOS 15.0（arm64）
+            - 包名：`com.arroghie.xmutimetable`
+
+            ### 本版功能
+            - 今日 / 周视图 / 网格视图，多课表管理
+            - 课程增删改、节次时间、单双周
+            - `.sleepy` / ICS 导入导出
+            - 厦大教务账号密码自动登录（**无需验证码**）
+            - 本地课前 / 每日提醒
+            - 桌面小组件：今日课程、最近两天、周课表
+
+            ### 注意
+            - 测试版，请备份课表数据后再升级
+            - 小组件需先打开一次主 App 生成共享快照
+          files: |
+            /tmp/rel/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

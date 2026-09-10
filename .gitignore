@@ -45,6 +45,7 @@ keystore.properties
 ios/.theos/
 ios/packages/
 ios-ref/
-artifacts/*.deb
-artifacts/*.ipa
+# deb/ipa for iOS are committed as release assets for CI
+# artifacts/*.deb
+# artifacts/*.ipa
 ios/reference-android/
